@@ -90,6 +90,19 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 /* Out of stock banner */
 .oos-banner { text-align:center; color:var(--danger); font-size:.85em; padding:8px; margin:8px 16px; background:rgba(233,69,96,.1); border-radius:10px; }
 
+/* ===== CONFIRM ===== */
+.confirm-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:30; justify-content:center; align-items:center; padding:16px; }
+.confirm-overlay.active { display:flex; }
+.confirm-box { background:var(--card); border-radius:20px; max-width:340px; width:100%; padding:24px; text-align:center; }
+.confirm-emoji { font-size:3em; margin-bottom:8px; }
+.confirm-title { font-size:1.1em; color:var(--sub); margin-bottom:12px; }
+.confirm-name { font-size:1.3em; font-weight:700; margin-bottom:6px; }
+.confirm-recipe { font-size:.85em; color:var(--ok); margin-bottom:20px; }
+.confirm-btns { display:flex; gap:12px; justify-content:center; }
+.confirm-btn { padding:12px 28px; border-radius:12px; border:none; font-size:1em; font-weight:600; cursor:pointer; }
+.confirm-btn.cancel { background:#333; color:var(--text); }
+.confirm-btn.ok { background:var(--ok); color:#000; }
+
 /* ===== ADMIN ===== */
 #admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:50; overflow-y:auto; padding:16px; }
 #admin-overlay.active { display:flex; justify-content:center; align-items:flex-start; }
@@ -202,6 +215,20 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
   <div class="tab-bar" id="tabBar"></div>
   <div class="cocktail-section" id="cocktailSection"></div>
   <div class="toast" id="toast"></div>
+
+  <!-- CONFIRM -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <div class="confirm-emoji">🍹</div>
+      <div class="confirm-title">Servir ce cocktail ?</div>
+      <div class="confirm-name" id="confirm-name"></div>
+      <div class="confirm-recipe" id="confirm-recipe"></div>
+      <div class="confirm-btns">
+        <button class="confirm-btn cancel" onclick="cancelServe()">Annuler</button>
+        <button class="confirm-btn ok" onclick="confirmServe()">Servir !</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ADMIN -->
@@ -363,14 +390,33 @@ function renderCocktails() {
 
 window.switchTab = (id) => { activeTab=id; renderTabs(); renderCocktails(); };
 
+// Confirm overlay
 window.serveCocktail = (mixId, softId, idx) => {
   if ((state.mixes[mixId]||0)<=0 || (state.softs[softId]||0)<=0) return;
+  const m = MIXES.find(x=>x.id===mixId);
+  const c = m.combos[idx];
+  pendingServe = {mixId, softId, idx};
+  document.getElementById('confirm-name').textContent = c.name;
+  document.getElementById('confirm-recipe').textContent = c.recipe || '';
+  document.getElementById('confirm-overlay').classList.add('active');
+};
+window.confirmServe = () => {
+  if (!pendingServe) return;
+  const {mixId, softId, idx} = pendingServe;
   state.mixes[mixId]--; state.softs[softId]--;
   saveAll(); renderTabs(); renderCocktails();
+  document.getElementById('confirm-overlay').classList.remove('active');
   const el = document.getElementById(`cc-${mixId}-${idx}`);
   if (el) { el.classList.add('just-served'); setTimeout(()=>el.classList.remove('just-served'),500); }
   showToast('🍹 Cocktail servi !');
+  pendingServe = null;
 };
+window.cancelServe = () => {
+  pendingServe = null;
+  document.getElementById('confirm-overlay').classList.remove('active');
+};
+let pendingServe = null;
+document.getElementById('confirm-overlay').addEventListener('click', e => { if(e.target===e.currentTarget) cancelServe(); });
 
 renderTabs(); renderCocktails();
 
