@@ -1143,7 +1143,8 @@ function toggleLanguage() {
 }
 
 function updateLanguageDisplay() {
-  document.getElementById('lang-toggle').textContent = lang === 'fr' ? '🇫🇷' : '🇬🇧';
+  const langToggle = document.getElementById('lang-toggle');
+  if (langToggle) langToggle.textContent = lang === 'fr' ? '🇫🇷' : '🇬🇧';
   document.querySelector('.bar-header small').textContent = t('subtitle');
   
   // Update username popup
