@@ -2412,7 +2412,24 @@ const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();BEERS_DATA.push
 state.beers[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Bière ajoutée' : 'Beer added'));};
 window.deleteBeer=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;BEERS_DATA.splice(BEERS_DATA.findIndex(b=>b.id===id),1);delete state.beers[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
 
-window.resetAll=()=>{if(!confirm(t('resetAll')))return;localStorage.removeItem('chezfred_v1');localStorage.removeItem('chezfred_demo_leaderboard');loadAll();loadLeaderboardData();activeTab=MIXES[0]?.id||'';saveAll();renderAdmin();renderTabs();renderCocktails();showToast(t('reset'));};
+window.resetAll=()=>{if(!confirm(t('resetAll')))return;
+  localStorage.removeItem('chezfred_v1');
+  localStorage.removeItem('chezfred_demo_leaderboard');
+  localStorage.removeItem('siphappens_demo_leaderboard');
+  localStorage.removeItem('siphappens_demo_username');
+  localStorage.removeItem('siphappens_titles');
+  localStorage.removeItem('siphappens_active_title');
+  localStorage.removeItem('siphappens_lang');
+  currentUsername=null;userTitles=[];activeTitle=null;
+  leaderboardData={history:[],topDrinkers:[],cocktailStar:null};
+  lang='fr';
+  loadAll();activeTab=MIXES[0]?.id||'';saveAll();
+  updateUserDisplay();updateLanguageDisplay();
+  renderAdmin();renderTabs();renderCocktails();
+  generateInitialHistory();startFakeActivity();
+  showToast(t('reset'));
+  showUsernamePopup(false);
+};
 
 // Initialiser les données historiques pour la démo
 function generateInitialHistory() {
