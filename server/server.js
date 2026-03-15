@@ -8,50 +8,90 @@ const { networkInterfaces } = require('os');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuration par défaut - gardée identique au HTML original
+// Configuration par défaut - synchronisée avec la version principale
 const DEFAULT_MIXES = [
   { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
     combos:[
-      { name:'Tropi-Kat 🐱', recipe:'Mix Tropical + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
-      { name:'L\'Ananas-rchiste', recipe:'Mix Tropical + 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
-      { name:'Mangue Ta Vie', recipe:'Mix Tropical + 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭' },
+      { name:'Tropi-Kat 🐱', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Fruité & pétillant', desc:'Un mix fruité et pétillant qui te transporte direct sous les cocotiers. Le tonic apporte le fizz, le tropical fait le reste.' },
+      { name:'L\'Ananas-rchiste', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        tag:'100% fruité, sans compromis', desc:'Rebellion tropicale en bouche. L\'ananas vient renforcer le mix pour un combo 100% fruité et sans compromis.' },
+      { name:'Mangue Ta Vie', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        tag:'Doux et onctueux', desc:'Doux, onctueux, réconfortant. La mangue enveloppe le mix tropical dans un câlin sucré.' },
+      { name:'Tropical Sunrise', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
+        tag:'Fruité & vitaminé', desc:'Le tropical rencontre l\'agrume. Un lever de soleil fruité, lumineux et vitaminé.' },
+      { name:'Bubble Paradise', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 120ml eau gazeuse + glaçons', soft:'gazeuse', icon:'💧',
+        tag:'Léger et rafraîchissant', desc:'Version allégée et pétillante du mix tropical. Rafraîchissant, léger, parfait pour enchaîner.' },
     ]},
   { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
     combos:[
-      { name:'Virgin Mojito', recipe:'Mix Fresh + 120ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃' },
-      { name:'Fraîch\'Attitude', recipe:'Mix Fresh + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
+      { name:'Virgin Mojito', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 120ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃',
+        tag:'Le classique sans alcool', desc:'Le classique indémodable version sans alcool. Menthe fraîche, lime, bulles — tout le plaisir, zéro regret.' },
+      { name:'Fraîchitude', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Fresh & tonic, simple', desc:'Simple, frais, efficace. Le tonic donne du peps au mix fresh pour un combo désaltérant.' },
+      { name:'Fresh Colada', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        tag:'Menthe & ananas, frais total', desc:'Ananas et fraîcheur mentholée, comme une piña colada qui a choisi le bon côté de la Force.' },
+      { name:'Mangue Zen', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        tag:'Douceur mangue-menthe', desc:'La douceur de la mangue + la fraîcheur de la menthe. Zen, fruité, et totalement addictif.' },
     ]},
   { id:'maitai', emoji:'🏝', name:'Mix Mai Tai', alc:true, stock:10,
     combos:[
-      { name:'Mai Tai Classique', recipe:'Mix Mai Tai + 80ml jus d\'ananas + glaçons pilés', soft:'ananas', icon:'🍍' },
-      { name:'Mai Oh Mai', recipe:'Mix Mai Tai + 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭' },
-      { name:'Tai Piquant', recipe:'Mix Mai Tai + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚' },
+      { name:'Mai Tai Classique', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 80ml jus d\'ananas + glaçons pilés', soft:'ananas', icon:'🍍',
+        tag:'Le roi du tiki', desc:'Le roi des cocktails tiki. Rhums, curaçao, orgeat et ananas — un voyage en Polynésie dans ton verre.' },
+      { name:'Mai Oh Mai', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        tag:'Tiki exotique à la mangue', desc:'Le Mai Tai qui a rencontré une mangue et qui n\'est jamais revenu. Exotique et addictif.' },
+      { name:'Tai Piquant', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
+        tag:'Tiki épicé au gingembre', desc:'Le tiki rencontre le gingembre. Épicé, pétillant, avec la profondeur du rhum. Ça réveille.' },
+      { name:'Tai & Tonic', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Tiki version light', desc:'Le tiki en mode light. Le tonic étire les saveurs de rhum et d\'orgeat, frais et sec.' },
     ]},
   { id:'passion', emoji:'🍑', name:'Mix Passion', alc:true, stock:10,
     combos:[
-      { name:'Pornstar Martini', recipe:'Mix Passion + shot de prosecco à côté', soft:'prosecco', icon:'🥂' },
-      { name:'Passionnément Orange', recipe:'Mix Passion + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊' },
-      { name:'Fruit Défendu', recipe:'Mix Passion + 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭' },
-      { name:'Crush Fizz', recipe:'Mix Passion + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
-      { name:'Ananas Désir', recipe:'Mix Passion + 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
+      { name:'Pornstar Martini', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : shot de prosecco à côté', soft:'prosecco', icon:'🥂',
+        tag:'Glamour & passion', desc:'Le cocktail star des soirées. Passion, vanille, et un shot de prosecco à descendre entre deux gorgées. Glamour.' },
+      { name:'Passionnément Orange', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊',
+        tag:'Vitaminé & fruité', desc:'La passion fruit rencontre l\'orange pour un duo vitaminé et légèrement sucré. Solaire.' },
+      { name:'Fruit Défendu', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        tag:'Tentation passion-mangue', desc:'Passion + mangue = tentation pure. Onctueux, sucré, et juste ce qu\'il faut d\'interdit.' },
+      { name:'Crush Fizz', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Passion pétillante', desc:'La passion version pétillante. Le tonic allège et les bulles font danser le fruit.' },
+      { name:'Ananas Désir', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        tag:'Coup de foudre tropical', desc:'Quand la passion rencontre l\'ananas, c\'est le coup de foudre tropical. Frais et envoûtant.' },
     ]},
   { id:'ginger', emoji:'🫚', name:'Mix Ginger', alc:true, stock:8,
     combos:[
-      { name:'Moscow Mule', recipe:'Mix Ginger + 120ml ginger beer + lime + glaçons', soft:'ginger', icon:'🫚' },
-      { name:'Lever de Gingembre', recipe:'Mix Ginger + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅' },
-      { name:'Pique & Piquant', recipe:'Mix Ginger + 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
+      { name:'Moscow Mule', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 120ml ginger beer + lime + glaçons', soft:'ginger', icon:'🫚',
+        tag:'Le classique iconique', desc:'Le classique absolu. Vodka, ginger beer, lime — simple, efficace, iconique. Servi dans un mug en cuivre si t\'as la classe.' },
+      { name:'Lever de Gingembre', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
+        tag:'Sunrise épicé', desc:'Le sunrise version gingembre. L\'orange adoucit le piquant pour un réveil en douceur.' },
+      { name:'Pique & Piquant', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        tag:'Épicé-sucré addictif', desc:'Le gingembre qui pique, l\'ananas qui adoucit. Un équilibre épicé-sucré addictif.' },
+      { name:'Ginger Mango', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        tag:'Exotique & piquant', desc:'Le piquant du gingembre adouci par la mangue veloutée. Un duo exotique qui fonctionne à merveille.' },
+      { name:'Ginger Highball', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Long drink raffiné', desc:'Le ginger mix version longue et raffinée. Le tonic allonge, les bulles dansent, le gingembre parle.' },
     ]},
   { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:12,
     combos:[
-      { name:'Sunset de Fred', recipe:'Mix Sunset + 100ml jus d\'orange + glaçons', soft:'orange', icon:'🌅' },
-      { name:'Soleil Couchant', recipe:'Mix Sunset + 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
-      { name:'Crépuscule Fizz', recipe:'Mix Sunset + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
+      { name:'Sunset de Fred', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 100ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
+        tag:'La signature du patron', desc:'La signature du patron. Orange, grenadine et coucher de soleil dans un verre. Le cocktail qui donne le smile.' },
+      { name:'Soleil Couchant', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        tag:'Sunset tropical', desc:'Le sunset prend une tournure tropicale avec l\'ananas. Doux, coloré, et parfait pour finir la journée.' },
+      { name:'Crépuscule Fizz', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Sunset pétillant', desc:'Le sunset allégé par le tonic. Pétillant, léger, avec juste ce qu\'il faut de couleur.' },
+      { name:'Sunset Exotique', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        tag:'Sunset façon Thaï', desc:'Le coucher de soleil prend des airs de plage thaïlandaise. Mangue + sunset = carte postale en verre.' },
+      { name:'Sunset Mule', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
+        tag:'Sunset qui kick', desc:'Le sunset qui kick. La ginger beer ajoute du piquant au dégradé fruité. Épicé et coloré.' },
     ]},
   { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:10,
     combos:[
-      { name:'Espresso Martini', recipe:'Mix Espresso + 30ml café froid + glaçons + shaker', soft:'cafe', icon:'☕' },
-      { name:'Café Méca-Nick', recipe:'Mix Espresso + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊' },
-      { name:'Ginger Buzz', recipe:'Mix Espresso + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚' },
+      { name:'Espresso Martini', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café — À ajouter : 30ml café froid + glaçons + shaker', soft:'cafe', icon:'☕',
+        tag:'Élégance caféinée', desc:'Le cocktail qui te garde éveillé pour danser. Vodka, café, liqueur de café — secoué, pas remué. Élégance caféinée.' },
+      { name:'Ginger Buzz', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
+        tag:'Café épicé & pétillant', desc:'Le café rencontre le gingembre pour un buzz épicé. Pétillant et corsé, il envoie du lourd.' },
+      { name:'Espresso Tonic', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        tag:'Le combo tendance', desc:'Le combo tendance des coffee shops branchés. Le tonic fait mousser le café, c\'est amer, frais et addictif.' },
     ]},
 ];
 
@@ -137,7 +177,7 @@ const server = app.listen(PORT, () => {
   const localIP = getLocalIP();
   const url = `http://${localIP}:${PORT}`;
   
-  console.log('🍹 Chez Fred - Serveur démarré !');
+  console.log('🍹 Sip Happens at Fred\'s - Serveur démarré !');
   console.log('');
   console.log(`📱 Accès local: http://localhost:${PORT}`);
   console.log(`🌐 Accès réseau: ${url}`);
@@ -146,7 +186,7 @@ const server = app.listen(PORT, () => {
   qrcode.generate(url, { small: true });
   console.log('');
   console.log('💡 Assure-toi que tous les appareils sont sur le même WiFi !');
-  console.log('🔧 Admin: maintenir appuyé sur le titre "Chez Fred"');
+  console.log('🔧 Admin: maintenir appuyé sur le titre "Sip Happens at Fred\'s"');
   console.log('');
 });
 
