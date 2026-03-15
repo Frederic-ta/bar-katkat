@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Chez Fred 🍹</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#0c0c1d; --card:rgba(255,255,255,.06); --card-border:rgba(255,255,255,.08);
+  --accent:#e94560; --text:#f0f0f0; --sub:rgba(255,255,255,.5);
+  --ok:#4ecca3; --warn:#f0a500; --danger:#e94560;
+  --glow:rgba(233,69,96,.15);
+}
+body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh;
+  background-image:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.08) 0%,transparent 60%); }
+
+/* ===== COUNTDOWN ===== */
+#countdown-screen {
+  position:fixed; inset:0; z-index:100; background:var(--bg);
+  background-image:radial-gradient(ellipse at 50% 40%,rgba(233,69,96,.12) 0%,transparent 60%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:24px;
+}
+#countdown-screen .logo { font-size:5em; margin-bottom:16px; animation:float 3s ease-in-out infinite; cursor:default; user-select:none;
+  filter:drop-shadow(0 0 20px rgba(233,69,96,.3)); }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+#countdown-screen h1 { font-size:2.2em; font-weight:800; letter-spacing:-.02em; }
+#countdown-screen .tagline { color:var(--sub); font-size:1em; margin-bottom:36px; font-style:italic; }
+#countdown-timer { display:flex; gap:12px; margin-bottom:36px; }
+#countdown-timer .unit { background:var(--card); backdrop-filter:blur(20px); border:1px solid var(--card-border);
+  border-radius:16px; padding:16px 18px; min-width:68px; }
+#countdown-timer .unit .num { font-size:2.2em; font-weight:800; color:var(--accent);
+  text-shadow:0 0 20px rgba(233,69,96,.4); }
+#countdown-timer .unit .label { font-size:.65em; color:var(--sub); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
+#countdown-screen .tease { color:var(--sub); font-size:.85em; margin-top:8px; }
+#countdown-screen .tease span { color:var(--accent); font-weight:600; }
+.particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.particle { position:absolute; font-size:1.4em; opacity:.12; animation:drift linear infinite; }
+@keyframes drift { 0%{transform:translateY(100vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
+
+/* ===== BAR ===== */
+#bar-content { display:none; }
+#bar-content.active { display:block; }
+
+.bar-header { text-align:center; padding:28px 16px 6px; user-select:none; cursor:default; }
+.bar-header h1 { font-size:1.8em; font-weight:800; letter-spacing:-.02em; }
+.bar-header small { display:block; font-size:.78em; color:var(--sub); font-weight:400; margin-top:6px; }
+
+/* Tabs */
+.tab-bar { display:flex; overflow-x:auto; gap:10px; padding:14px 16px 16px;
+  -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.15) transparent; }
+.tab-bar::-webkit-scrollbar { height:3px; }
+.tab-bar::-webkit-scrollbar-track { background:transparent; }
+.tab-bar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.15); border-radius:4px; }
+
+.tab { flex-shrink:0; background:var(--card); backdrop-filter:blur(12px); border:1px solid var(--card-border);
+  border-radius:16px; padding:12px 20px; text-align:center; cursor:pointer; transition:all .2s; min-width:88px; position:relative; }
+.tab:active { transform:scale(.95); }
+.tab.active { background:rgba(233,69,96,.12); border-color:var(--accent); box-shadow:0 0 20px rgba(233,69,96,.15), inset 0 0 20px rgba(233,69,96,.05); }
+.tab .tab-emoji { font-size:1.6em; filter:grayscale(.3); transition:filter .2s; }
+.tab.active .tab-emoji { filter:grayscale(0) drop-shadow(0 0 8px rgba(255,255,255,.2)); }
+.tab .tab-name { font-size:.7em; font-weight:600; margin-top:4px; color:var(--sub); transition:color .2s; }
+.tab.active .tab-name { color:var(--text); }
+.tab .tab-type { font-size:.55em; font-weight:600; padding:2px 8px; border-radius:20px; margin-top:5px; display:inline-block; letter-spacing:.5px; }
+.tab .type-alc { background:rgba(233,69,96,.15); color:var(--danger); }
+.tab .type-na { background:rgba(78,204,163,.12); color:var(--ok); }
+
+/* Section */
+.cocktail-section { padding:4px 16px 120px; }
+.section-header { display:flex; align-items:center; gap:14px; padding:8px 4px 18px; }
+.section-header .sec-emoji { font-size:2.6em; filter:drop-shadow(0 0 10px rgba(255,255,255,.1)); }
+.section-header .sec-info h2 { font-size:1.25em; font-weight:700; }
+.section-header .sec-stock { font-size:.82em; color:var(--sub); margin-top:2px; }
+.section-header .sec-stock strong { font-weight:700; }
+
+/* Cocktail cards */
+.cocktail-card {
+  background:var(--card); backdrop-filter:blur(12px); border:1px solid var(--card-border);
+  border-radius:18px; padding:16px 18px; margin-bottom:10px;
+  display:flex; align-items:center; gap:14px; cursor:pointer;
+  transition:all .18s; position:relative; overflow:hidden;
+}
+.cocktail-card::before {
+  content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s;
+  background:linear-gradient(135deg, rgba(233,69,96,.06) 0%, rgba(78,204,163,.04) 100%);
+}
+.cocktail-card:active { transform:scale(.98); }
+.cocktail-card:active::before { opacity:1; }
+.cocktail-card.disabled { opacity:.3; pointer-events:none; }
+.cocktail-card .cc-icon { font-size:2em; flex-shrink:0; width:44px; text-align:center; position:relative; z-index:1; }
+.cocktail-card .cc-body { flex:1; position:relative; z-index:1; }
+.cocktail-card .cc-name { font-size:1em; font-weight:700; }
+.cocktail-card .cc-recipe { font-size:.78em; color:var(--sub); margin-top:4px; line-height:1.5; }
+.cocktail-card .cc-recipe em { color:rgba(78,204,163,.8); font-style:normal; font-weight:500; }
+.cocktail-card .cc-go { flex-shrink:0; width:32px; height:32px; border-radius:50%;
+  background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center;
+  font-size:.85em; color:var(--sub); position:relative; z-index:1; transition:all .2s; }
+.cocktail-card:not(.disabled) .cc-go { color:var(--ok); background:rgba(78,204,163,.1); }
+
+@keyframes served { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
+.cocktail-card.just-served { animation:served .4s ease; }
+
+/* OOS */
+.oos-banner { text-align:center; color:var(--danger); font-size:.82em; padding:10px 16px;
+  margin:4px 0 12px; background:rgba(233,69,96,.08); border:1px solid rgba(233,69,96,.15); border-radius:12px; }
+
+/* Toast */
+.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ok); color:#000;
+  padding:12px 28px; border-radius:14px; font-weight:700; font-size:.9em; z-index:60; opacity:0;
+  transition:opacity .3s; pointer-events:none; box-shadow:0 4px 20px rgba(78,204,163,.3); }
+.toast.show { opacity:1; }
+
+/* Confirm */
+.confirm-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
+  z-index:30; justify-content:center; align-items:center; padding:16px; }
+.confirm-overlay.active { display:flex; }
+.confirm-box { background:linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border:1px solid var(--card-border); border-radius:24px; max-width:340px; width:100%; padding:28px; text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5); }
+.confirm-emoji { font-size:3.2em; margin-bottom:10px; filter:drop-shadow(0 0 12px rgba(255,255,255,.1)); }
+.confirm-title { font-size:.95em; color:var(--sub); margin-bottom:14px; font-weight:500; }
+.confirm-name { font-size:1.4em; font-weight:800; margin-bottom:6px; }
+.confirm-recipe { font-size:.82em; color:var(--ok); margin-bottom:24px; font-weight:500; }
+.confirm-btns { display:flex; gap:12px; justify-content:center; }
+.confirm-btn { padding:13px 28px; border-radius:14px; border:none; font-size:.95em; font-weight:700; cursor:pointer; transition:transform .12s; }
+.confirm-btn:active { transform:scale(.95); }
+.confirm-btn.cancel { background:rgba(255,255,255,.08); color:var(--text); }
+.confirm-btn.ok { background:linear-gradient(135deg,var(--ok),#3ab88a); color:#000; box-shadow:0 4px 16px rgba(78,204,163,.25); }
+
+/* ===== CONNECTION STATUS ===== */
+.connection-status { position:fixed; bottom:10px; right:10px; z-index:40; padding:6px 10px; 
+  background:rgba(0,0,0,.8); backdrop-filter:blur(10px); border-radius:20px; font-size:.7em; 
+  font-weight:600; border:1px solid var(--card-border); transition:all .2s; }
+.connection-status.online { color:var(--ok); border-color:rgba(78,204,163,.3); }
+.connection-status.offline { color:var(--danger); border-color:rgba(233,69,96,.3); }
+
+/* ===== ADMIN ===== */
+#admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); backdrop-filter:blur(4px);
+  z-index:50; overflow-y:auto; padding:16px; }
+#admin-overlay.active { display:flex; justify-content:center; align-items:flex-start; }
+#admin-panel { background:linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border:1px solid var(--card-border); border-radius:20px; max-width:500px; width:100%; padding:20px; margin:20px auto; }
+#admin-panel h2 { text-align:center; margin-bottom:16px; color:var(--accent); font-weight:800; }
+#admin-panel h3 { margin:16px 0 8px; color:var(--ok); font-size:.95em; font-weight:700; }
+.admin-row { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.04);
+  border:1px solid var(--card-border); border-radius:12px; padding:10px 14px; margin:6px 0; flex-wrap:wrap; }
+.admin-row .admin-label { font-size:.9em; flex:1; min-width:120px; }
+.admin-row .admin-label small { color:var(--sub); }
+.admin-stock-ctrl { display:flex; align-items:center; gap:8px; }
+.admin-stock-ctrl button { width:30px; height:30px; border-radius:50%; border:none; font-size:1em; cursor:pointer; font-weight:700; }
+.admin-stock-ctrl .minus { background:rgba(233,69,96,.15); color:var(--danger); }
+.admin-stock-ctrl .plus { background:rgba(78,204,163,.15); color:var(--ok); }
+.admin-stock-ctrl input[type=number] { width:50px; text-align:center; background:rgba(255,255,255,.06);
+  border:1px solid var(--card-border); color:var(--text); border-radius:8px; padding:4px; font-size:1em; }
+.admin-add-form { background:rgba(255,255,255,.03); border:1px solid var(--card-border); border-radius:14px; padding:14px; margin:8px 0; }
+.admin-add-form label { display:block; font-size:.75em; color:var(--sub); margin:8px 0 2px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+.admin-add-form input, .admin-add-form select { width:100%; padding:8px 10px; border-radius:10px;
+  border:1px solid var(--card-border); background:rgba(255,255,255,.06); color:var(--text); font-size:.9em; }
+.admin-add-form .row2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.admin-btn { display:inline-block; margin:6px 4px; padding:10px 22px; border-radius:12px; border:none; font-size:.9em; cursor:pointer; font-weight:700; }
+.admin-btn-ok { background:linear-gradient(135deg,var(--ok),#3ab88a); color:#000; }
+.admin-btn-danger { background:rgba(233,69,96,.2); color:var(--danger); border:1px solid rgba(233,69,96,.3); }
+.admin-btn-close { background:rgba(255,255,255,.08); color:var(--text); }
+.admin-delete { cursor:pointer; color:var(--danger); font-size:.8em; margin-left:8px; opacity:.5; transition:opacity .15s; }
+.admin-delete:hover { opacity:1; }
+.admin-combo-row { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.03);
+  border:1px solid var(--card-border); border-radius:8px; padding:6px 10px; margin:4px 0; font-size:.82em; }
+.admin-combo-row span { flex:1; }
+.admin-combo-add { background:rgba(255,255,255,.03); border:1px solid var(--card-border); border-radius:10px; padding:8px; margin:4px 0; }
+.admin-combo-add input, .admin-combo-add select { width:100%; padding:6px 8px; border-radius:8px;
+  border:1px solid var(--card-border); background:rgba(255,255,255,.06); color:var(--text); font-size:.82em; margin:2px 0; }
+.admin-actions { text-align:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--card-border); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:480px) {
+  .bar-header h1 { font-size:1.5em; }
+  .tab { padding:10px 14px; min-width:76px; }
+  .tab .tab-emoji { font-size:1.3em; }
+  .tab .tab-name { font-size:.62em; }
+  .section-header .sec-emoji { font-size:2em; }
+  .section-header .sec-info h2 { font-size:1.1em; }
+  .cocktail-card { padding:14px; gap:10px; }
+  .cocktail-card .cc-icon { font-size:1.6em; width:36px; }
+  .cocktail-card .cc-name { font-size:.92em; }
+  .cocktail-card .cc-recipe { font-size:.72em; }
+  #countdown-timer { gap:8px; }
+  #countdown-timer .unit { padding:12px 10px; min-width:55px; }
+  #countdown-timer .unit .num { font-size:1.8em; }
+  #countdown-screen h1 { font-size:1.6em; }
+  #admin-panel { padding:14px; }
+  .admin-add-form .row2 { grid-template-columns:1fr; }
+}
+@media (min-width:481px) and (max-width:1024px) {
+  body { padding:16px; }
+  .bar-header { padding:28px 20px 8px; }
+  .bar-header h1 { font-size:2.1em; }
+  .tab-bar { padding:14px 20px 16px; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .tab { padding:14px 24px; min-width:100px; }
+  .cocktail-section { max-width:680px; margin:0 auto; }
+  .cocktail-card { padding:18px 20px; }
+  .cocktail-card .cc-name { font-size:1.05em; }
+  #admin-panel { max-width:580px; }
+}
+@media (min-width:1025px) {
+  .bar-header h1 { font-size:2.4em; }
+  .tab-bar { justify-content:center; gap:14px; padding:16px 24px; }
+  .tab { padding:16px 30px; }
+  .cocktail-section { max-width:750px; margin:0 auto; }
+  .cocktail-card { padding:20px 22px; border-radius:20px; }
+  .cocktail-card .cc-icon { font-size:2.2em; }
+  #admin-panel { max-width:620px; }
+}
+</style>
+</head>
+<body>
+
+<!-- COUNTDOWN -->
+<div id="countdown-screen">
+  <div class="particles" id="particles"></div>
+  <div class="logo" id="countdown-logo">🍹</div>
+  <h1>Chez Fred</h1>
+  <div class="tagline">Something's brewing...</div>
+  <div id="countdown-timer">
+    <div class="unit"><div class="num" id="cd-days">--</div><div class="label">Jours</div></div>
+    <div class="unit"><div class="num" id="cd-hours">--</div><div class="label">Heures</div></div>
+    <div class="unit"><div class="num" id="cd-mins">--</div><div class="label">Min</div></div>
+    <div class="unit"><div class="num" id="cd-secs">--</div><div class="label">Sec</div></div>
+  </div>
+  <div class="tease">🔒 Ouverture le <span>5 avril à 11h30</span></div>
+</div>
+
+<!-- BAR -->
+<div id="bar-content">
+  <div class="bar-header" id="title">
+    <h1>Chez Fred 🍹</h1>
+    <small>Tape un mix, choisis ton cocktail !</small>
+  </div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="cocktail-section" id="cocktailSection"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- CONNECTION STATUS -->
+  <div class="connection-status offline" id="connectionStatus">🔴 Hors ligne</div>
+
+  <!-- CONFIRM -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <div class="confirm-emoji">🍹</div>
+      <div class="confirm-title">Servir ce cocktail ?</div>
+      <div class="confirm-name" id="confirm-name"></div>
+      <div class="confirm-recipe" id="confirm-recipe"></div>
+      <div class="confirm-btns">
+        <button class="confirm-btn cancel" onclick="cancelServe()">Annuler</button>
+        <button class="confirm-btn ok" onclick="confirmServe()">Servir !</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-overlay">
+  <div id="admin-panel"></div>
+</div>
+
+<script>
+// ===== WebSocket et État Global =====
+let ws = null;
+let isConnected = false;
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 5;
+
+// Configuration par défaut - identique au serveur
+const DEFAULT_MIXES = [
+  { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
+    combos:[
+      { name:'Tropi-Kat 🐱', recipe:'Mix Tropical + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
+      { name:'L\'Ananas-rchiste', recipe:'Mix Tropical + 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
+      { name:'Mangue Ta Vie', recipe:'Mix Tropical + 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭' },
+    ]},
+  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
+    combos:[
+      { name:'Virgin Mojito', recipe:'Mix Fresh + 120ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃' },
+      { name:'Fraîch\'Attitude', recipe:'Mix Fresh + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
+    ]},
+  { id:'maitai', emoji:'🏝', name:'Mix Mai Tai', alc:true, stock:10,
+    combos:[
+      { name:'Mai Tai Classique', recipe:'Mix Mai Tai + 80ml jus d\'ananas + glaçons pilés', soft:'ananas', icon:'🍍' },
+      { name:'Mai Oh Mai', recipe:'Mix Mai Tai + 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭' },
+      { name:'Tai Piquant', recipe:'Mix Mai Tai + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚' },
+    ]},
+  { id:'passion', emoji:'🍑', name:'Mix Passion', alc:true, stock:10,
+    combos:[
+      { name:'Pornstar Martini', recipe:'Mix Passion + shot de prosecco à côté', soft:'prosecco', icon:'🥂' },
+      { name:'Passionnément Orange', recipe:'Mix Passion + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊' },
+      { name:'Fruit Défendu', recipe:'Mix Passion + 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭' },
+      { name:'Crush Fizz', recipe:'Mix Passion + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
+      { name:'Ananas Désir', recipe:'Mix Passion + 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
+    ]},
+  { id:'ginger', emoji:'🫚', name:'Mix Ginger', alc:true, stock:8,
+    combos:[
+      { name:'Moscow Mule', recipe:'Mix Ginger + 120ml ginger beer + lime + glaçons', soft:'ginger', icon:'🫚' },
+      { name:'Lever de Gingembre', recipe:'Mix Ginger + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅' },
+      { name:'Pique & Piquant', recipe:'Mix Ginger + 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
+    ]},
+  { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:12,
+    combos:[
+      { name:'Sunset de Fred', recipe:'Mix Sunset + 100ml jus d\'orange + glaçons', soft:'orange', icon:'🌅' },
+      { name:'Soleil Couchant', recipe:'Mix Sunset + 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍' },
+      { name:'Crépuscule Fizz', recipe:'Mix Sunset + 120ml tonic + glaçons', soft:'tonic', icon:'🫧' },
+    ]},
+  { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:10,
+    combos:[
+      { name:'Espresso Martini', recipe:'Mix Espresso + 30ml café froid + glaçons + shaker', soft:'cafe', icon:'☕' },
+      { name:'Café Méca-Nick', recipe:'Mix Espresso + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊' },
+      { name:'Ginger Buzz', recipe:'Mix Espresso + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚' },
+    ]},
+];
+
+const DEFAULT_SOFTS = [
+  { id:'ginger', emoji:'🫚', name:'Ginger beer', stock:30 },
+  { id:'orange', emoji:'🍊', name:'Jus orange', stock:30 },
+  { id:'gazeuse', emoji:'💧', name:'Eau gazeuse', stock:20 },
+  { id:'tonic', emoji:'🧊', name:'Tonic', stock:30 },
+  { id:'ananas', emoji:'🍍', name:'Jus ananas', stock:30 },
+  { id:'cafe', emoji:'☕', name:'Café froid', stock:10 },
+  { id:'prosecco', emoji:'🥂', name:'Prosecco', stock:8 },
+  { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
+];
+
+let MIXES, SOFTS, state, activeTab;
+
+// ===== WebSocket Connection =====
+function connectWebSocket() {
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsUrl = `${protocol}//${window.location.host}`;
+  
+  console.log('🔌 Tentative connexion WebSocket:', wsUrl);
+  
+  try {
+    ws = new WebSocket(wsUrl);
+    
+    ws.onopen = () => {
+      console.log('🟢 WebSocket connecté');
+      isConnected = true;
+      reconnectAttempts = 0;
+      updateConnectionStatus();
+    };
+    
+    ws.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        handleWebSocketMessage(message);
+      } catch (error) {
+        console.error('❌ Erreur parsing message WebSocket:', error);
+      }
+    };
+    
+    ws.onclose = () => {
+      console.log('🔴 WebSocket déconnecté');
+      isConnected = false;
+      updateConnectionStatus();
+      
+      // Tentative de reconnexion
+      if (reconnectAttempts < maxReconnectAttempts) {
+        reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
+        console.log(`🔄 Reconnexion dans ${delay}ms (tentative ${reconnectAttempts})`);
+        setTimeout(connectWebSocket, delay);
+      } else {
+        console.log('❌ Nombre max de tentatives de reconnexion atteint');
+        showToast('📶 Mode hors ligne - utilisation du stockage local');
+      }
+    };
+    
+    ws.onerror = (error) => {
+      console.error('❌ Erreur WebSocket:', error);
+    };
+    
+  } catch (error) {
+    console.error('❌ Impossible de créer la connexion WebSocket:', error);
+    isConnected = false;
+    updateConnectionStatus();
+  }
+}
+
+function handleWebSocketMessage(message) {
+  console.log('📨 Message reçu:', message.type);
+  
+  switch (message.type) {
+    case 'sync':
+      // Synchronisation complète de l'état
+      if (message.state) {
+        MIXES = message.state.mixes || DEFAULT_MIXES;
+        SOFTS = message.state.softs || DEFAULT_SOFTS;
+        state = message.state.stock || { mixes: {}, softs: {} };
+        
+        // Mise à jour de l'interface
+        if (activeTab && !MIXES.find(m => m.id === activeTab)) {
+          activeTab = MIXES[0]?.id || '';
+        }
+        renderTabs();
+        renderCocktails();
+        console.log('✅ État synchronisé depuis le serveur');
+      }
+      break;
+  }
+}
+
+function sendWebSocketMessage(message) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(message));
+    console.log('📤 Message envoyé:', message.type);
+  } else {
+    console.log('📴 WebSocket non connecté, message ignoré');
+  }
+}
+
+function updateConnectionStatus() {
+  const status = document.getElementById('connectionStatus');
+  if (isConnected) {
+    status.textContent = '🟢 Connecté';
+    status.className = 'connection-status online';
+  } else {
+    status.textContent = '🔴 Hors ligne';
+    status.className = 'connection-status offline';
+  }
+}
+
+// ===== Gestion de l'État =====
+function loadAll() {
+  if (isConnected) {
+    // Si connecté, attendre la sync depuis le serveur
+    return;
+  }
+  
+  // Fallback localStorage si pas de connexion
+  try {
+    const s = JSON.parse(localStorage.getItem('chezfred_v1'));
+    if (s && s.mixes && s.softs && s.stock) {
+      MIXES = s.mixes;
+      SOFTS = s.softs;
+      state = s.stock;
+      return;
+    }
+  } catch (e) {}
+  
+  // État par défaut
+  MIXES = JSON.parse(JSON.stringify(DEFAULT_MIXES));
+  SOFTS = JSON.parse(JSON.stringify(DEFAULT_SOFTS));
+  state = { mixes: {}, softs: {} };
+  MIXES.forEach(m => state.mixes[m.id] = m.stock);
+  SOFTS.forEach(d => state.softs[d.id] = d.stock);
+}
+
+function saveAll() {
+  // Sauvegarde locale toujours
+  localStorage.setItem('chezfred_v1', JSON.stringify({
+    mixes: MIXES,
+    softs: SOFTS,
+    stock: state
+  }));
+  
+  // Envoi au serveur si connecté
+  if (isConnected) {
+    sendWebSocketMessage({
+      type: 'admin_update',
+      mixes: MIXES,
+      softs: SOFTS,
+      stock: state
+    });
+  }
+}
+
+// ===== Countdown =====
+const LAUNCH = new Date('2026-04-05T11:30:00+02:00');
+
+function spawnParticles() {
+  const e = ['🍹', '🍸', '🧊', '🍋', '🫚', '🥭', '🍊', '☕', '🥂', '🌿', '🍍'];
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = e[Math.floor(Math.random() * e.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (-Math.random() * 15) + 's';
+    p.style.fontSize = (1 + Math.random() * 1.2) + 'em';
+    c.appendChild(p);
+  }
+}
+
+function launchBar() {
+  document.getElementById('countdown-screen').style.display = 'none';
+  document.getElementById('bar-content').classList.add('active');
+  
+  // Initialiser WebSocket et état
+  connectWebSocket();
+  loadAll();
+  activeTab = MIXES[0]?.id || '';
+  renderTabs();
+  renderCocktails();
+}
+
+function updateCountdown() {
+  const d = LAUNCH - new Date();
+  if (d <= 0) {
+    launchBar();
+    return;
+  }
+  document.getElementById('cd-days').textContent = String(Math.floor(d / 864e5)).padStart(2, '0');
+  document.getElementById('cd-hours').textContent = String(Math.floor((d % 864e5) / 36e5)).padStart(2, '0');
+  document.getElementById('cd-mins').textContent = String(Math.floor((d % 36e5) / 6e4)).padStart(2, '0');
+  document.getElementById('cd-secs').textContent = String(Math.floor((d % 6e4) / 1e3)).padStart(2, '0');
+  setTimeout(updateCountdown, 1000);
+}
+
+let tapC = 0, tapT;
+document.getElementById('countdown-logo').addEventListener('click', () => {
+  tapC++;
+  clearTimeout(tapT);
+  if (tapC >= 3) {
+    tapC = 0;
+    launchBar();
+    return;
+  }
+  tapT = setTimeout(() => tapC = 0, 600);
+});
+
+// ===== Rendering =====
+function stockClass(n) {
+  return n <= 0 ? 'stock-danger' : n <= 3 ? 'stock-warn' : 'stock-ok';
+}
+
+function showToast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function renderTabs() {
+  document.getElementById('tabBar').innerHTML = MIXES.map(m => `<div class="tab ${m.id === activeTab ? 'active' : ''}" onclick="switchTab('${m.id}')">
+    <div class="tab-emoji">${m.emoji}</div>
+    <div class="tab-name">${m.name.replace('Mix ', '')}</div>
+    <div class="tab-type ${m.alc ? 'type-alc' : 'type-na'}">${m.alc ? 'Alcool' : 'Sans alc.'}</div>
+  </div>`).join('');
+}
+
+function renderCocktails() {
+  const m = MIXES.find(x => x.id === activeTab);
+  if (!m) return;
+  
+  const ms = state.mixes[m.id] || 0;
+  let h = `<div class="section-header">
+    <div class="sec-emoji">${m.emoji}</div>
+    <div class="sec-info"><h2>${m.name}</h2>
+    <div class="sec-stock">Stock : <strong class="${stockClass(ms)}">${ms} fiole${ms > 1 ? 's' : ''}</strong></div></div></div>`;
+  
+  if (ms <= 0) h += `<div class="oos-banner">⚠️ Plus de stock pour ce mix</div>`;
+  
+  h += m.combos.map((c, i) => {
+    const ss = state.softs[c.soft] || 0;
+    const can = ms > 0 && ss > 0;
+    const si = SOFTS.find(s => s.id === c.soft);
+    const w = ss <= 0 ? ` — <span style="color:var(--danger)">${si ? si.name : 'diluant'} épuisé</span>` : '';
+    
+    return `<div class="cocktail-card ${can ? '' : 'disabled'}" id="cc-${m.id}-${i}" onclick="serveCocktail('${m.id}','${c.soft}',${i})">
+      <div class="cc-icon">${c.icon || '🍹'}</div>
+      <div class="cc-body"><div class="cc-name">${c.name}</div>
+      <div class="cc-recipe"><em>${c.recipe || ''}</em>${w}</div></div>
+      <div class="cc-go">${can ? '→' : '✕'}</div></div>`;
+  }).join('');
+  
+  document.getElementById('cocktailSection').innerHTML = h;
+}
+
+window.switchTab = (id) => {
+  activeTab = id;
+  renderTabs();
+  renderCocktails();
+  
+  // scroll active tab into view
+  const el = document.querySelector('.tab.active');
+  if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+};
+
+// ===== Serve + confirm =====
+let pendingServe = null;
+
+window.serveCocktail = (mixId, softId, idx) => {
+  if ((state.mixes[mixId] || 0) <= 0 || (state.softs[softId] || 0) <= 0) return;
+  
+  const c = MIXES.find(x => x.id === mixId).combos[idx];
+  pendingServe = { mixId, softId, idx };
+  
+  document.getElementById('confirm-name').textContent = c.name;
+  document.getElementById('confirm-recipe').textContent = c.recipe || '';
+  document.getElementById('confirm-overlay').classList.add('active');
+};
+
+window.confirmServe = () => {
+  if (!pendingServe) return;
+  
+  const { mixId, softId, idx } = pendingServe;
+  
+  // Mettre à jour l'état localement
+  state.mixes[mixId]--;
+  state.softs[softId]--;
+  
+  // Envoi au serveur si connecté
+  if (isConnected) {
+    sendWebSocketMessage({
+      type: 'serve',
+      mixId: mixId,
+      softId: softId
+    });
+  }
+  
+  // Sauvegarde locale
+  saveAll();
+  renderTabs();
+  renderCocktails();
+  
+  document.getElementById('confirm-overlay').classList.remove('active');
+  
+  const el = document.getElementById(`cc-${mixId}-${idx}`);
+  if (el) {
+    el.classList.add('just-served');
+    setTimeout(() => el.classList.remove('just-served'), 500);
+  }
+  
+  showToast('🍹 Cocktail servi !');
+  pendingServe = null;
+};
+
+window.cancelServe = () => {
+  pendingServe = null;
+  document.getElementById('confirm-overlay').classList.remove('active');
+};
+
+document.getElementById('confirm-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) cancelServe();
+});
+
+// ===== Admin =====
+let adminTimer;
+const title = document.getElementById('title');
+
+function startAdmin() { adminTimer = setTimeout(openAdmin, 3000); }
+function cancelAdmin() { clearTimeout(adminTimer); }
+
+title.addEventListener('touchstart', startAdmin);
+title.addEventListener('touchend', cancelAdmin);
+title.addEventListener('mousedown', startAdmin);
+title.addEventListener('mouseup', cancelAdmin);
+
+function openAdmin() {
+  renderAdmin();
+  document.getElementById('admin-overlay').classList.add('active');
+}
+
+window.closeAdmin = () => {
+  document.getElementById('admin-overlay').classList.remove('active');
+  renderTabs();
+  renderCocktails();
+};
+
+document.getElementById('admin-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeAdmin();
+});
+
+function renderAdmin() {
+  document.getElementById('admin-panel').innerHTML = `
+    <h2>🔧 Admin</h2>
+    <h3>🍹 Mixes</h3>
+    ${MIXES.map(m => `<div class="admin-row">
+      <div class="admin-label">${m.emoji} ${m.name} <small>${m.alc ? '(alc)' : '(sans)'}</small><span class="admin-delete" onclick="deleteMix('${m.id}')">🗑</span></div>
+      <div class="admin-stock-ctrl"><button class="minus" onclick="ams('${m.id}',-1)">−</button>
+      <input type="number" value="${state.mixes[m.id] || 0}" onchange="sms('${m.id}',this.value)" min="0">
+      <button class="plus" onclick="ams('${m.id}',1)">+</button></div></div>
+      <div style="padding:0 14px 8px;">
+      ${m.combos.map((c, i) => `<div class="admin-combo-row"><span>${c.name} <small style="color:var(--sub)">${c.recipe || ''}</small></span>
+      <span class="admin-delete" onclick="dc('${m.id}',${i})">✕</span></div>`).join('')}
+      <div class="admin-combo-add"><input placeholder="Nom cocktail" id="cn-${m.id}">
+      <input placeholder="Recette complète" id="cr-${m.id}">
+      <input placeholder="Emoji" id="ci-${m.id}" style="width:60px;display:inline-block">
+      <select id="cs-${m.id}" style="margin-top:4px">${SOFTS.map(s => `<option value="${s.id}">${s.emoji} ${s.name}</option>`).join('')}</select>
+      <div style="text-align:right;margin-top:6px"><button class="admin-btn admin-btn-ok" onclick="ac('${m.id}')" style="padding:6px 14px;font-size:.82em">+ Cocktail</button></div></div></div>`).join('')}
+    <h3 style="margin-top:20px">➕ Nouveau mix</h3>
+    <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="nm-n" placeholder="Mix Coco"></div><div><label>Emoji</label><input id="nm-e" placeholder="🥥"></div></div>
+    <div class="row2"><div><label>Stock</label><input id="nm-s" type="number" value="10" min="0"></div><div><label>Alcool ?</label><select id="nm-a"><option value="true">🔴 Oui</option><option value="false">🟢 Non</option></select></div></div>
+    <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addMix()">Ajouter</button></div></div>
+    <h3>🧊 Diluants</h3>
+    ${SOFTS.map(d => `<div class="admin-row"><div class="admin-label">${d.emoji} ${d.name}<span class="admin-delete" onclick="deleteSoft('${d.id}')">🗑</span></div>
+    <div class="admin-stock-ctrl"><button class="minus" onclick="ass('${d.id}',-1)">−</button>
+    <input type="number" value="${state.softs[d.id] || 0}" onchange="sss('${d.id}',this.value)" min="0">
+    <button class="plus" onclick="ass('${d.id}',1)">+</button></div></div>`).join('')}
+    <h3 style="margin-top:20px">➕ Nouveau diluant</h3>
+    <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="ns-n" placeholder="Jus cranberry"></div><div><label>Emoji</label><input id="ns-e" placeholder="🫐"></div></div>
+    <div><label>Stock</label><input id="ns-s" type="number" value="20" min="0"></div>
+    <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addSoft()">Ajouter</button></div></div>
+    <div class="admin-actions"><button class="admin-btn admin-btn-danger" onclick="resetAll()">🔄 Reset</button>
+    <button class="admin-btn admin-btn-close" onclick="closeAdmin()">Fermer</button></div>`;
+}
+
+// Fonctions admin (identiques mais avec sync WebSocket)
+window.ams = (id, d) => {
+  state.mixes[id] = Math.max(0, (state.mixes[id] || 0) + d);
+  saveAll();
+  renderAdmin();
+};
+
+window.sms = (id, v) => {
+  state.mixes[id] = Math.max(0, parseInt(v) || 0);
+  saveAll();
+};
+
+window.ass = (id, d) => {
+  state.softs[id] = Math.max(0, (state.softs[id] || 0) + d);
+  saveAll();
+  renderAdmin();
+};
+
+window.sss = (id, v) => {
+  state.softs[id] = Math.max(0, parseInt(v) || 0);
+  saveAll();
+};
+
+window.addMix = () => {
+  const n = document.getElementById('nm-n').value.trim();
+  const e = document.getElementById('nm-e').value.trim() || '🍹';
+  const s = parseInt(document.getElementById('nm-s').value) || 10;
+  const a = document.getElementById('nm-a').value === 'true';
+  
+  if (!n) return;
+  
+  const id = n.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now();
+  MIXES.push({ id, emoji: e, name: n, alc: a, stock: s, combos: [] });
+  state.mixes[id] = s;
+  saveAll();
+  renderAdmin();
+  showToast('✅ Mix ajouté');
+};
+
+window.deleteMix = (id) => {
+  if (!confirm('Supprimer ?')) return;
+  MIXES.splice(MIXES.findIndex(m => m.id === id), 1);
+  delete state.mixes[id];
+  saveAll();
+  renderAdmin();
+  showToast('🗑 Supprimé');
+};
+
+window.addSoft = () => {
+  const n = document.getElementById('ns-n').value.trim();
+  const e = document.getElementById('ns-e').value.trim() || '🧊';
+  const s = parseInt(document.getElementById('ns-s').value) || 20;
+  
+  if (!n) return;
+  
+  const id = n.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now();
+  SOFTS.push({ id, emoji: e, name: n, stock: s });
+  state.softs[id] = s;
+  saveAll();
+  renderAdmin();
+  showToast('✅ Diluant ajouté');
+};
+
+window.deleteSoft = (id) => {
+  if (!confirm('Supprimer ?')) return;
+  SOFTS.splice(SOFTS.findIndex(d => d.id === id), 1);
+  delete state.softs[id];
+  saveAll();
+  renderAdmin();
+  showToast('🗑 Supprimé');
+};
+
+window.ac = (mid) => {
+  const n = document.getElementById('cn-' + mid).value.trim();
+  const r = document.getElementById('cr-' + mid).value.trim();
+  const ic = document.getElementById('ci-' + mid).value.trim() || '🍹';
+  const s = document.getElementById('cs-' + mid).value;
+  
+  if (!n || !r) return;
+  
+  MIXES.find(x => x.id === mid).combos.push({ name: n, recipe: r, soft: s, icon: ic });
+  saveAll();
+  renderAdmin();
+  showToast('✅ Cocktail ajouté');
+};
+
+window.dc = (mid, i) => {
+  MIXES.find(x => x.id === mid).combos.splice(i, 1);
+  saveAll();
+  renderAdmin();
+};
+
+window.resetAll = () => {
+  if (!confirm('Tout reset ?')) return;
+  
+  // Reset WebSocket
+  if (isConnected) {
+    sendWebSocketMessage({ type: 'reset' });
+  }
+  
+  // Reset local
+  localStorage.removeItem('chezfred_v1');
+  loadAll();
+  activeTab = MIXES[0]?.id || '';
+  saveAll();
+  renderAdmin();
+  renderTabs();
+  renderCocktails();
+  showToast('🔄 Reset');
+};
+
+// ===== Initialisation =====
+spawnParticles();
+updateCountdown();
+updateConnectionStatus();
+</script>
+</body>
+</html>

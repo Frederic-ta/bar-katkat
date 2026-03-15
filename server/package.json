@@ -1,0 +1,18 @@
+{
+  "name": "chez-fred-server",
+  "version": "1.0.0",
+  "description": "Serveur local pour Chez Fred - bar à cocktails avec synchro temps réel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.14.2",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "keywords": ["bar", "cocktails", "websocket", "realtime"],
+  "author": "Fred",
+  "license": "MIT"
+}
