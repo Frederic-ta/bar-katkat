@@ -127,8 +127,9 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   background:rgba(255,255,255,.04); border:1px solid var(--card-border); border-radius:12px; text-align:left; line-height:1.7; }
 .detail-recipe .fiole { color:var(--warn); font-weight:700; display:block; margin-bottom:6px; }
 .detail-recipe .fiole-ingredients { color:var(--sub); display:block; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--card-border); }
-.detail-recipe .ajouter-label { color:var(--ok); font-weight:700; display:block; margin-bottom:2px; }
-.detail-recipe .ajouter { color:var(--ok); display:block; }
+.detail-recipe .prep-label { color:var(--ok); font-weight:700; display:block; margin-bottom:4px; font-size:.95em; }
+.detail-recipe .prep-item { color:var(--sub); display:block; padding-left:12px; line-height:1.6; }
+.detail-recipe .prep-item::before { content:'• '; color:var(--ok); }
 .detail-btns { display:flex; gap:12px; justify-content:center; }
 .detail-btn { padding:13px 28px; border-radius:14px; border:none; font-size:.95em; font-weight:700; cursor:pointer; transition:transform .12s; }
 .detail-btn:active { transform:scale(.95); }
@@ -419,16 +420,25 @@ window.serveCocktail=(mixId,softId,idx)=>{
   document.getElementById('detail-icon').textContent=c.icon||'🍹';
   document.getElementById('detail-name').textContent=c.name;
   document.getElementById('detail-desc').textContent=c.desc||'Un cocktail unique à découvrir !';
-  // Format recipe with fiole/ajouter sections
+  // Format recipe with fiole/prep sections
   const recipe=c.recipe||'';
   const parts=recipe.split(' — À ajouter : ');
   if(parts.length===2){
     const mixParts=parts[0].split(' : ');
+    // Parse "à ajouter" into separate items
+    const addParts=parts[1].split(' + ');
+    // Find the diluant (first item with ml) and the rest
+    let diluant='', extras=[];
+    addParts.forEach(p=>{
+      const t=p.trim();
+      if(t) extras.push(t);
+    });
     document.getElementById('detail-recipe').innerHTML=
       '<span class="fiole">'+mixParts[0]+'</span>'+
       '<span class="fiole-ingredients">'+mixParts[1]+'</span>'+
-      '<span class="ajouter-label">À ajouter :</span>'+
-      '<span class="ajouter">'+parts[1]+'</span>';
+      '<span class="prep-label">Préparation :</span>'+
+      '<span class="prep-item">Verre 250ml</span>'+
+      extras.map(e=>'<span class="prep-item">'+e+'</span>').join('');
   } else {
     document.getElementById('detail-recipe').textContent=recipe;
   }
