@@ -218,8 +218,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 .lang-toggle {
   position: fixed;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
   z-index: 40;
   background: var(--card);
   backdrop-filter: blur(12px);
@@ -286,7 +285,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 /* Leaderboard button */
 .leaderboard-btn {
   position: fixed;
-  top: 20px;
+  top: 72px;
   left: 20px;
   z-index: 40;
   width: 44px;
@@ -558,7 +557,8 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 /* Mobile responsive pour nouvelles fonctionnalités */
 @media (max-width:480px) {
   .user-display { top: 16px; right: 16px; padding: 6px 10px; font-size: .8em; }
-  .leaderboard-btn { top: 16px; left: 16px; width: 40px; height: 40px; font-size: 1.1em; }
+  .leaderboard-btn { top: 62px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
+  .lang-toggle { top: 16px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
   .username-form { padding: 24px; }
   .leaderboard-content { padding: 16px 20px; }
   .history-list { max-height: 150px; }
@@ -630,6 +630,10 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   <div class="username-form">
     <h3 id="username-title">👋 Salut toi !</h3>
     <p id="username-desc">Choisis ton pseudo pour profiter du bar et accéder au classement.</p>
+    <div style="display:flex;justify-content:center;gap:10px;margin-bottom:16px;">
+      <button class="lang-choice" id="lang-fr" onclick="setLangPopup('fr')" style="padding:8px 18px;border-radius:12px;border:2px solid var(--accent);background:var(--card);font-size:1.2em;cursor:pointer;transition:all .2s;color:var(--text);">🇫🇷 Français</button>
+      <button class="lang-choice" id="lang-en" onclick="setLangPopup('en')" style="padding:8px 18px;border-radius:12px;border:2px solid var(--card-border);background:var(--card);font-size:1.2em;cursor:pointer;transition:all .2s;color:var(--sub);">🇬🇧 English</button>
+    </div>
     <div class="input-group">
       <input type="text" id="username-input" placeholder="Ton pseudo" maxlength="20" autocomplete="off">
       <div class="error" id="username-error"></div>
@@ -778,6 +782,20 @@ const I18N = {
 let lang = localStorage.getItem('siphappens_lang') || 'fr';
 function t(key) {
   return I18N[lang][key] || key;
+}
+
+function setLangPopup(l) {
+  lang = l;
+  localStorage.setItem('siphappens_lang', lang);
+  document.getElementById('lang-fr').style.borderColor = lang==='fr' ? 'var(--accent)' : 'var(--card-border)';
+  document.getElementById('lang-fr').style.color = lang==='fr' ? 'var(--text)' : 'var(--sub)';
+  document.getElementById('lang-en').style.borderColor = lang==='en' ? 'var(--accent)' : 'var(--card-border)';
+  document.getElementById('lang-en').style.color = lang==='en' ? 'var(--text)' : 'var(--sub)';
+  document.getElementById('username-title').textContent = lang==='fr' ? '👋 Salut toi !' : '👋 Hey there!';
+  document.getElementById('username-desc').textContent = t('chooseNicknameDesc');
+  document.getElementById('username-input').placeholder = t('chooseNickname');
+  document.getElementById('username-submit').textContent = t('letsGo') + ' 🚀';
+  updateLanguageDisplay();
 }
 
 function toggleLanguage() {
