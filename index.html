@@ -1767,8 +1767,8 @@ function renderTitles() {
   let html = TITLES.map(title => {
     const unlocked = userTitles.includes(title.id);
     const isActive = activeTitle === title.id;
-    const name = unlocked ? title.name[lang] : '???';
-    const desc = unlocked ? title.desc[lang] : '???';
+    const name = title.name[lang];
+    const desc = unlocked ? title.desc[lang] : title.desc[lang];
     
     let actionButtons = '';
     if (unlocked) {
