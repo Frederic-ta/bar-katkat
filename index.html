@@ -1258,17 +1258,17 @@ const DEFAULT_SOFTS = [
 ];
 
 const STANDALONE_SOFTS = [
-  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20 },
-  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15 },
-  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15 },
-  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20 },
-  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15 },
-  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15 },
-  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true },
+  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20, tag:'Le classique indétrônable' },
+  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15, tag:'Secouez-moi, secouez-moi' },
+  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15, tag:'Frais et désaltérant' },
+  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20, tag:'100% vitaminé' },
+  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15, tag:'Exotique et sucré' },
+  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15, tag:'Douceur tropicale' },
+  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true, tag:'L\'essentiel, tout simplement' },
 ];
 
 const BEERS = [
-  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4 },
+  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4, tag:'Bière d\'abbaye, 6.8°' },
 ];
 
 let MIXES,SOFTS,STANDALONE_SOFTS_DATA,BEERS_DATA,state,activeTab;
@@ -2149,7 +2149,7 @@ function renderSoftsSection(){
       <div class="cc-icon">${s.emoji}</div>
       <div class="cc-body">
         <div class="cc-name">${s.name}</div>
-        <div class="cc-recipe"><em>${t('stock')} : ${stockText}</em></div>
+        <div class="cc-recipe"><em>${s.tag||''}</em></div>
       </div>
       <div class="cc-go">${canServe?'→':'✕'}</div>
     </div>`;
@@ -2172,7 +2172,7 @@ function renderBeersSection(){
       <div class="cc-icon">${b.emoji}</div>
       <div class="cc-body">
         <div class="cc-name">${b.name}</div>
-        <div class="cc-recipe"><em>${t('stock')} : ${stock}</em></div>
+        <div class="cc-recipe"><em>${b.tag||''}</em></div>
       </div>
       <div class="cc-go">${canServe?'→':'✕'}</div>
     </div>`;
@@ -2185,45 +2185,36 @@ function renderBeersSection(){
 window.serveSoft=(id,idx)=>{
   const soft=STANDALONE_SOFTS_DATA[idx];
   if(!soft) return;
-  
   const canServe = soft.unlimited || (state.standalone_softs[id]||0) > 0;
   if(!canServe) return;
-  
-  if(confirm(`${t('serveConfirm')} ${soft.name}`)) {
-    if(!soft.unlimited) {
-      state.standalone_softs[id]--;
-    }
-    
-    // Ajouter à l'historique avec le nouveau système
-    if (currentUsername && soft.name) {
-      addDrinkToHistory(currentUsername, soft.name, 'soft');
-    }
-    
-    saveAll();
-    renderCocktails();
-    showToast(`🥤 ${soft.name} servi !`);
-  }
+  const stock = soft.unlimited ? '∞' : (state.standalone_softs[id]||0);
+  pendingServe={type:'soft',id,idx};
+  document.getElementById('detail-icon').textContent=soft.emoji;
+  document.getElementById('detail-name').textContent=soft.name;
+  document.getElementById('detail-desc').textContent=soft.tag||'';
+  document.getElementById('detail-recipe').innerHTML=`<div style="text-align:center;color:var(--sub);font-size:.9em;">${t('stock')} : <strong>${stock}</strong></div>`;
+  const btn=document.getElementById('detail-serve-btn');
+  btn.textContent=canServe?t('serve'):t('outOfStockBtn');
+  btn.disabled=!canServe;
+  btn.className='detail-btn '+(canServe?'ok':'disabled');
+  document.getElementById('detail-overlay').classList.add('active');
 };
 
 window.serveBeer=(id,idx)=>{
   const beer=BEERS_DATA[idx];
   if(!beer) return;
-  
-  const canServe = (state.beers[id]||0) > 0;
-  if(!canServe) return;
-  
-  if(confirm(`${t('serveConfirm')} ${beer.name}`)) {
-    state.beers[id]--;
-    
-    // Ajouter à l'historique avec le nouveau système
-    if (currentUsername && beer.name) {
-      addDrinkToHistory(currentUsername, beer.name, 'beer');
-    }
-    
-    saveAll();
-    renderCocktails();
-    showToast(`🍺 ${beer.name} servi !`);
-  }
+  const stock=state.beers[id]||0;
+  const canServe = stock > 0;
+  pendingServe={type:'beer',id,idx};
+  document.getElementById('detail-icon').textContent=beer.emoji;
+  document.getElementById('detail-name').textContent=beer.name;
+  document.getElementById('detail-desc').textContent=beer.tag||'';
+  document.getElementById('detail-recipe').innerHTML=`<div style="text-align:center;color:var(--sub);font-size:.9em;">${t('stock')} : <strong>${stock}</strong></div>`;
+  const btn=document.getElementById('detail-serve-btn');
+  btn.textContent=canServe?t('serve'):t('outOfStockBtn');
+  btn.disabled=!canServe;
+  btn.className='detail-btn '+(canServe?'ok':'disabled');
+  document.getElementById('detail-overlay').classList.add('active');
 };
 
 window.switchTab=(id)=>{activeTab=id;renderTabs();renderCocktails();
@@ -2275,12 +2266,28 @@ window.serveCocktail=(mixId,softId,idx)=>{
   document.querySelector('.detail-btn.cancel').textContent = t('close');
   document.getElementById('detail-overlay').classList.add('active');
 };
-window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pendingServe;
+window.confirmServe=()=>{if(!pendingServe)return;
+  if(pendingServe.type==='soft'){
+    const soft=STANDALONE_SOFTS_DATA[pendingServe.idx];
+    if(!soft.unlimited) state.standalone_softs[pendingServe.id]--;
+    if(currentUsername) addDrinkToHistory(currentUsername, soft.name, 'soft');
+    saveAll();renderCocktails();
+    document.getElementById('detail-overlay').classList.remove('active');
+    showToast(`🥤 ${soft.name} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
+  }
+  if(pendingServe.type==='beer'){
+    const beer=BEERS_DATA[pendingServe.idx];
+    state.beers[pendingServe.id]--;
+    if(currentUsername) addDrinkToHistory(currentUsername, beer.name, 'beer');
+    saveAll();renderCocktails();
+    document.getElementById('detail-overlay').classList.remove('active');
+    showToast(`🍺 ${beer.name} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
+  }
+  const{mixId,softId,idx}=pendingServe;
   const m=MIXES.find(x=>x.id===mixId);
   const cocktailName = m.combos[idx].name;
   const drinkType = m.alc ? 'cocktail_alc' : 'cocktail_na';
   
-  // Ajouter à l'historique avec le nouveau système
   if (currentUsername && cocktailName) {
     addDrinkToHistory(currentUsername, cocktailName, drinkType);
   }
