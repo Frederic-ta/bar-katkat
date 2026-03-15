@@ -92,6 +92,18 @@
 /* User display */
 /* old user-display styles replaced by .top-bar-right */
 
+/* Mini serve popup for softs/beers */
+.mini-serve-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(4px);
+  z-index:100; align-items:center; justify-content:center; padding:20px; }
+.mini-serve-overlay.active { display:flex; }
+.mini-serve-popup { background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--card-border);
+  border-radius:20px; padding:28px 24px 20px; text-align:center; max-width:280px; width:100%;
+  box-shadow:0 20px 50px rgba(0,0,0,.4); }
+.mini-serve-emoji { font-size:3em; margin-bottom:8px; }
+.mini-serve-name { font-size:1.3em; font-weight:800; margin-bottom:6px; }
+.mini-serve-tag { font-size:.85em; color:var(--sub); margin-bottom:20px; font-style:italic; }
+.mini-serve-btns { display:flex; gap:10px; justify-content:center; }
+
 /* Leaderboard button */
 /* old leaderboard-btn styles replaced by .top-bar-btn */
 
@@ -886,6 +898,19 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
         <button class="detail-btn cancel" onclick="closeDetail()">Fermer</button>
         <button class="detail-btn ok" id="detail-serve-btn" onclick="confirmServe()">🍹 Servir !</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- MINI SERVE POPUP (softs/bières) -->
+<div class="mini-serve-overlay" id="mini-serve-overlay" onclick="if(event.target===this)closeMiniServe()">
+  <div class="mini-serve-popup">
+    <div class="mini-serve-emoji" id="mini-serve-emoji">🥤</div>
+    <div class="mini-serve-name" id="mini-serve-name"></div>
+    <div class="mini-serve-tag" id="mini-serve-tag"></div>
+    <div class="mini-serve-btns">
+      <button class="detail-btn cancel" onclick="closeMiniServe()">Fermer</button>
+      <button class="detail-btn ok" id="mini-serve-btn" onclick="confirmMiniServe()">🍹 Servir !</button>
     </div>
   </div>
 </div>
@@ -2171,34 +2196,48 @@ window.serveSoft=(id,idx)=>{
   if(!soft) return;
   const canServe = soft.unlimited || (state.standalone_softs[id]||0) > 0;
   if(!canServe) return;
-  const stock = soft.unlimited ? '∞' : (state.standalone_softs[id]||0);
   pendingServe={type:'soft',id,idx};
-  document.getElementById('detail-icon').textContent=soft.emoji;
-  document.getElementById('detail-name').textContent=soft.name;
-  document.getElementById('detail-desc').textContent=soft.tag||'';
-  document.getElementById('detail-recipe').innerHTML=`<div style="text-align:center;color:var(--sub);font-size:.9em;">${t('stock')} : <strong>${stock}</strong></div>`;
-  const btn=document.getElementById('detail-serve-btn');
-  btn.textContent=canServe?t('serve'):t('outOfStockBtn');
-  btn.disabled=!canServe;
-  btn.className='detail-btn '+(canServe?'ok':'disabled');
-  document.getElementById('detail-overlay').classList.add('active');
+  document.getElementById('mini-serve-emoji').textContent=soft.emoji;
+  document.getElementById('mini-serve-name').textContent=soft.name;
+  document.getElementById('mini-serve-tag').textContent=soft.tag||'';
+  const btn=document.getElementById('mini-serve-btn');
+  btn.textContent=t('serve');btn.disabled=false;
+  document.getElementById('mini-serve-overlay').classList.add('active');
 };
 
 window.serveBeer=(id,idx)=>{
   const beer=BEERS_DATA[idx];
   if(!beer) return;
-  const stock=state.beers[id]||0;
-  const canServe = stock > 0;
+  const canServe = (state.beers[id]||0) > 0;
+  if(!canServe) return;
   pendingServe={type:'beer',id,idx};
-  document.getElementById('detail-icon').textContent=beer.emoji;
-  document.getElementById('detail-name').textContent=beer.name;
-  document.getElementById('detail-desc').textContent=beer.tag||'';
-  document.getElementById('detail-recipe').innerHTML=`<div style="text-align:center;color:var(--sub);font-size:.9em;">${t('stock')} : <strong>${stock}</strong></div>`;
-  const btn=document.getElementById('detail-serve-btn');
-  btn.textContent=canServe?t('serve'):t('outOfStockBtn');
-  btn.disabled=!canServe;
-  btn.className='detail-btn '+(canServe?'ok':'disabled');
-  document.getElementById('detail-overlay').classList.add('active');
+  document.getElementById('mini-serve-emoji').textContent=beer.emoji;
+  document.getElementById('mini-serve-name').textContent=beer.name;
+  document.getElementById('mini-serve-tag').textContent=beer.tag||'';
+  const btn=document.getElementById('mini-serve-btn');
+  btn.textContent=t('serve');btn.disabled=false;
+  document.getElementById('mini-serve-overlay').classList.add('active');
+};
+
+window.closeMiniServe=()=>{pendingServe=null;document.getElementById('mini-serve-overlay').classList.remove('active');};
+
+window.confirmMiniServe=()=>{if(!pendingServe)return;
+  if(pendingServe.type==='soft'){
+    const soft=STANDALONE_SOFTS_DATA[pendingServe.idx];
+    if(!soft.unlimited) state.standalone_softs[pendingServe.id]--;
+    if(currentUsername) addDrinkToHistory(currentUsername, soft.name, 'soft');
+    saveAll();renderCocktails();
+    document.getElementById('mini-serve-overlay').classList.remove('active');
+    showToast(`🥤 ${soft.name} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
+  }
+  if(pendingServe.type==='beer'){
+    const beer=BEERS_DATA[pendingServe.idx];
+    state.beers[pendingServe.id]--;
+    if(currentUsername) addDrinkToHistory(currentUsername, beer.name, 'beer');
+    saveAll();renderCocktails();
+    document.getElementById('mini-serve-overlay').classList.remove('active');
+    showToast(`🍺 ${beer.name} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
+  }
 };
 
 window.switchTab=(id)=>{activeTab=id;renderTabs();renderCocktails();
@@ -2251,22 +2290,6 @@ window.serveCocktail=(mixId,softId,idx)=>{
   document.getElementById('detail-overlay').classList.add('active');
 };
 window.confirmServe=()=>{if(!pendingServe)return;
-  if(pendingServe.type==='soft'){
-    const soft=STANDALONE_SOFTS_DATA[pendingServe.idx];
-    if(!soft.unlimited) state.standalone_softs[pendingServe.id]--;
-    if(currentUsername) addDrinkToHistory(currentUsername, soft.name, 'soft');
-    saveAll();renderCocktails();
-    document.getElementById('detail-overlay').classList.remove('active');
-    showToast(`🥤 ${soft.name} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
-  }
-  if(pendingServe.type==='beer'){
-    const beer=BEERS_DATA[pendingServe.idx];
-    state.beers[pendingServe.id]--;
-    if(currentUsername) addDrinkToHistory(currentUsername, beer.name, 'beer');
-    saveAll();renderCocktails();
-    document.getElementById('detail-overlay').classList.remove('active');
-    showToast(`🍺 ${beer.name} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
-  }
   const{mixId,softId,idx}=pendingServe;
   const m=MIXES.find(x=>x.id===mixId);
   const cocktailName = m.combos[idx].name;
