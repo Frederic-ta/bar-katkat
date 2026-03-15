@@ -2146,7 +2146,7 @@ function renderSoftsSection(){
   let h=`<div class="section-header">
     <div class="sec-emoji">🥤</div>
     <div class="sec-info"><h2>${t('softs')}</h2>
-    <div class="sec-stock">${t('stock')} : <strong>${STANDALONE_SOFTS_DATA.length} boissons</strong></div></div></div>`;
+    <div class="sec-stock">${STANDALONE_SOFTS_DATA.length} ${lang==='fr'?'boissons disponibles':'drinks available'}</div></div></div>`;
   
   h+=STANDALONE_SOFTS_DATA.map((s,i)=>{
     const stock=state.standalone_softs[s.id]||0;
@@ -2154,10 +2154,11 @@ function renderSoftsSection(){
     const canServe = s.unlimited || stock > 0;
     const stockText = s.unlimited ? t('unlimited') : `${stock}`;
     
+    const stockLabel = s.unlimited ? '∞' : stock;
     return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveSoft('${s.id}',${i})">
       <div class="cc-icon">${s.emoji}</div>
       <div class="cc-body">
-        <div class="cc-name">${s.name}</div>
+        <div class="cc-name">${s.name} <span style="font-size:.7em;color:var(--sub);font-weight:400;">(${stockLabel})</span></div>
         <div class="cc-recipe"><em>${s.tag||''}</em></div>
       </div>
       <div class="cc-go">${canServe?'→':'✕'}</div>
@@ -2168,10 +2169,11 @@ function renderSoftsSection(){
 }
 
 function renderBeersSection(){
+  const totalBeers = BEERS_DATA.reduce((sum,b)=>sum+(state.beers[b.id]||0),0);
   let h=`<div class="section-header">
     <div class="sec-emoji">🍺</div>
     <div class="sec-info"><h2>${t('beers')}</h2>
-    <div class="sec-stock">${t('stock')} : <strong>${BEERS_DATA.length} bières</strong></div></div></div>`;
+    <div class="sec-stock">${t('stock')} : <strong>${totalBeers} ${totalBeers>1?'bouteilles':'bouteille'}</strong></div></div></div>`;
   
   h+=BEERS_DATA.map((b,i)=>{
     const stock=state.beers[b.id]||0;
@@ -2180,7 +2182,7 @@ function renderBeersSection(){
     return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveBeer('${b.id}',${i})">
       <div class="cc-icon">${b.emoji}</div>
       <div class="cc-body">
-        <div class="cc-name">${b.name}</div>
+        <div class="cc-name">${b.name} <span style="font-size:.7em;color:var(--sub);font-weight:400;">(${stock})</span></div>
         <div class="cc-recipe"><em>${b.tag||''}</em></div>
       </div>
       <div class="cc-go">${canServe?'→':'✕'}</div>
