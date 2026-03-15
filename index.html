@@ -1911,7 +1911,6 @@ function updateUserDisplay() {
   const pointsEl = document.getElementById('user-points');
   
   if (currentUsername) {
-    // Afficher nom + titre actif
     let displayName = currentUsername;
     if (activeTitle) {
       const title = TITLES.find(t => t.id === activeTitle);
@@ -1921,13 +1920,14 @@ function updateUserDisplay() {
     }
     nameEl.textContent = displayName;
     
-    // Afficher points
     const stats = getUserStats(currentUsername);
     pointsEl.textContent = `⭐ ${stats.points} pts`;
     
     display.style.display = 'flex';
   } else {
-    display.style.display = 'none';
+    nameEl.textContent = lang==='fr' ? '👤 Pseudo ?' : '👤 Name?';
+    pointsEl.textContent = '';
+    display.style.display = 'flex';
   }
 }
 
