@@ -357,9 +357,292 @@
   .user-display { top: 16px; right: 16px; padding: 6px 10px; font-size: .8em; }
   .leaderboard-btn { top: 62px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
   .lang-toggle { top: 16px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
+  .titles-btn { top: 114px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
   .username-form { padding: 24px; }
   .leaderboard-content { padding: 16px 20px; }
   .history-list { max-height: 150px; }
+}
+
+/* ===== SYSTÈME DE TITRES =====*/
+.titles-btn {
+  position: fixed;
+  top: 124px;
+  left: 20px;
+  z-index: 40;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  color: var(--accent);
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+.titles-btn:hover {
+  background: rgba(233,69,96,.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(233,69,96,.2);
+}
+
+.titles-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0,0,0,.8);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.titles-overlay.active {
+  display: flex;
+}
+.titles-panel {
+  background: linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.titles-header {
+  padding: 24px 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--card-border);
+}
+.titles-header h3 {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.titles-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+.title-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  transition: all .2s;
+}
+.title-item.unlocked {
+  background: rgba(78,204,163,.08);
+  border-color: rgba(78,204,163,.2);
+}
+.title-item.active {
+  background: rgba(233,69,96,.08);
+  border-color: rgba(233,69,96,.3);
+  box-shadow: 0 0 20px rgba(233,69,96,.1);
+}
+.title-emoji {
+  font-size: 2em;
+  flex-shrink: 0;
+  filter: grayscale(.8);
+  opacity: .4;
+  transition: all .2s;
+}
+.title-item.unlocked .title-emoji {
+  filter: grayscale(0);
+  opacity: 1;
+}
+.title-info {
+  flex: 1;
+}
+.title-name {
+  font-size: .95em;
+  font-weight: 700;
+  color: var(--sub);
+  margin-bottom: 2px;
+}
+.title-item.unlocked .title-name {
+  color: var(--text);
+}
+.title-desc {
+  font-size: .8em;
+  color: var(--sub);
+  opacity: .7;
+  line-height: 1.4;
+}
+.title-item.locked .title-desc {
+  opacity: .3;
+}
+.title-actions {
+  display: flex;
+  gap: 8px;
+}
+.title-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: .8em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  background: rgba(78,204,163,.15);
+  color: var(--ok);
+}
+.title-btn:hover {
+  background: rgba(78,204,163,.25);
+}
+.title-btn.active-btn {
+  background: rgba(233,69,96,.2);
+  color: var(--accent);
+}
+.titles-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  text-align: center;
+}
+.titles-close {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.titles-close:hover {
+  background: rgba(255,255,255,.12);
+}
+
+/* ===== ACHIEVEMENT POPUP =====*/
+.achievement-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 90;
+  background: linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border: 2px solid var(--ok);
+  border-radius: 24px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(78,204,163,.3);
+  min-width: 320px;
+  max-width: 90vw;
+  opacity: 0;
+  transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.achievement-popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.achievement-emoji {
+  font-size: 4em;
+  display: block;
+  margin-bottom: 16px;
+  animation: achievementBounce .6s ease;
+}
+@keyframes achievementBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-30px); }
+  60% { transform: translateY(-15px); }
+}
+.achievement-title {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--ok);
+  margin-bottom: 8px;
+}
+.achievement-desc {
+  font-size: .9em;
+  color: var(--sub);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.achievement-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.achievement-btn {
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  font-size: .9em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+.achievement-btn.equip {
+  background: linear-gradient(135deg, var(--ok), #3ab88a);
+  color: #000;
+}
+.achievement-btn.close {
+  background: rgba(255,255,255,.1);
+  color: var(--text);
+}
+
+/* ===== ANIMATIONS CONFETTIS =====*/
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: confettiFall 2s linear forwards;
+}
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ===== ANIMATION EMOJI BOUNCE =====*/
+.emoji-bounce {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5em;
+  z-index: 95;
+  pointer-events: none;
+  animation: emojiBounce 1.2s ease-out forwards;
+}
+@keyframes emojiBounce {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
 }
 body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh;
   background-image:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.08) 0%,transparent 60%); }
@@ -588,11 +871,15 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   <!-- USER DISPLAY -->
   <div class="user-display" id="user-display" style="display: none;">
     <span class="user-name" id="user-name"></span>
+    <span class="user-points" id="user-points" style="color: var(--warn); margin-left: 4px;"></span>
     <button class="edit-btn" id="edit-username-btn" onclick="showUsernamePopup(true)">✏️</button>
   </div>
   
   <!-- LEADERBOARD BUTTON -->
   <button class="leaderboard-btn" onclick="showLeaderboard()">🏆</button>
+  
+  <!-- TITLES BUTTON -->
+  <button class="titles-btn" onclick="showTitles()">🎖️</button>
   
   <div class="bar-header" id="title">
     <h1>Sip Happens at Fred's 🍹</h1>
@@ -675,6 +962,32 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   </div>
 </div>
 
+<!-- TITLES OVERLAY -->
+<div class="titles-overlay" id="titles-overlay">
+  <div class="titles-panel">
+    <div class="titles-header">
+      <h3 id="titles-title">🎖️ Titres</h3>
+    </div>
+    <div class="titles-content" id="titles-content">
+      <!-- Contenu généré dynamiquement -->
+    </div>
+    <div class="titles-footer">
+      <button class="titles-close" id="titles-close-btn" onclick="hideTitles()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENT POPUP -->
+<div class="achievement-popup" id="achievement-popup">
+  <div class="achievement-emoji" id="achievement-emoji">🏆</div>
+  <div class="achievement-title" id="achievement-title">Nouveau titre débloqué !</div>
+  <div class="achievement-desc" id="achievement-desc">Description du titre</div>
+  <div class="achievement-actions">
+    <button class="achievement-btn equip" id="achievement-equip" onclick="equipNewTitle()">Équiper</button>
+    <button class="achievement-btn close" onclick="hideAchievement()">Fermer</button>
+  </div>
+</div>
+
 <script>
 // ===== I18N SYSTEM =====
 const I18N = {
@@ -728,6 +1041,11 @@ const I18N = {
     beers: 'Bières',
     serveConfirm: 'Servir ?',
     unlimited: 'Illimité',
+    titles: 'Titres',
+    newTitle: 'Nouveau titre débloqué !',
+    equip: 'Équiper',
+    equipped: 'Équipé',
+    titleEquipped: 'Titre équipé !',
   },
   en: {
     subtitle: 'Pick a mix, choose your cocktail!',
@@ -779,6 +1097,11 @@ const I18N = {
     beers: 'Beers',
     serveConfirm: 'Serve?',
     unlimited: 'Unlimited',
+    titles: 'Titles',
+    newTitle: 'New title unlocked!',
+    equip: 'Equip',
+    equipped: 'Equipped',
+    titleEquipped: 'Title equipped!',
   }
 };
 
@@ -952,6 +1275,58 @@ let leaderboardData = { history: [], topDrinkers: [], cocktailStar: null };
 const FAKE_USERS = ['Alex', 'Léa', 'Nico', 'Sarah', 'Max', 'Chloé', 'Tom', 'Emma'];
 let fakeActivityTimer = null;
 
+// ===== SYSTÈME DE POINTS ET ACHIEVEMENTS =====
+const POINT_VALUES = {
+  cocktail_alc: 3,    // Cocktail alcoolisé
+  cocktail_na: 2,     // Cocktail sans alcool
+  beer: 2,           // Bière
+  soft: 1            // Soft
+};
+
+const TITLES = [
+  // Progression
+  { id:'first_sip', emoji:'🌟', name:{fr:'Première Gorgée',en:'First Sip'}, desc:{fr:'Ton tout premier drink',en:'Your very first drink'}, condition:'drinks >= 1' },
+  { id:'two_fingers', emoji:'✌️', name:{fr:'Deux Doigts de Folie',en:'Two Fingers of Madness'}, desc:{fr:'2 drinks au compteur',en:'2 drinks served'}, condition:'drinks >= 2' },
+  { id:'trois_verres', emoji:'🎵', name:{fr:'Trois P\'tits Verres',en:'Three Little Glasses'}, desc:{fr:'Et puis s\'en va... ou pas',en:'And off we go... or not'}, condition:'drinks >= 3' },
+  { id:'fifth_gear', emoji:'🏎️', name:{fr:'À la Cinquième Vitesse',en:'Fifth Gear'}, desc:{fr:'5 drinks, ça commence à chauffer',en:'5 drinks, things are heating up'}, condition:'drinks >= 5' },
+  { id:'perfect_10', emoji:'💯', name:{fr:'Perfect 10',en:'Perfect 10'}, desc:{fr:'10 drinks. Respect.',en:'10 drinks. Respect.'}, condition:'drinks >= 10' },
+  { id:'marathon', emoji:'🏃', name:{fr:'Marathonien du Bar',en:'Bar Marathoner'}, desc:{fr:'15 drinks, t\'es encore debout ?',en:'15 drinks, still standing?'}, condition:'drinks >= 15' },
+  
+  // Points
+  { id:'debutant', emoji:'⭐', name:{fr:'Apprenti Barfly',en:'Rookie Barfly'}, desc:{fr:'10 points accumulés',en:'10 points earned'}, condition:'points >= 10' },
+  { id:'confirmed', emoji:'🌟', name:{fr:'Barfly Confirmé',en:'Confirmed Barfly'}, desc:{fr:'20 points au compteur',en:'20 points earned'}, condition:'points >= 20' },
+  { id:'champion', emoji:'🏆', name:{fr:'Sip Happens Champion',en:'Sip Happens Champion'}, desc:{fr:'30 points. Tu possèdes ce bar.',en:'30 points. You own this bar.'}, condition:'points >= 30' },
+  { id:'legend', emoji:'👑', name:{fr:'Légende du Bar',en:'Bar Legend'}, desc:{fr:'50 points. On devrait te nommer le bar.',en:'50 points. The bar should be named after you.'}, condition:'points >= 50' },
+
+  // Exploration
+  { id:'curious', emoji:'🔍', name:{fr:'Curieux du Comptoir',en:'Counter Curious'}, desc:{fr:'3 cocktails différents goûtés',en:'3 different cocktails tasted'}, condition:'unique_cocktails >= 3' },
+  { id:'explorer', emoji:'🧭', name:{fr:'L\'Explorateur',en:'The Explorer'}, desc:{fr:'5 cocktails différents goûtés',en:'5 different cocktails tasted'}, condition:'unique_cocktails >= 5' },
+  { id:'connoisseur', emoji:'🎩', name:{fr:'Le Connaisseur',en:'The Connoisseur'}, desc:{fr:'10 cocktails différents, tu les connais tous',en:'10 different cocktails, you know them all'}, condition:'unique_cocktails >= 10' },
+  
+  // Fidélité
+  { id:'faithful', emoji:'💍', name:{fr:'Fidèle au Poste',en:'Faithful to the Post'}, desc:{fr:'Le même cocktail 3 fois. Tu sais ce que tu veux.',en:'Same cocktail 3 times. You know what you want.'}, condition:'max_same >= 3' },
+  { id:'obsessed', emoji:'😍', name:{fr:'Obsession Liquide',en:'Liquid Obsession'}, desc:{fr:'Le même cocktail 5 fois. C\'est de l\'amour.',en:'Same cocktail 5 times. That\'s love.'}, condition:'max_same >= 5' },
+  
+  // Catégories spéciales
+  { id:'tropical_fan', emoji:'🏝️', name:{fr:'Team Tropical',en:'Team Tropical'}, desc:{fr:'Tous les cocktails Tropical goûtés',en:'All Tropical cocktails tasted'}, condition:'all_tropical' },
+  { id:'espresso_fan', emoji:'☕', name:{fr:'Espresso Yourself',en:'Espresso Yourself'}, desc:{fr:'Tous les cocktails Espresso goûtés',en:'All Espresso cocktails tasted'}, condition:'all_espresso' },
+  { id:'sunset_fan', emoji:'🌅', name:{fr:'Sunset Lover',en:'Sunset Lover'}, desc:{fr:'Tous les cocktails Sunset goûtés',en:'All Sunset cocktails tasted'}, condition:'all_sunset' },
+  
+  // Styles de consommation
+  { id:'dd', emoji:'🚗', name:{fr:'Designated Driver',en:'Designated Driver'}, desc:{fr:'Que du sans alcool. Le vrai héros.',en:'Only non-alcoholic. The real hero.'}, condition:'only_soft_and_na' },
+  { id:'biere_ment', emoji:'🍺', name:{fr:'Bière-vement Vôtre',en:'Beer-y Much Yours'}, desc:{fr:'3 bières descendues',en:'3 beers down'}, condition:'beers >= 3' },
+  { id:'pur_jus', emoji:'🧃', name:{fr:'Pur Jus',en:'Pure Juice'}, desc:{fr:'3 softs bus, hydratation au top',en:'3 softs, hydration on point'}, condition:'softs >= 3' },
+  { id:'eclectic', emoji:'🎨', name:{fr:'L\'Éclectique',en:'The Eclectic'}, desc:{fr:'Au moins 1 cocktail + 1 bière + 1 soft',en:'At least 1 cocktail + 1 beer + 1 soft'}, condition:'has_cocktail_beer_soft' },
+  
+  // Speed
+  { id:'speed_run', emoji:'⚡', name:{fr:'Speed Runner',en:'Speed Runner'}, desc:{fr:'3 drinks en 30 minutes',en:'3 drinks in 30 minutes'}, condition:'speed_3_in_30' },
+  { id:'hydra', emoji:'💦', name:{fr:'Hydra-Thé',en:'Hydra-Tea'}, desc:{fr:'3 softs d\'affilée, sage décision',en:'3 softs in a row, wise choice'}, condition:'3_softs_streak' },
+];
+
+// Variables pour les achievements
+let userTitles = JSON.parse(localStorage.getItem('siphappens_titles') || '[]');
+let activeTitle = localStorage.getItem('siphappens_active_title') || null;
+
 function loadAll(){try{const s=JSON.parse(localStorage.getItem('chezfred_v1'));if(s&&s.mixes&&s.softs&&s.standalone_softs&&s.beers&&s.stock){MIXES=s.mixes;SOFTS=s.softs;STANDALONE_SOFTS_DATA=s.standalone_softs;BEERS_DATA=s.beers;state=s.stock;return;}}catch(e){}
 MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));STANDALONE_SOFTS_DATA=JSON.parse(JSON.stringify(STANDALONE_SOFTS));BEERS_DATA=JSON.parse(JSON.stringify(BEERS));state={mixes:{},softs:{},standalone_softs:{},beers:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);STANDALONE_SOFTS_DATA.forEach(s=>state.standalone_softs[s.id]=s.stock);BEERS_DATA.forEach(b=>state.beers[b.id]=b.stock);}
 function saveAll(){localStorage.setItem('chezfred_v1',JSON.stringify({mixes:MIXES,softs:SOFTS,standalone_softs:STANDALONE_SOFTS_DATA,beers:BEERS_DATA,stock:state}));}
@@ -1015,32 +1390,45 @@ function generateInitialHistory() {
 
 function addFakeOrder() {
   const drinks = [];
+  const drinkTypes = [];
   
   // Collecter tous les cocktails disponibles
   MIXES.forEach(mix => {
     mix.combos.forEach(combo => {
       drinks.push(combo.name);
+      drinkTypes.push(mix.alc ? 'cocktail_alc' : 'cocktail_na');
     });
   });
   
   // Ajouter les softs standalone
   STANDALONE_SOFTS_DATA.forEach(soft => {
     drinks.push(soft.name);
+    drinkTypes.push('soft');
   });
   
   // Ajouter les bières
   BEERS_DATA.forEach(beer => {
     drinks.push(beer.name);
+    drinkTypes.push('beer');
   });
   
   if (drinks.length === 0) return;
   
   const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
-  const fakeDrink = drinks[Math.floor(Math.random() * drinks.length)];
+  const drinkIndex = Math.floor(Math.random() * drinks.length);
+  const fakeDrink = drinks[drinkIndex];
+  const drinkType = drinkTypes[drinkIndex];
+  
+  // Attribuer des titres aléatoires aux faux utilisateurs  
+  const fakeTitles = ['first_sip', 'debutant', 'curious', 'tropical_fan', 'dd', 'pur_jus'];
+  const fakeTitle = Math.random() > 0.7 ? fakeTitles[Math.floor(Math.random() * fakeTitles.length)] : null;
   
   leaderboardData.history.unshift({
     username: fakeUser,
     cocktailName: fakeDrink,
+    drinkType: drinkType,
+    points: POINT_VALUES[drinkType],
+    title: fakeTitle,
     timestamp: Date.now()
   });
   
@@ -1070,6 +1458,343 @@ function stopFakeActivity() {
     clearTimeout(fakeActivityTimer);
     fakeActivityTimer = null;
   }
+}
+
+// ===== SYSTÈME DE POINTS ET ACHIEVEMENTS =====
+
+function getUserStats(username) {
+  const userHistory = leaderboardData.history.filter(h => h.username === username);
+  
+  const stats = {
+    drinks: userHistory.length,
+    points: 0,
+    beers: 0,
+    softs: 0,
+    cocktails: 0,
+    cocktails_alc: 0,
+    cocktails_na: 0,
+    unique_cocktails: 0,
+    max_same: 0,
+    last_drinks: [],
+    drink_counts: {},
+    categories: {
+      tropical: new Set(),
+      espresso: new Set(), 
+      sunset: new Set()
+    }
+  };
+  
+  // Analyser l'historique
+  userHistory.forEach((entry, index) => {
+    stats.points += entry.points || 0;
+    
+    switch(entry.drinkType) {
+      case 'cocktail_alc':
+        stats.cocktails++;
+        stats.cocktails_alc++;
+        break;
+      case 'cocktail_na':
+        stats.cocktails++;
+        stats.cocktails_na++;
+        break;
+      case 'beer':
+        stats.beers++;
+        break;
+      case 'soft':
+        stats.softs++;
+        break;
+    }
+    
+    // Compter les cocktails uniques
+    const drinkName = entry.cocktailName;
+    if (!stats.drink_counts[drinkName]) {
+      stats.drink_counts[drinkName] = 0;
+    }
+    stats.drink_counts[drinkName]++;
+    
+    // Derniers drinks pour la détection de séries
+    if (index < 10) {
+      stats.last_drinks.push(entry);
+    }
+    
+    // Détecter les catégories spéciales
+    if (drinkName.includes('Tropical') || drinkName.includes('Tropi') || drinkName.includes('Ananas') || drinkName.includes('Mangue')) {
+      stats.categories.tropical.add(drinkName);
+    }
+    if (drinkName.includes('Espresso') || drinkName.includes('Buzz')) {
+      stats.categories.espresso.add(drinkName);
+    }
+    if (drinkName.includes('Sunset') || drinkName.includes('Soleil') || drinkName.includes('Crépuscule')) {
+      stats.categories.sunset.add(drinkName);
+    }
+  });
+  
+  stats.unique_cocktails = Object.keys(stats.drink_counts).filter(name => 
+    stats.drink_counts[name] > 0 && !STANDALONE_SOFTS_DATA.some(s => s.name === name) && !BEERS_DATA.some(b => b.name === name)
+  ).length;
+  
+  stats.max_same = Math.max(...Object.values(stats.drink_counts), 0);
+  
+  return stats;
+}
+
+function checkTitleConditions(stats) {
+  const newTitles = [];
+  
+  TITLES.forEach(title => {
+    if (userTitles.includes(title.id)) return; // Déjà débloqué
+    
+    let unlocked = false;
+    
+    switch(title.condition) {
+      case 'drinks >= 1':
+        unlocked = stats.drinks >= 1;
+        break;
+      case 'drinks >= 2':
+        unlocked = stats.drinks >= 2;
+        break;
+      case 'drinks >= 3':
+        unlocked = stats.drinks >= 3;
+        break;
+      case 'drinks >= 5':
+        unlocked = stats.drinks >= 5;
+        break;
+      case 'drinks >= 10':
+        unlocked = stats.drinks >= 10;
+        break;
+      case 'drinks >= 15':
+        unlocked = stats.drinks >= 15;
+        break;
+      case 'points >= 10':
+        unlocked = stats.points >= 10;
+        break;
+      case 'points >= 20':
+        unlocked = stats.points >= 20;
+        break;
+      case 'points >= 30':
+        unlocked = stats.points >= 30;
+        break;
+      case 'points >= 50':
+        unlocked = stats.points >= 50;
+        break;
+      case 'unique_cocktails >= 3':
+        unlocked = stats.unique_cocktails >= 3;
+        break;
+      case 'unique_cocktails >= 5':
+        unlocked = stats.unique_cocktails >= 5;
+        break;
+      case 'unique_cocktails >= 10':
+        unlocked = stats.unique_cocktails >= 10;
+        break;
+      case 'max_same >= 3':
+        unlocked = stats.max_same >= 3;
+        break;
+      case 'max_same >= 5':
+        unlocked = stats.max_same >= 5;
+        break;
+      case 'beers >= 3':
+        unlocked = stats.beers >= 3;
+        break;
+      case 'softs >= 3':
+        unlocked = stats.softs >= 3;
+        break;
+      case 'only_soft_and_na':
+        unlocked = stats.drinks > 0 && stats.cocktails_alc === 0 && stats.beers === 0;
+        break;
+      case 'has_cocktail_beer_soft':
+        unlocked = stats.cocktails > 0 && stats.beers > 0 && stats.softs > 0;
+        break;
+      case 'all_tropical':
+        unlocked = stats.categories.tropical.size >= 3; // Au moins 3 cocktails tropical
+        break;
+      case 'all_espresso':
+        unlocked = stats.categories.espresso.size >= 2; // Au moins 2 cocktails espresso
+        break;
+      case 'all_sunset':
+        unlocked = stats.categories.sunset.size >= 3; // Au moins 3 cocktails sunset
+        break;
+      case 'speed_3_in_30':
+        // 3 drinks en 30 minutes
+        if (stats.last_drinks.length >= 3) {
+          const now = Date.now();
+          const recent = stats.last_drinks.filter(d => now - d.timestamp < 30 * 60 * 1000);
+          unlocked = recent.length >= 3;
+        }
+        break;
+      case '3_softs_streak':
+        // 3 softs d'affilée
+        if (stats.last_drinks.length >= 3) {
+          const lastThree = stats.last_drinks.slice(0, 3);
+          unlocked = lastThree.every(d => d.drinkType === 'soft');
+        }
+        break;
+    }
+    
+    if (unlocked) {
+      newTitles.push(title);
+      userTitles.push(title.id);
+    }
+  });
+  
+  if (newTitles.length > 0) {
+    localStorage.setItem('siphappens_titles', JSON.stringify(userTitles));
+    // Afficher le premier nouveau titre
+    showAchievementPopup(newTitles[0]);
+  }
+}
+
+function showAchievementPopup(title) {
+  const popup = document.getElementById('achievement-popup');
+  const emoji = document.getElementById('achievement-emoji');
+  const titleEl = document.getElementById('achievement-title');
+  const desc = document.getElementById('achievement-desc');
+  const equipBtn = document.getElementById('achievement-equip');
+  
+  emoji.textContent = title.emoji;
+  titleEl.textContent = title.name[lang];
+  desc.textContent = title.desc[lang];
+  
+  equipBtn.onclick = () => equipNewTitle(title.id);
+  
+  popup.classList.add('show');
+}
+
+function hideAchievement() {
+  document.getElementById('achievement-popup').classList.remove('show');
+}
+
+function equipNewTitle(titleId) {
+  activeTitle = titleId || document.getElementById('achievement-equip').titleId;
+  localStorage.setItem('siphappens_active_title', activeTitle);
+  hideAchievement();
+  updateUserDisplay();
+  showToast('🎖️ Titre équipé !');
+}
+
+function createConfetti() {
+  const colors = ['#FFD700', '#FF69B4', '#9370DB', '#32CD32', '#1E90FF', '#FF8C00'];
+  
+  for (let i = 0; i < 30; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 2 + 's';
+    confetti.style.animationDuration = (2 + Math.random() * 1) + 's';
+    
+    document.body.appendChild(confetti);
+    
+    setTimeout(() => {
+      confetti.remove();
+    }, 4000);
+  }
+}
+
+function showEmojiAnimation(emoji) {
+  const emojiEl = document.createElement('div');
+  emojiEl.className = 'emoji-bounce';
+  emojiEl.textContent = emoji;
+  
+  document.body.appendChild(emojiEl);
+  
+  setTimeout(() => {
+    emojiEl.remove();
+  }, 1200);
+}
+
+function addDrinkToHistory(username, cocktailName, drinkType) {
+  if (!username || !cocktailName) return;
+  
+  const points = POINT_VALUES[drinkType] || 0;
+  
+  leaderboardData.history.unshift({
+    username: username,
+    cocktailName: cocktailName,
+    drinkType: drinkType,
+    points: points,
+    timestamp: Date.now()
+  });
+  
+  // Garder max 100 entrées
+  if (leaderboardData.history.length > 100) {
+    leaderboardData.history = leaderboardData.history.slice(0, 100);
+  }
+  
+  saveLeaderboardData();
+  
+  // Déclencher animations
+  createConfetti();
+  showEmojiAnimation(getEmojiForDrinkType(drinkType));
+  
+  // Vérifier les nouveaux titres
+  const stats = getUserStats(username);
+  checkTitleConditions(stats);
+  
+  updateLeaderboardData();
+  updateUserDisplay();
+}
+
+function getEmojiForDrinkType(drinkType) {
+  switch(drinkType) {
+    case 'cocktail_alc':
+    case 'cocktail_na':
+      return '🍹';
+    case 'beer':
+      return '🍺';
+    case 'soft':
+      return '🥤';
+    default:
+      return '🍹';
+  }
+}
+
+function showTitles() {
+  renderTitles();
+  document.getElementById('titles-overlay').classList.add('active');
+}
+
+function hideTitles() {
+  document.getElementById('titles-overlay').classList.remove('active');
+}
+
+function renderTitles() {
+  const content = document.getElementById('titles-content');
+  const stats = currentUsername ? getUserStats(currentUsername) : { drinks: 0, points: 0 };
+  
+  let html = TITLES.map(title => {
+    const unlocked = userTitles.includes(title.id);
+    const isActive = activeTitle === title.id;
+    const name = unlocked ? title.name[lang] : '???';
+    const desc = unlocked ? title.desc[lang] : '???';
+    
+    let actionButtons = '';
+    if (unlocked) {
+      if (isActive) {
+        actionButtons = '<button class="title-btn active-btn">Équipé</button>';
+      } else {
+        actionButtons = `<button class="title-btn" onclick="equipTitle('${title.id}')">Équiper</button>`;
+      }
+    }
+    
+    return `<div class="title-item ${unlocked ? 'unlocked' : 'locked'} ${isActive ? 'active' : ''}">
+      <div class="title-emoji">${title.emoji}</div>
+      <div class="title-info">
+        <div class="title-name">${name}</div>
+        <div class="title-desc">${desc}</div>
+      </div>
+      <div class="title-actions">${actionButtons}</div>
+    </div>`;
+  }).join('');
+  
+  content.innerHTML = html;
+}
+
+function equipTitle(titleId) {
+  activeTitle = titleId;
+  localStorage.setItem('siphappens_active_title', activeTitle);
+  renderTitles();
+  updateUserDisplay();
+  showToast('🎖️ Titre équipé !');
 }
 
 // === GESTION DU PSEUDO ===
@@ -1145,9 +1870,23 @@ function hideUsernamePopup() {
 function updateUserDisplay() {
   const display = document.getElementById('user-display');
   const nameEl = document.getElementById('user-name');
+  const pointsEl = document.getElementById('user-points');
   
   if (currentUsername) {
-    nameEl.textContent = currentUsername;
+    // Afficher nom + titre actif
+    let displayName = currentUsername;
+    if (activeTitle) {
+      const title = TITLES.find(t => t.id === activeTitle);
+      if (title) {
+        displayName = `${title.emoji} ${currentUsername}`;
+      }
+    }
+    nameEl.textContent = displayName;
+    
+    // Afficher points
+    const stats = getUserStats(currentUsername);
+    pointsEl.textContent = `⭐ ${stats.points} pts`;
+    
     display.style.display = 'flex';
   } else {
     display.style.display = 'none';
@@ -1167,27 +1906,47 @@ function hideLeaderboard() {
 function updateLeaderboardData() {
   if (!leaderboardData.history) return;
   
-  // Compter les cocktails par utilisateur
-  const userCounts = {};
+  // Compter les points par utilisateur
+  const userStats = {};
   const cocktailCounts = {};
   
   leaderboardData.history.forEach(entry => {
-    userCounts[entry.username] = (userCounts[entry.username] || 0) + 1;
+    if (!userStats[entry.username]) {
+      userStats[entry.username] = { points: 0, drinks: 0, title: null };
+    }
+    userStats[entry.username].points += entry.points || 0;
+    userStats[entry.username].drinks += 1;
+    
+    // Garder le titre le plus récent pour l'affichage
+    if (entry.title) {
+      userStats[entry.username].title = entry.title;
+    }
+    
     cocktailCounts[entry.cocktailName] = (cocktailCounts[entry.cocktailName] || 0) + 1;
   });
   
-  // Top buveurs
-  const topDrinkers = Object.entries(userCounts)
-    .sort(([,a], [,b]) => b - a)
+  // Top buveurs (triés par points)
+  const topDrinkers = Object.entries(userStats)
+    .sort(([,a], [,b]) => b.points - a.points)
     .slice(0, 10);
   
   const topDrinkersHtml = topDrinkers.length > 0 
-    ? topDrinkers.map(([username, count], index) => {
+    ? topDrinkers.map(([username, stats], index) => {
         const classes = ['first', 'second', 'third'][index] ? `leaderboard-item ${['first', 'second', 'third'][index]}` : 'leaderboard-item';
+        
+        // Afficher titre + nom si on a un titre
+        let displayName = username;
+        if (stats.title) {
+          const title = TITLES.find(t => t.id === stats.title);
+          if (title) {
+            displayName = `${title.emoji} ${username}`;
+          }
+        }
+        
         return `<div class="${classes}">
           <div class="rank">${index + 1}</div>
-          <div class="name">${username}</div>
-          <div class="count">${count}</div>
+          <div class="name">${displayName}</div>
+          <div class="count">${stats.points} pts</div>
         </div>`;
       }).join('')
     : `<div style="text-align: center; color: var(--sub); padding: 20px;">${t('noDrinks')}</div>`;
@@ -1216,10 +1975,12 @@ function updateLeaderboardData() {
     ? leaderboardData.history.slice(0, 50).map(entry => {
         const time = new Date(entry.timestamp);
         const timeStr = time.toLocaleTimeString(lang === 'fr' ? 'fr-FR' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        const points = entry.points || 0;
+        const pointsStr = points > 0 ? ` <span style="color: var(--ok); font-weight: 700;">+${points}</span>` : '';
         return `<div class="history-item">
           <div>
             <span class="user">${entry.username}</span>
-            <span class="cocktail">${entry.cocktailName}</span>
+            <span class="cocktail">${entry.cocktailName}${pointsStr}</span>
           </div>
           <div class="time">${timeStr}</div>
         </div>`;
@@ -1247,6 +2008,12 @@ document.getElementById('username-popup').addEventListener('click', function(e) 
 document.getElementById('leaderboard-overlay').addEventListener('click', function(e) {
   if (e.target === e.currentTarget) {
     hideLeaderboard();
+  }
+});
+
+document.getElementById('titles-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) {
+    hideTitles();
   }
 });
 
@@ -1388,20 +2155,9 @@ window.serveSoft=(id,idx)=>{
       state.standalone_softs[id]--;
     }
     
-    // Ajouter à l'historique
+    // Ajouter à l'historique avec le nouveau système
     if (currentUsername && soft.name) {
-      leaderboardData.history.unshift({
-        username: currentUsername,
-        cocktailName: soft.name,
-        timestamp: Date.now()
-      });
-      
-      if (leaderboardData.history.length > 100) {
-        leaderboardData.history = leaderboardData.history.slice(0, 100);
-      }
-      
-      saveLeaderboardData();
-      updateLeaderboardData();
+      addDrinkToHistory(currentUsername, soft.name, 'soft');
     }
     
     saveAll();
@@ -1420,20 +2176,9 @@ window.serveBeer=(id,idx)=>{
   if(confirm(`${t('serveConfirm')} ${beer.name}`)) {
     state.beers[id]--;
     
-    // Ajouter à l'historique
+    // Ajouter à l'historique avec le nouveau système
     if (currentUsername && beer.name) {
-      leaderboardData.history.unshift({
-        username: currentUsername,
-        cocktailName: beer.name,
-        timestamp: Date.now()
-      });
-      
-      if (leaderboardData.history.length > 100) {
-        leaderboardData.history = leaderboardData.history.slice(0, 100);
-      }
-      
-      saveLeaderboardData();
-      updateLeaderboardData();
+      addDrinkToHistory(currentUsername, beer.name, 'beer');
     }
     
     saveAll();
@@ -1494,22 +2239,11 @@ window.serveCocktail=(mixId,softId,idx)=>{
 window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pendingServe;
   const m=MIXES.find(x=>x.id===mixId);
   const cocktailName = m.combos[idx].name;
+  const drinkType = m.alc ? 'cocktail_alc' : 'cocktail_na';
   
-  // Ajouter à l'historique si on a un username
+  // Ajouter à l'historique avec le nouveau système
   if (currentUsername && cocktailName) {
-    leaderboardData.history.unshift({
-      username: currentUsername,
-      cocktailName: cocktailName,
-      timestamp: Date.now()
-    });
-    
-    // Garder max 100 entrées
-    if (leaderboardData.history.length > 100) {
-      leaderboardData.history = leaderboardData.history.slice(0, 100);
-    }
-    
-    saveLeaderboardData();
-    updateLeaderboardData();
+    addDrinkToHistory(currentUsername, cocktailName, drinkType);
   }
   
   state.mixes[mixId]--;state.softs[softId]--;saveAll();renderTabs();renderCocktails();
@@ -1627,9 +2361,67 @@ window.deleteBeer=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))
 
 window.resetAll=()=>{if(!confirm(t('resetAll')))return;localStorage.removeItem('chezfred_v1');localStorage.removeItem('chezfred_demo_leaderboard');loadAll();loadLeaderboardData();activeTab=MIXES[0]?.id||'';saveAll();renderAdmin();renderTabs();renderCocktails();showToast(t('reset'));};
 
+// Initialiser les données historiques pour la démo
+function generateInitialHistory() {
+  const now = Date.now();
+  const drinks = [];
+  const drinkTypes = [];
+  
+  // Collecter tous les cocktails disponibles
+  MIXES.forEach(mix => {
+    mix.combos.forEach(combo => {
+      drinks.push(combo.name);
+      drinkTypes.push(mix.alc ? 'cocktail_alc' : 'cocktail_na');
+    });
+  });
+  
+  // Ajouter les softs standalone
+  STANDALONE_SOFTS_DATA.forEach(soft => {
+    drinks.push(soft.name);
+    drinkTypes.push('soft');
+  });
+  
+  // Ajouter les bières
+  BEERS_DATA.forEach(beer => {
+    drinks.push(beer.name);
+    drinkTypes.push('beer');
+  });
+  
+  // Générer 5-8 commandes récentes avec points
+  const count = 5 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < count; i++) {
+    const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
+    const drinkIndex = Math.floor(Math.random() * drinks.length);
+    const fakeDrink = drinks[drinkIndex];
+    const drinkType = drinkTypes[drinkIndex];
+    const fakeTime = now - (i * 60000) - Math.random() * 300000; // Entre maintenant et 5-25 min ago
+    
+    // Attribuer des titres aléatoires aux faux utilisateurs  
+    const fakeTitles = ['first_sip', 'debutant', 'curious', 'tropical_fan', 'dd', 'pur_jus'];
+    const fakeTitle = Math.random() > 0.7 ? fakeTitles[Math.floor(Math.random() * fakeTitles.length)] : null;
+    
+    leaderboardData.history.unshift({
+      username: fakeUser,
+      cocktailName: fakeDrink,
+      drinkType: drinkType,
+      points: POINT_VALUES[drinkType],
+      title: fakeTitle,
+      timestamp: fakeTime
+    });
+  }
+  
+  saveLeaderboardData();
+}
+
 // Initialisation
 updateLanguageDisplay();
 initUsername();
+
+// Générer historique initial s'il n'existe pas
+if (leaderboardData.history.length === 0) {
+  generateInitialHistory();
+}
+
 startFakeActivity();
 </script>
 </body>
