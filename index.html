@@ -724,6 +724,10 @@ const I18N = {
     order: 'commande',
     noOrdersYet: 'Aucune commande pour le moment',
     nobody: 'Aucune commande',
+    softs: 'Softs',
+    beers: 'Bières',
+    serveConfirm: 'Servir ?',
+    unlimited: 'Illimité',
   },
   en: {
     subtitle: 'Pick a mix, choose your cocktail!',
@@ -771,6 +775,10 @@ const I18N = {
     order: 'order',
     noOrdersYet: 'No orders yet',
     nobody: 'No orders',
+    softs: 'Soft drinks',
+    beers: 'Beers',
+    serveConfirm: 'Serve?',
+    unlimited: 'Unlimited',
   }
 };
 
@@ -922,7 +930,21 @@ const DEFAULT_SOFTS = [
   { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
 ];
 
-let MIXES,SOFTS,state,activeTab;
+const STANDALONE_SOFTS = [
+  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20 },
+  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15 },
+  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15 },
+  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20 },
+  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15 },
+  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15 },
+  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true },
+];
+
+const BEERS = [
+  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4 },
+];
+
+let MIXES,SOFTS,STANDALONE_SOFTS_DATA,BEERS_DATA,state,activeTab;
 
 // Variables pour l'identification et le classement simulé
 let currentUsername = null;
@@ -930,9 +952,9 @@ let leaderboardData = { history: [], topDrinkers: [], cocktailStar: null };
 const FAKE_USERS = ['Alex', 'Léa', 'Nico', 'Sarah', 'Max', 'Chloé', 'Tom', 'Emma'];
 let fakeActivityTimer = null;
 
-function loadAll(){try{const s=JSON.parse(localStorage.getItem('chezfred_v1'));if(s&&s.mixes&&s.softs&&s.stock){MIXES=s.mixes;SOFTS=s.softs;state=s.stock;return;}}catch(e){}
-MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));state={mixes:{},softs:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);}
-function saveAll(){localStorage.setItem('chezfred_v1',JSON.stringify({mixes:MIXES,softs:SOFTS,stock:state}));}
+function loadAll(){try{const s=JSON.parse(localStorage.getItem('chezfred_v1'));if(s&&s.mixes&&s.softs&&s.standalone_softs&&s.beers&&s.stock){MIXES=s.mixes;SOFTS=s.softs;STANDALONE_SOFTS_DATA=s.standalone_softs;BEERS_DATA=s.beers;state=s.stock;return;}}catch(e){}
+MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));STANDALONE_SOFTS_DATA=JSON.parse(JSON.stringify(STANDALONE_SOFTS));BEERS_DATA=JSON.parse(JSON.stringify(BEERS));state={mixes:{},softs:{},standalone_softs:{},beers:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);STANDALONE_SOFTS_DATA.forEach(s=>state.standalone_softs[s.id]=s.stock);BEERS_DATA.forEach(b=>state.beers[b.id]=b.stock);}
+function saveAll(){localStorage.setItem('chezfred_v1',JSON.stringify({mixes:MIXES,softs:SOFTS,standalone_softs:STANDALONE_SOFTS_DATA,beers:BEERS_DATA,stock:state}));}
 
 // Gestion du classement simulé
 function loadLeaderboardData() {
@@ -955,25 +977,35 @@ function saveLeaderboardData() {
 
 function generateInitialHistory() {
   const now = Date.now();
-  const cocktails = [];
+  const drinks = [];
   
   // Collecter tous les cocktails disponibles
   MIXES.forEach(mix => {
     mix.combos.forEach(combo => {
-      cocktails.push(combo.name);
+      drinks.push(combo.name);
     });
+  });
+  
+  // Ajouter les softs standalone
+  STANDALONE_SOFTS.forEach(soft => {
+    drinks.push(soft.name);
+  });
+  
+  // Ajouter les bières
+  BEERS.forEach(beer => {
+    drinks.push(beer.name);
   });
   
   // Générer 5-8 commandes récentes
   const count = 5 + Math.floor(Math.random() * 4);
   for (let i = 0; i < count; i++) {
     const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
-    const fakeCocktail = cocktails[Math.floor(Math.random() * cocktails.length)];
+    const fakeDrink = drinks[Math.floor(Math.random() * drinks.length)];
     const fakeTime = now - (i * 60000) - Math.random() * 300000; // Entre maintenant et 5-25 min ago
     
     leaderboardData.history.unshift({
       username: fakeUser,
-      cocktailName: fakeCocktail,
+      cocktailName: fakeDrink,
       timestamp: fakeTime
     });
   }
@@ -982,23 +1014,33 @@ function generateInitialHistory() {
 }
 
 function addFakeOrder() {
-  const cocktails = [];
+  const drinks = [];
   
   // Collecter tous les cocktails disponibles
   MIXES.forEach(mix => {
     mix.combos.forEach(combo => {
-      cocktails.push(combo.name);
+      drinks.push(combo.name);
     });
   });
   
-  if (cocktails.length === 0) return;
+  // Ajouter les softs standalone
+  STANDALONE_SOFTS_DATA.forEach(soft => {
+    drinks.push(soft.name);
+  });
+  
+  // Ajouter les bières
+  BEERS_DATA.forEach(beer => {
+    drinks.push(beer.name);
+  });
+  
+  if (drinks.length === 0) return;
   
   const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
-  const fakeCocktail = cocktails[Math.floor(Math.random() * cocktails.length)];
+  const fakeDrink = drinks[Math.floor(Math.random() * drinks.length)];
   
   leaderboardData.history.unshift({
     username: fakeUser,
-    cocktailName: fakeCocktail,
+    cocktailName: fakeDrink,
     timestamp: Date.now()
   });
   
@@ -1078,9 +1120,15 @@ function submitUsername() {
     return;
   }
   
-  // Pas de vérification anti-doublon en mode demo
+  // Transférer l'historique de l'ancien pseudo vers le nouveau
+  const oldUsername = currentUsername;
   currentUsername = username;
   localStorage.setItem('siphappens_demo_username', username);
+  if (oldUsername && oldUsername !== username && leaderboardData.history) {
+    leaderboardData.history.forEach(h => { if (h.username === oldUsername) h.username = username; });
+    localStorage.setItem('siphappens_demo_leaderboard', JSON.stringify(leaderboardData));
+    updateLeaderboardData();
+  }
   
   updateUserDisplay();
   hideUsernamePopup();
@@ -1228,14 +1276,37 @@ function stockClass(n){return n<=0?'stock-danger':n<=3?'stock-warn':'stock-ok';}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
 function renderTabs(){
-  document.getElementById('tabBar').innerHTML=MIXES.map(m=>`<div class="tab ${m.id===activeTab?'active':''}" onclick="switchTab('${m.id}')">
+  const mixTabs = MIXES.map(m=>`<div class="tab ${m.id===activeTab?'active':''}" onclick="switchTab('${m.id}')">
     <div class="tab-emoji">${m.emoji}</div>
     <div class="tab-name">${m.name.replace('Mix ','')}</div>
     <div class="tab-type ${m.alc?'type-alc':'type-na'}">${m.alc?t('alcool'):t('noAlc')}</div>
   </div>`).join('');
+  
+  const specialTabs = `
+    <div class="tab ${activeTab==='_softs'?'active':''}" onclick="switchTab('_softs')">
+      <div class="tab-emoji">🥤</div>
+      <div class="tab-name">${t('softs')}</div>
+    </div>
+    <div class="tab ${activeTab==='_beers'?'active':''}" onclick="switchTab('_beers')">
+      <div class="tab-emoji">🍺</div>
+      <div class="tab-name">${t('beers')}</div>
+    </div>
+  `;
+  
+  document.getElementById('tabBar').innerHTML = mixTabs + specialTabs;
 }
 
 function renderCocktails(){
+  if(activeTab === '_softs') {
+    renderSoftsSection();
+    return;
+  }
+  
+  if(activeTab === '_beers') {
+    renderBeersSection();
+    return;
+  }
+  
   const m=MIXES.find(x=>x.id===activeTab);if(!m)return;
   const ms=state.mixes[m.id]||0;
   const fioleText = ms > 1 ? t('fioles') : t('fiole');
@@ -1255,6 +1326,121 @@ function renderCocktails(){
   }).join('');
   document.getElementById('cocktailSection').innerHTML=h;
 }
+
+function renderSoftsSection(){
+  let h=`<div class="section-header">
+    <div class="sec-emoji">🥤</div>
+    <div class="sec-info"><h2>${t('softs')}</h2>
+    <div class="sec-stock">${t('stock')} : <strong>${STANDALONE_SOFTS_DATA.length} boissons</strong></div></div></div>`;
+  
+  h+=STANDALONE_SOFTS_DATA.map((s,i)=>{
+    const stock=state.standalone_softs[s.id]||0;
+    const stockDisplay = s.unlimited ? '∞' : stock;
+    const canServe = s.unlimited || stock > 0;
+    const stockText = s.unlimited ? t('unlimited') : `${stock}`;
+    
+    return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveSoft('${s.id}',${i})">
+      <div class="cc-icon">${s.emoji}</div>
+      <div class="cc-body">
+        <div class="cc-name">${s.name}</div>
+        <div class="cc-recipe"><em>${t('stock')} : ${stockText}</em></div>
+      </div>
+      <div class="cc-go">${canServe?'→':'✕'}</div>
+    </div>`;
+  }).join('');
+  
+  document.getElementById('cocktailSection').innerHTML=h;
+}
+
+function renderBeersSection(){
+  let h=`<div class="section-header">
+    <div class="sec-emoji">🍺</div>
+    <div class="sec-info"><h2>${t('beers')}</h2>
+    <div class="sec-stock">${t('stock')} : <strong>${BEERS_DATA.length} bières</strong></div></div></div>`;
+  
+  h+=BEERS_DATA.map((b,i)=>{
+    const stock=state.beers[b.id]||0;
+    const canServe = stock > 0;
+    
+    return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveBeer('${b.id}',${i})">
+      <div class="cc-icon">${b.emoji}</div>
+      <div class="cc-body">
+        <div class="cc-name">${b.name}</div>
+        <div class="cc-recipe"><em>${t('stock')} : ${stock}</em></div>
+      </div>
+      <div class="cc-go">${canServe?'→':'✕'}</div>
+    </div>`;
+  }).join('');
+  
+  document.getElementById('cocktailSection').innerHTML=h;
+}
+
+// Fonctions pour servir softs et bières
+window.serveSoft=(id,idx)=>{
+  const soft=STANDALONE_SOFTS_DATA[idx];
+  if(!soft) return;
+  
+  const canServe = soft.unlimited || (state.standalone_softs[id]||0) > 0;
+  if(!canServe) return;
+  
+  if(confirm(`${t('serveConfirm')} ${soft.name}`)) {
+    if(!soft.unlimited) {
+      state.standalone_softs[id]--;
+    }
+    
+    // Ajouter à l'historique
+    if (currentUsername && soft.name) {
+      leaderboardData.history.unshift({
+        username: currentUsername,
+        cocktailName: soft.name,
+        timestamp: Date.now()
+      });
+      
+      if (leaderboardData.history.length > 100) {
+        leaderboardData.history = leaderboardData.history.slice(0, 100);
+      }
+      
+      saveLeaderboardData();
+      updateLeaderboardData();
+    }
+    
+    saveAll();
+    renderCocktails();
+    showToast(`🥤 ${soft.name} servi !`);
+  }
+};
+
+window.serveBeer=(id,idx)=>{
+  const beer=BEERS_DATA[idx];
+  if(!beer) return;
+  
+  const canServe = (state.beers[id]||0) > 0;
+  if(!canServe) return;
+  
+  if(confirm(`${t('serveConfirm')} ${beer.name}`)) {
+    state.beers[id]--;
+    
+    // Ajouter à l'historique
+    if (currentUsername && beer.name) {
+      leaderboardData.history.unshift({
+        username: currentUsername,
+        cocktailName: beer.name,
+        timestamp: Date.now()
+      });
+      
+      if (leaderboardData.history.length > 100) {
+        leaderboardData.history = leaderboardData.history.slice(0, 100);
+      }
+      
+      saveLeaderboardData();
+      updateLeaderboardData();
+    }
+    
+    saveAll();
+    renderCocktails();
+    showToast(`🍺 ${beer.name} servi !`);
+  }
+};
 
 window.switchTab=(id)=>{activeTab=id;renderTabs();renderCocktails();
   // scroll active tab into view
@@ -1377,6 +1563,29 @@ function renderAdmin(){
     <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="ns-n" placeholder="Jus cranberry"></div><div><label>Emoji</label><input id="ns-e" placeholder="🫐"></div></div>
     <div><label>Stock</label><input id="ns-s" type="number" value="20" min="0"></div>
     <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addSoft()">Ajouter</button></div></div>
+    
+    <h3>🥤 Softs Standalone</h3>
+    ${STANDALONE_SOFTS_DATA.map(s=>`<div class="admin-row"><div class="admin-label">${s.emoji} ${s.name} ${s.unlimited?'<small>(illimité)</small>':''}<span class="admin-delete" onclick="deleteStandaloneSoft('${s.id}')">🗑</span></div>
+    <div class="admin-stock-ctrl">${s.unlimited?'<span style="color:var(--ok);font-weight:700;">∞</span>':`<button class="minus" onclick="asss('${s.id}',-1)">−</button>
+    <input type="number" value="${state.standalone_softs[s.id]||0}" onchange="ssss('${s.id}',this.value)" min="0">
+    <button class="plus" onclick="asss('${s.id}',1)">+</button>`}</div></div>`).join('')}
+    
+    <h3 style="margin-top:20px">➕ Nouveau soft standalone</h3>
+    <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="nss-n" placeholder="Coca-Cola"></div><div><label>Emoji</label><input id="nss-e" placeholder="🥤"></div></div>
+    <div class="row2"><div><label>Stock</label><input id="nss-s" type="number" value="20" min="0"></div><div><label>Illimité ?</label><select id="nss-u"><option value="false">Non</option><option value="true">Oui</option></select></div></div>
+    <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addStandaloneSoft()">Ajouter</button></div></div>
+    
+    <h3>🍺 Bières</h3>
+    ${BEERS_DATA.map(b=>`<div class="admin-row"><div class="admin-label">${b.emoji} ${b.name}<span class="admin-delete" onclick="deleteBeer('${b.id}')">🗑</span></div>
+    <div class="admin-stock-ctrl"><button class="minus" onclick="abs('${b.id}',-1)">−</button>
+    <input type="number" value="${state.beers[b.id]||0}" onchange="sbs('${b.id}',this.value)" min="0">
+    <button class="plus" onclick="abs('${b.id}',1)">+</button></div></div>`).join('')}
+    
+    <h3 style="margin-top:20px">➕ Nouvelle bière</h3>
+    <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="nb-n" placeholder="Affligem"></div><div><label>Emoji</label><input id="nb-e" placeholder="🍺"></div></div>
+    <div><label>Stock</label><input id="nb-s" type="number" value="4" min="0"></div>
+    <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addBeer()">Ajouter</button></div></div>
+    
     <div class="admin-actions"><button class="admin-btn admin-btn-danger" onclick="resetAll()">🔄 Reset</button>
     <button class="admin-btn admin-btn-close" onclick="closeAdmin()">Fermer</button></div>`;
 }
@@ -1398,6 +1607,24 @@ window.ac=(mid)=>{const n=document.getElementById('cn-'+mid).value.trim(),r=docu
 ic=document.getElementById('ci-'+mid).value.trim()||'🍹',s=document.getElementById('cs-'+mid).value;if(!n||!r)return;
 MIXES.find(x=>x.id===mid).combos.push({name:n,recipe:r,soft:s,icon:ic});saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Cocktail ajouté' : 'Cocktail added'));};
 window.dc=(mid,i)=>{MIXES.find(x=>x.id===mid).combos.splice(i,1);saveAll();renderAdmin();};
+// Gestion softs standalone admin
+window.asss=(id,d)=>{state.standalone_softs[id]=Math.max(0,(state.standalone_softs[id]||0)+d);saveAll();renderAdmin();};
+window.ssss=(id,v)=>{state.standalone_softs[id]=Math.max(0,parseInt(v)||0);saveAll();};
+window.addStandaloneSoft=()=>{const n=document.getElementById('nss-n').value.trim(),e=document.getElementById('nss-e').value.trim()||'🥤',
+s=parseInt(document.getElementById('nss-s').value)||20,u=document.getElementById('nss-u').value==='true';if(!n)return;
+const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();const newSoft={id,emoji:e,name:n,stock:s};if(u)newSoft.unlimited=true;
+STANDALONE_SOFTS_DATA.push(newSoft);state.standalone_softs[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Soft ajouté' : 'Soft added'));};
+window.deleteStandaloneSoft=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;STANDALONE_SOFTS_DATA.splice(STANDALONE_SOFTS_DATA.findIndex(s=>s.id===id),1);delete state.standalone_softs[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
+
+// Gestion bières admin
+window.abs=(id,d)=>{state.beers[id]=Math.max(0,(state.beers[id]||0)+d);saveAll();renderAdmin();};
+window.sbs=(id,v)=>{state.beers[id]=Math.max(0,parseInt(v)||0);saveAll();};
+window.addBeer=()=>{const n=document.getElementById('nb-n').value.trim(),e=document.getElementById('nb-e').value.trim()||'🍺',
+s=parseInt(document.getElementById('nb-s').value)||4;if(!n)return;
+const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();BEERS_DATA.push({id,emoji:e,name:n,stock:s});
+state.beers[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Bière ajoutée' : 'Beer added'));};
+window.deleteBeer=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;BEERS_DATA.splice(BEERS_DATA.findIndex(b=>b.id===id),1);delete state.beers[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
+
 window.resetAll=()=>{if(!confirm(t('resetAll')))return;localStorage.removeItem('chezfred_v1');localStorage.removeItem('chezfred_demo_leaderboard');loadAll();loadLeaderboardData();activeTab=MIXES[0]?.id||'';saveAll();renderAdmin();renderTabs();renderCocktails();showToast(t('reset'));};
 
 // Initialisation

@@ -729,6 +729,10 @@ const I18N = {
     order: 'commande',
     noOrdersYet: 'Aucune commande pour le moment',
     nobody: 'Aucune commande',
+    softs: 'Softs',
+    beers: 'Bières',
+    serveConfirm: 'Servir ?',
+    unlimited: 'Illimité',
   },
   en: {
     subtitle: 'Pick a mix, choose your cocktail!',
@@ -776,6 +780,10 @@ const I18N = {
     order: 'order',
     noOrdersYet: 'No orders yet',
     nobody: 'No orders',
+    softs: 'Soft drinks',
+    beers: 'Beers',
+    serveConfirm: 'Serve?',
+    unlimited: 'Unlimited',
   }
 };
 
@@ -925,14 +933,28 @@ const DEFAULT_SOFTS = [
   { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
 ];
 
-let MIXES,SOFTS,state,activeTab;
+const STANDALONE_SOFTS = [
+  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20 },
+  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15 },
+  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15 },
+  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20 },
+  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15 },
+  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15 },
+  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true },
+];
+
+const BEERS = [
+  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4 },
+];
+
+let MIXES,SOFTS,STANDALONE_SOFTS_DATA,BEERS_DATA,state,activeTab;
 // Nouvelles variables pour l'identification
 let currentUsername = null;
 let leaderboardData = { history: [], topDrinkers: [], cocktailStar: null };
 
-function loadAll(){try{const s=JSON.parse(localStorage.getItem('siphappens_ws'));if(s&&s.mixes&&s.softs&&s.stock){MIXES=s.mixes;SOFTS=s.softs;state=s.stock;return;}}catch(e){}
-MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));state={mixes:{},softs:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);}
-function saveAll(){localStorage.setItem('siphappens_ws',JSON.stringify({mixes:MIXES,softs:SOFTS,stock:state}));}
+function loadAll(){try{const s=JSON.parse(localStorage.getItem('siphappens_ws'));if(s&&s.mixes&&s.softs&&s.standalone_softs&&s.beers&&s.stock){MIXES=s.mixes;SOFTS=s.softs;STANDALONE_SOFTS_DATA=s.standalone_softs;BEERS_DATA=s.beers;state=s.stock;return;}}catch(e){}
+MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));STANDALONE_SOFTS_DATA=JSON.parse(JSON.stringify(STANDALONE_SOFTS));BEERS_DATA=JSON.parse(JSON.stringify(BEERS));state={mixes:{},softs:{},standalone_softs:{},beers:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);STANDALONE_SOFTS_DATA.forEach(s=>state.standalone_softs[s.id]=s.stock);BEERS_DATA.forEach(b=>state.beers[b.id]=b.stock);}
+function saveAll(){localStorage.setItem('siphappens_ws',JSON.stringify({mixes:MIXES,softs:SOFTS,standalone_softs:STANDALONE_SOFTS_DATA,beers:BEERS_DATA,stock:state}));}
 
 // === NOUVELLES FONCTIONNALITÉS ===
 
@@ -1008,8 +1030,13 @@ function submitUsername() {
 }
 
 function acceptUsername(username) {
+  const oldUsername = currentUsername;
   currentUsername = username;
   localStorage.setItem('siphappens_username', username);
+  // Demander au serveur de transférer l'historique
+  if (wsConnected && ws && oldUsername && oldUsername !== username) {
+    ws.send(JSON.stringify({ type: 'rename', oldUsername, newUsername: username }));
+  }
   
   // S'enregistrer auprès du serveur
   if (wsConnected && ws) {
@@ -1172,14 +1199,37 @@ function stockClass(n){return n<=0?'stock-danger':n<=3?'stock-warn':'stock-ok';}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
 function renderTabs(){
-  document.getElementById('tabBar').innerHTML=MIXES.map(m=>`<div class="tab ${m.id===activeTab?'active':''}" onclick="switchTab('${m.id}')">
+  const mixTabs = MIXES.map(m=>`<div class="tab ${m.id===activeTab?'active':''}" onclick="switchTab('${m.id}')">
     <div class="tab-emoji">${m.emoji}</div>
     <div class="tab-name">${m.name.replace('Mix ','')}</div>
     <div class="tab-type ${m.alc?'type-alc':'type-na'}">${m.alc?t('alcool'):t('noAlc')}</div>
   </div>`).join('');
+  
+  const specialTabs = `
+    <div class="tab ${activeTab==='_softs'?'active':''}" onclick="switchTab('_softs')">
+      <div class="tab-emoji">🥤</div>
+      <div class="tab-name">${t('softs')}</div>
+    </div>
+    <div class="tab ${activeTab==='_beers'?'active':''}" onclick="switchTab('_beers')">
+      <div class="tab-emoji">🍺</div>
+      <div class="tab-name">${t('beers')}</div>
+    </div>
+  `;
+  
+  document.getElementById('tabBar').innerHTML = mixTabs + specialTabs;
 }
 
 function renderCocktails(){
+  if(activeTab === '_softs') {
+    renderSoftsSection();
+    return;
+  }
+  
+  if(activeTab === '_beers') {
+    renderBeersSection();
+    return;
+  }
+  
   const m=MIXES.find(x=>x.id===activeTab);if(!m)return;
   const ms=state.mixes[m.id]||0;
   const fioleText = ms > 1 ? t('fioles') : t('fiole');
@@ -1197,6 +1247,54 @@ function renderCocktails(){
       <div class="cc-recipe"><em>${c.tag||''}</em>${w}</div></div>
       <div class="cc-go">${can?'→':'✕'}</div></div>`;
   }).join('');
+  document.getElementById('cocktailSection').innerHTML=h;
+}
+
+function renderSoftsSection(){
+  let h=`<div class="section-header">
+    <div class="sec-emoji">🥤</div>
+    <div class="sec-info"><h2>${t('softs')}</h2>
+    <div class="sec-stock">${t('stock')} : <strong>${STANDALONE_SOFTS_DATA.length} boissons</strong></div></div></div>`;
+  
+  h+=STANDALONE_SOFTS_DATA.map((s,i)=>{
+    const stock=state.standalone_softs[s.id]||0;
+    const stockDisplay = s.unlimited ? '∞' : stock;
+    const canServe = s.unlimited || stock > 0;
+    const stockText = s.unlimited ? t('unlimited') : `${stock}`;
+    
+    return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveSoft('${s.id}',${i})">
+      <div class="cc-icon">${s.emoji}</div>
+      <div class="cc-body">
+        <div class="cc-name">${s.name}</div>
+        <div class="cc-recipe"><em>${t('stock')} : ${stockText}</em></div>
+      </div>
+      <div class="cc-go">${canServe?'→':'✕'}</div>
+    </div>`;
+  }).join('');
+  
+  document.getElementById('cocktailSection').innerHTML=h;
+}
+
+function renderBeersSection(){
+  let h=`<div class="section-header">
+    <div class="sec-emoji">🍺</div>
+    <div class="sec-info"><h2>${t('beers')}</h2>
+    <div class="sec-stock">${t('stock')} : <strong>${BEERS_DATA.length} bières</strong></div></div></div>`;
+  
+  h+=BEERS_DATA.map((b,i)=>{
+    const stock=state.beers[b.id]||0;
+    const canServe = stock > 0;
+    
+    return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveBeer('${b.id}',${i})">
+      <div class="cc-icon">${b.emoji}</div>
+      <div class="cc-body">
+        <div class="cc-name">${b.name}</div>
+        <div class="cc-recipe"><em>${t('stock')} : ${stock}</em></div>
+      </div>
+      <div class="cc-go">${canServe?'→':'✕'}</div>
+    </div>`;
+  }).join('');
+  
   document.getElementById('cocktailSection').innerHTML=h;
 }
 
@@ -1280,6 +1378,61 @@ window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pending
 };
 window.closeDetail=()=>{pendingServe=null;document.getElementById('detail-overlay').classList.remove('active');};
 document.getElementById('detail-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDetail();});
+
+// Fonctions pour servir softs et bières
+window.serveSoft=(id,idx)=>{
+  const soft=STANDALONE_SOFTS_DATA[idx];
+  if(!soft) return;
+  
+  const canServe = soft.unlimited || (state.standalone_softs[id]||0) > 0;
+  if(!canServe) return;
+  
+  if(confirm(`${t('serveConfirm')} ${soft.name}`)) {
+    if (wsConnected && ws && currentUsername) {
+      // Envoyer via WebSocket
+      ws.send(JSON.stringify({
+        type: 'serve_soft',
+        softId: id,
+        username: currentUsername
+      }));
+    } else {
+      // Comportement localStorage classique
+      if(!soft.unlimited) {
+        state.standalone_softs[id]--;
+      }
+      saveAll();
+      renderCocktails();
+    }
+    
+    showToast(`🥤 ${soft.name} servi !`);
+  }
+};
+
+window.serveBeer=(id,idx)=>{
+  const beer=BEERS_DATA[idx];
+  if(!beer) return;
+  
+  const canServe = (state.beers[id]||0) > 0;
+  if(!canServe) return;
+  
+  if(confirm(`${t('serveConfirm')} ${beer.name}`)) {
+    if (wsConnected && ws && currentUsername) {
+      // Envoyer via WebSocket
+      ws.send(JSON.stringify({
+        type: 'serve_beer',
+        beerId: id,
+        username: currentUsername
+      }));
+    } else {
+      // Comportement localStorage classique
+      state.beers[id]--;
+      saveAll();
+      renderCocktails();
+    }
+    
+    showToast(`🍺 ${beer.name} servi !`);
+  }
+};
 
 renderTabs();renderCocktails();
 

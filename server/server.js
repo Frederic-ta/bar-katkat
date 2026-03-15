@@ -106,10 +106,26 @@ const DEFAULT_SOFTS = [
   { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
 ];
 
+const STANDALONE_SOFTS = [
+  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20 },
+  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15 },
+  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15 },
+  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20 },
+  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15 },
+  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15 },
+  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true },
+];
+
+const BEERS = [
+  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4 },
+];
+
 // État global du serveur
 let globalState = {
   mixes: JSON.parse(JSON.stringify(DEFAULT_MIXES)),
   softs: JSON.parse(JSON.stringify(DEFAULT_SOFTS)),
+  standalone_softs: JSON.parse(JSON.stringify(STANDALONE_SOFTS)),
+  beers: JSON.parse(JSON.stringify(BEERS)),
   stock: {},
   history: []
 };
@@ -127,10 +143,33 @@ function loadState() {
       const saved = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
       if (saved && saved.mixes && saved.softs && saved.stock) {
         globalState = saved;
-        // S'assurer que history existe
+        // S'assurer que toutes les nouvelles structures existent
         if (!globalState.history) {
           globalState.history = [];
         }
+        if (!globalState.standalone_softs) {
+          globalState.standalone_softs = JSON.parse(JSON.stringify(STANDALONE_SOFTS));
+        }
+        if (!globalState.beers) {
+          globalState.beers = JSON.parse(JSON.stringify(BEERS));
+        }
+        if (!globalState.stock.standalone_softs) {
+          globalState.stock.standalone_softs = {};
+        }
+        if (!globalState.stock.beers) {
+          globalState.stock.beers = {};
+        }
+        // Initialiser les stocks manquants
+        globalState.standalone_softs.forEach(s => {
+          if (globalState.stock.standalone_softs[s.id] === undefined) {
+            globalState.stock.standalone_softs[s.id] = s.stock;
+          }
+        });
+        globalState.beers.forEach(b => {
+          if (globalState.stock.beers[b.id] === undefined) {
+            globalState.stock.beers[b.id] = b.stock;
+          }
+        });
         console.log('📂 État chargé depuis state.json');
         return;
       }
@@ -143,9 +182,13 @@ function loadState() {
   console.log('🆕 Initialisation avec l\'état par défaut');
   globalState.stock.mixes = {};
   globalState.stock.softs = {};
+  globalState.stock.standalone_softs = {};
+  globalState.stock.beers = {};
   globalState.history = [];
   globalState.mixes.forEach(m => globalState.stock.mixes[m.id] = m.stock);
   globalState.softs.forEach(s => globalState.stock.softs[s.id] = s.stock);
+  globalState.standalone_softs.forEach(s => globalState.stock.standalone_softs[s.id] = s.stock);
+  globalState.beers.forEach(b => globalState.stock.beers[b.id] = b.stock);
   saveState();
 }
 
@@ -305,13 +348,99 @@ wss.on('connection', (ws) => {
           console.log('🔧 Mise à jour admin');
           break;
           
+        case 'rename':
+          // Transférer l'historique d'un pseudo à un autre
+          if (message.oldUsername && message.newUsername && globalState.history) {
+            globalState.history.forEach(h => { if (h.username === message.oldUsername) h.username = message.newUsername; });
+            // Mettre à jour le Set des pseudos connectés
+            connectedUsernames.delete(message.oldUsername);
+            connectedUsernames.add(message.newUsername);
+            ws.username = message.newUsername;
+            saveState();
+            broadcast({ type: 'sync', state: globalState });
+            console.log(`📝 Rename: ${message.oldUsername} → ${message.newUsername}`);
+          }
+          break;
+
+        case 'serve_soft':
+          // Servir un soft standalone
+          const soft = globalState.standalone_softs.find(s => s.id === message.softId);
+          if (soft && (soft.unlimited || globalState.stock.standalone_softs[message.softId] > 0)) {
+            // Décrémenter seulement si pas unlimited
+            if (!soft.unlimited) {
+              globalState.stock.standalone_softs[message.softId]--;
+            }
+            
+            // Ajouter à l'historique
+            if (message.username && soft.name) {
+              const historyEntry = {
+                username: message.username,
+                cocktailName: soft.name,
+                mixName: 'Soft',
+                timestamp: Date.now()
+              };
+              globalState.history.unshift(historyEntry);
+              if (globalState.history.length > 100) {
+                globalState.history = globalState.history.slice(0, 100);
+              }
+            }
+            
+            saveState();
+            
+            // Broadcast la nouvelle state à tous
+            broadcast({
+              type: 'sync',
+              state: globalState
+            });
+            
+            console.log(`🥤 Soft servi: ${soft.name}${message.username ? ' pour ' + message.username : ''}`);
+          }
+          break;
+          
+        case 'serve_beer':
+          // Servir une bière
+          const beer = globalState.beers.find(b => b.id === message.beerId);
+          if (beer && globalState.stock.beers[message.beerId] > 0) {
+            globalState.stock.beers[message.beerId]--;
+            
+            // Ajouter à l'historique
+            if (message.username && beer.name) {
+              const historyEntry = {
+                username: message.username,
+                cocktailName: beer.name,
+                mixName: 'Bière',
+                timestamp: Date.now()
+              };
+              globalState.history.unshift(historyEntry);
+              if (globalState.history.length > 100) {
+                globalState.history = globalState.history.slice(0, 100);
+              }
+            }
+            
+            saveState();
+            
+            // Broadcast la nouvelle state à tous
+            broadcast({
+              type: 'sync',
+              state: globalState
+            });
+            
+            console.log(`🍺 Bière servie: ${beer.name}${message.username ? ' pour ' + message.username : ''}`);
+          }
+          break;
+
         case 'reset':
           // Reset complet
           globalState.mixes = JSON.parse(JSON.stringify(DEFAULT_MIXES));
           globalState.softs = JSON.parse(JSON.stringify(DEFAULT_SOFTS));
-          globalState.stock = { mixes: {}, softs: {} };
+          globalState.standalone_softs = JSON.parse(JSON.stringify(STANDALONE_SOFTS));
+          globalState.beers = JSON.parse(JSON.stringify(BEERS));
+          globalState.stock = { mixes: {}, softs: {}, standalone_softs: {}, beers: {} };
+          globalState.history = [];
           globalState.mixes.forEach(m => globalState.stock.mixes[m.id] = m.stock);
           globalState.softs.forEach(s => globalState.stock.softs[s.id] = s.stock);
+          globalState.standalone_softs.forEach(s => globalState.stock.standalone_softs[s.id] = s.stock);
+          globalState.beers.forEach(b => globalState.stock.beers[b.id] = b.stock);
           saveState();
           
           broadcast({
