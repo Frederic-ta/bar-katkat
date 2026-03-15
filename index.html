@@ -118,6 +118,60 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .admin-combo-add input { width:100%; padding:6px; border-radius:6px; border:1px solid #333; background:var(--card); color:var(--text); font-size:.85em; margin:2px 0; }
 .admin-combo-add select { width:100%; padding:6px; border-radius:6px; border:1px solid #333; background:var(--card); color:var(--text); font-size:.85em; }
 .admin-actions { text-align:center; margin-top:16px; }
+
+/* ===== RESPONSIVE ===== */
+
+/* Smartphone (≤480px) */
+@media (max-width:480px) {
+  .bar-header h1 { font-size:1.4em; }
+  .tab { padding:8px 12px; min-width:75px; }
+  .tab .tab-emoji { font-size:1.3em; }
+  .tab .tab-name { font-size:.65em; }
+  .tab .tab-badge { font-size:.5em; }
+  .section-header .sec-emoji { font-size:1.8em; }
+  .section-header .sec-info h2 { font-size:1.1em; }
+  .cocktail-card { padding:12px; gap:10px; }
+  .cocktail-card .cc-icon { font-size:1.6em; width:36px; }
+  .cocktail-card .cc-name { font-size:.95em; }
+  .cocktail-card .cc-recipe { font-size:.75em; }
+  #countdown-timer { gap:8px; }
+  #countdown-timer .unit { padding:10px 12px; min-width:55px; }
+  #countdown-timer .unit .num { font-size:1.8em; }
+  #countdown-screen h1 { font-size:1.5em; }
+  #admin-panel { padding:14px; }
+  .admin-row { padding:8px 10px; }
+  .admin-add-form .row2 { grid-template-columns:1fr; }
+}
+
+/* Tablette (481px–1024px) */
+@media (min-width:481px) and (max-width:1024px) {
+  body { padding:16px; }
+  .bar-header { padding:24px 20px 12px; }
+  .bar-header h1 { font-size:2em; }
+  .tab-bar { padding:10px 20px; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .tab { padding:12px 22px; min-width:100px; }
+  .tab .tab-emoji { font-size:1.8em; }
+  .cocktail-section { padding:16px 20px 100px; max-width:700px; margin:0 auto; }
+  .section-header { margin-bottom:20px; }
+  .cocktail-card { padding:18px; gap:16px; }
+  .cocktail-card .cc-icon { font-size:2.2em; width:52px; }
+  .cocktail-card .cc-name { font-size:1.1em; }
+  .cocktail-card .cc-recipe { font-size:.88em; }
+  #admin-panel { max-width:600px; }
+}
+
+/* Grand écran / tablette paysage (>1024px) */
+@media (min-width:1025px) {
+  .bar-header h1 { font-size:2.2em; }
+  .tab-bar { justify-content:center; gap:12px; padding:12px 24px; }
+  .tab { padding:14px 28px; min-width:110px; border-radius:16px; }
+  .cocktail-section { max-width:800px; margin:0 auto; padding:20px 24px 100px; }
+  .cocktail-card { padding:20px; border-radius:18px; }
+  .cocktail-card .cc-icon { font-size:2.4em; width:56px; }
+  .cocktail-card .cc-name { font-size:1.15em; }
+  .cocktail-card .cc-recipe { font-size:.9em; }
+  #admin-panel { max-width:650px; }
+}
 </style>
 </head>
 <body>
