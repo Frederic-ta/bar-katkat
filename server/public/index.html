@@ -214,6 +214,33 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   #admin-panel { max-width:620px; }
 }
 
+/* ===== I18N TOGGLE ===== */
+.lang-toggle {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 6px 8px;
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  width: 44px;
+  height: 44px;
+}
+.lang-toggle:hover {
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 0 20px rgba(255,255,255,.1);
+}
+
 /* ===== NOUVELLES FONCTIONNALITÉS ===== */
 
 /* User display */
@@ -557,6 +584,9 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 
 <!-- BAR -->
 <div id="bar-content">
+  <!-- I18N TOGGLE -->
+  <button class="lang-toggle" id="lang-toggle" onclick="toggleLanguage()" title="Switch language">🇫🇷</button>
+  
   <!-- USER DISPLAY -->
   <div class="user-display" id="user-display" style="display: none;">
     <span class="user-name" id="user-name"></span>
@@ -598,8 +628,8 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 <!-- USERNAME POPUP -->
 <div class="username-popup" id="username-popup">
   <div class="username-form">
-    <h3>👋 Salut toi !</h3>
-    <p>Choisis ton pseudo pour profiter du bar et accéder au classement.</p>
+    <h3 id="username-title">👋 Salut toi !</h3>
+    <p id="username-desc">Choisis ton pseudo pour profiter du bar et accéder au classement.</p>
     <div class="input-group">
       <input type="text" id="username-input" placeholder="Ton pseudo" maxlength="20" autocomplete="off">
       <div class="error" id="username-error"></div>
@@ -612,16 +642,16 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 <div class="leaderboard-overlay" id="leaderboard-overlay">
   <div class="leaderboard-panel">
     <div class="leaderboard-header">
-      <h3>🏆 Classement</h3>
+      <h3 id="leaderboard-title">🏆 Classement</h3>
     </div>
     <div class="leaderboard-content">
       <div class="leaderboard-section">
-        <h4>🏆 Top buveurs</h4>
+        <h4 id="top-drinkers-title">🏆 Top buveurs</h4>
         <div id="top-drinkers"></div>
       </div>
       
       <div class="leaderboard-section">
-        <h4>🍹 Cocktail star</h4>
+        <h4 id="cocktail-star-title">🍹 Cocktail star</h4>
         <div class="cocktail-star" id="cocktail-star">
           <div class="cocktail-name">-</div>
           <div class="cocktail-count">Aucune commande</div>
@@ -629,7 +659,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
       </div>
       
       <div class="leaderboard-section">
-        <h4>📜 Historique</h4>
+        <h4 id="history-title">📜 Historique</h4>
         <div class="history-list" id="history-list">
           <div style="text-align: center; color: var(--sub); padding: 20px;">
             Aucune commande pour le moment
@@ -638,7 +668,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
       </div>
     </div>
     <div class="leaderboard-footer">
-      <button class="leaderboard-close" onclick="hideLeaderboard()">Fermer</button>
+      <button class="leaderboard-close" id="leaderboard-close-btn" onclick="hideLeaderboard()">Fermer</button>
     </div>
   </div>
 </div>
@@ -647,6 +677,140 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 <div id="ws-status" style="position:fixed;bottom:8px;right:12px;font-size:.7em;color:var(--sub);z-index:5;opacity:.6;">🔴 Hors ligne</div>
 
 <script>
+// ===== I18N SYSTEM =====
+const I18N = {
+  fr: {
+    subtitle: 'Tape un mix, choisis ton cocktail !',
+    stock: 'Stock',
+    fioles: 'fioles',
+    fiole: 'fiole',
+    outOfStock: 'Plus de stock pour ce mix',
+    recipe: 'RECETTE',
+    preparation: 'Préparation :',
+    glass: 'Verre 250ml',
+    serve: '🍹 Servir !',
+    close: 'Fermer',
+    outOfStockBtn: 'Rupture de stock',
+    served: '🍹 Cocktail servi !',
+    reset: '🔄 Reset',
+    admin: '🔧 Admin',
+    addMix: 'Ajouter',
+    addSoft: 'Ajouter',
+    deleteMix: 'Supprimer ?',
+    resetAll: 'Tout reset ?',
+    chooseNickname: 'Ton pseudo ?',
+    minChars: '2 caractères minimum',
+    letsGo: "C'est parti !",
+    taken: 'Ce pseudo est déjà pris',
+    leaderboard: 'Classement',
+    topDrinkers: '🏆 Top buveurs',
+    cocktailStar: '🍹 Cocktail star',
+    history: '📜 Historique',
+    noDrinks: 'Personne n\'a encore bu !',
+    drinks: 'cocktails',
+    drink: 'cocktail',
+    alcool: 'Alcool',
+    noAlc: 'Sans alc.',
+    fioleLabel: 'fiole',
+    addLabel: 'À ajouter :',
+    changeNickname: 'Changer de pseudo',
+    days: 'Jours',
+    hours: 'Heures',
+    min: 'Min',
+    sec: 'Sec',
+    opening: 'Ouverture le',
+    hello: 'Salut toi !',
+    chooseNicknameDesc: 'Choisis ton pseudo pour profiter du bar et accéder au classement.',
+    orders: 'commandes',
+    order: 'commande',
+    noOrdersYet: 'Aucune commande pour le moment',
+    nobody: 'Aucune commande',
+  },
+  en: {
+    subtitle: 'Pick a mix, choose your cocktail!',
+    stock: 'Stock',
+    fioles: 'bottles',
+    fiole: 'bottle',
+    outOfStock: 'Out of stock for this mix',
+    recipe: 'RECIPE',
+    preparation: 'How to make:',
+    glass: '250ml glass',
+    serve: '🍹 Serve!',
+    close: 'Close',
+    outOfStockBtn: 'Out of stock',
+    served: '🍹 Cocktail served!',
+    reset: '🔄 Reset',
+    admin: '🔧 Admin',
+    addMix: 'Add',
+    addSoft: 'Add',
+    deleteMix: 'Delete?',
+    resetAll: 'Reset all?',
+    chooseNickname: 'Your nickname?',
+    minChars: '2 characters minimum',
+    letsGo: "Let's go!",
+    taken: 'This nickname is already taken',
+    leaderboard: 'Leaderboard',
+    topDrinkers: '🏆 Top drinkers',
+    cocktailStar: '🍹 Most popular',
+    history: '📜 History',
+    noDrinks: 'Nobody drank yet!',
+    drinks: 'cocktails',
+    drink: 'cocktail',
+    alcool: 'Alcohol',
+    noAlc: 'No alc.',
+    fioleLabel: 'bottle',
+    addLabel: 'Add:',
+    changeNickname: 'Change nickname',
+    days: 'Days',
+    hours: 'Hours',
+    min: 'Min',
+    sec: 'Sec',
+    opening: 'Opening on',
+    hello: 'Hello there!',
+    chooseNicknameDesc: 'Choose your nickname to enjoy the bar and access the leaderboard.',
+    orders: 'orders',
+    order: 'order',
+    noOrdersYet: 'No orders yet',
+    nobody: 'No orders',
+  }
+};
+
+let lang = localStorage.getItem('siphappens_lang') || 'fr';
+function t(key) {
+  return I18N[lang][key] || key;
+}
+
+function toggleLanguage() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  localStorage.setItem('siphappens_lang', lang);
+  updateLanguageDisplay();
+  
+  // Re-render everything with new language
+  updateCountdown();
+  renderTabs();
+  renderCocktails();
+  updateUserDisplay();
+  updateLeaderboardData();
+}
+
+function updateLanguageDisplay() {
+  document.getElementById('lang-toggle').textContent = lang === 'fr' ? '🇫🇷' : '🇬🇧';
+  document.querySelector('.bar-header small').textContent = t('subtitle');
+  
+  // Update username popup
+  document.getElementById('username-title').textContent = '👋 ' + t('hello');
+  document.getElementById('username-desc').textContent = t('chooseNicknameDesc');
+  document.getElementById('username-input').placeholder = t('chooseNickname');
+  document.getElementById('username-submit').textContent = t('letsGo');
+  
+  // Update leaderboard
+  document.getElementById('leaderboard-title').textContent = '🏆 ' + t('leaderboard');
+  document.getElementById('top-drinkers-title').textContent = t('topDrinkers');
+  document.getElementById('cocktail-star-title').textContent = t('cocktailStar');
+  document.getElementById('history-title').textContent = t('history');
+  document.getElementById('leaderboard-close-btn').textContent = t('close');
+}
+
 const DEFAULT_MIXES = [
   { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
     combos:[
@@ -798,19 +962,19 @@ function submitUsername() {
   const username = input.value.trim();
   
   if (username.length < 2) {
-    error.textContent = 'Le pseudo doit faire au moins 2 caractères';
+    error.textContent = t('minChars');
     error.style.display = 'block';
     return;
   }
   
   if (username.length > 20) {
-    error.textContent = 'Le pseudo ne peut pas dépasser 20 caractères';
+    error.textContent = lang === 'fr' ? 'Le pseudo ne peut pas dépasser 20 caractères' : 'Nickname cannot exceed 20 characters';
     error.style.display = 'block';
     return;
   }
   
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Vérification...';
+  submitBtn.textContent = lang === 'fr' ? 'Vérification...' : 'Checking...';
   error.style.display = 'none';
   
   // Vérifier la disponibilité du pseudo
@@ -839,17 +1003,17 @@ function acceptUsername(username) {
   
   updateUserDisplay();
   hideUsernamePopup();
-  showToast('👋 Salut ' + username + ' !');
+  showToast('👋 ' + (lang === 'fr' ? 'Salut ' : 'Hello ') + username + ' !');
 }
 
 function rejectUsername() {
   const error = document.getElementById('username-error');
   const submitBtn = document.getElementById('username-submit');
   
-  error.textContent = 'Ce pseudo est déjà pris, choisis-en un autre';
+  error.textContent = t('taken');
   error.style.display = 'block';
   submitBtn.disabled = false;
-  submitBtn.textContent = 'C\'est parti ! 🚀';
+  submitBtn.textContent = t('letsGo');
 }
 
 function hideUsernamePopup() {
@@ -907,7 +1071,7 @@ function updateLeaderboardData() {
           <div class="count">${count}</div>
         </div>`;
       }).join('')
-    : '<div style="text-align: center; color: var(--sub); padding: 20px;">Aucun buveur pour le moment</div>';
+    : `<div style="text-align: center; color: var(--sub); padding: 20px;">${t('noDrinks')}</div>`;
   
   document.getElementById('top-drinkers').innerHTML = topDrinkersHtml;
   
@@ -916,14 +1080,15 @@ function updateLeaderboardData() {
     .sort(([,a], [,b]) => b - a)[0];
   
   if (cocktailStar) {
+    const orderText = cocktailStar[1] > 1 ? t('orders') : t('order');
     document.getElementById('cocktail-star').innerHTML = `
       <div class="cocktail-name">${cocktailStar[0]}</div>
-      <div class="cocktail-count">${cocktailStar[1]} commande${cocktailStar[1] > 1 ? 's' : ''}</div>
+      <div class="cocktail-count">${cocktailStar[1]} ${orderText}</div>
     `;
   } else {
     document.getElementById('cocktail-star').innerHTML = `
       <div class="cocktail-name">-</div>
-      <div class="cocktail-count">Aucune commande</div>
+      <div class="cocktail-count">${t('nobody')}</div>
     `;
   }
   
@@ -931,7 +1096,7 @@ function updateLeaderboardData() {
   const historyHtml = leaderboardData.history.length > 0
     ? leaderboardData.history.slice(0, 50).map(entry => {
         const time = new Date(entry.timestamp);
-        const timeStr = time.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        const timeStr = time.toLocaleTimeString(lang === 'fr' ? 'fr-FR' : 'en-US', { hour: '2-digit', minute: '2-digit' });
         return `<div class="history-item">
           <div>
             <span class="user">${entry.username}</span>
@@ -940,7 +1105,7 @@ function updateLeaderboardData() {
           <div class="time">${timeStr}</div>
         </div>`;
       }).join('')
-    : '<div style="text-align: center; color: var(--sub); padding: 20px;">Aucune commande pour le moment</div>';
+    : `<div style="text-align: center; color: var(--sub); padding: 20px;">${t('noOrdersYet')}</div>`;
   
   document.getElementById('history-list').innerHTML = historyHtml;
 }
@@ -971,7 +1136,16 @@ loadAll(); activeTab=MIXES[0]?.id||'';
 const LAUNCH=new Date('2026-04-05T12:00:00+02:00');
 function spawnParticles(){const e=['🍹','🍸','🧊','🍋','🫚','🥭','🍊','☕','🥂','🌿','🍍'];const c=document.getElementById('particles');for(let i=0;i<15;i++){const p=document.createElement('div');p.className='particle';p.textContent=e[Math.floor(Math.random()*e.length)];p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=(-Math.random()*15)+'s';p.style.fontSize=(1+Math.random()*1.2)+'em';c.appendChild(p);}}
 function launchBar(){document.getElementById('countdown-screen').style.display='none';document.getElementById('bar-content').classList.add('active');}
-function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return;}document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');setTimeout(updateCountdown,1000);}
+function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return;}document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');
+  // Update labels
+  const units = document.querySelectorAll('#countdown-timer .unit .label');
+  if(units.length >= 4) {
+    units[0].textContent = t('days');
+    units[1].textContent = t('hours');
+    units[2].textContent = t('min');
+    units[3].textContent = t('sec');
+  }
+  setTimeout(updateCountdown,1000);}
 let tapC=0,tapT;document.getElementById('countdown-logo').addEventListener('click',()=>{tapC++;clearTimeout(tapT);if(tapC>=3){tapC=0;launchBar();return;}tapT=setTimeout(()=>tapC=0,600);});
 spawnParticles();updateCountdown();
 
@@ -983,18 +1157,19 @@ function renderTabs(){
   document.getElementById('tabBar').innerHTML=MIXES.map(m=>`<div class="tab ${m.id===activeTab?'active':''}" onclick="switchTab('${m.id}')">
     <div class="tab-emoji">${m.emoji}</div>
     <div class="tab-name">${m.name.replace('Mix ','')}</div>
-    <div class="tab-type ${m.alc?'type-alc':'type-na'}">${m.alc?'Alcool':'Sans alc.'}</div>
+    <div class="tab-type ${m.alc?'type-alc':'type-na'}">${m.alc?t('alcool'):t('noAlc')}</div>
   </div>`).join('');
 }
 
 function renderCocktails(){
   const m=MIXES.find(x=>x.id===activeTab);if(!m)return;
   const ms=state.mixes[m.id]||0;
+  const fioleText = ms > 1 ? t('fioles') : t('fiole');
   let h=`<div class="section-header">
     <div class="sec-emoji">${m.emoji}</div>
     <div class="sec-info"><h2>${m.name}</h2>
-    <div class="sec-stock">Stock : <strong class="${stockClass(ms)}">${ms} fiole${ms>1?'s':''}</strong></div></div></div>`;
-  if(ms<=0) h+=`<div class="oos-banner">⚠️ Plus de stock pour ce mix</div>`;
+    <div class="sec-stock">${t('stock')} : <strong class="${stockClass(ms)}">${ms} ${fioleText}</strong></div></div></div>`;
+  if(ms<=0) h+=`<div class="oos-banner">⚠️ ${t('outOfStock')}</div>`;
   h+=m.combos.map((c,i)=>{
     const ss=state.softs[c.soft]||0,can=ms>0&&ss>0,si=SOFTS.find(s=>s.id===c.soft);
     const w=ss<=0?` — <span style="color:var(--danger)">${si?si.name:'diluant'} épuisé</span>`:'';
@@ -1031,21 +1206,29 @@ window.serveCocktail=(mixId,softId,idx)=>{
     // Find the diluant (first item with ml) and the rest
     let diluant='', extras=[];
     addParts.forEach(p=>{
-      const t=p.trim();
-      if(t) extras.push(t);
+      const pt=p.trim();
+      if(pt) extras.push(pt);
     });
+    // Replace (fiole) with translated version
+    const fioleReplaced = mixParts[0].replace(/\(fiole\)/gi, '('+t('fioleLabel')+')');
     document.getElementById('detail-recipe').innerHTML=
-      '<span class="fiole">'+mixParts[0]+'</span>'+
+      '<span class="fiole">'+fioleReplaced+'</span>'+
       '<span class="fiole-ingredients">'+mixParts[1]+'</span>'+
-      '<span class="prep-label">Préparation :</span>'+
-      '<span class="prep-item">Verre 250ml</span>'+
+      '<span class="prep-label">'+t('preparation')+'</span>'+
+      '<span class="prep-item">'+t('glass')+'</span>'+
       extras.map(e=>'<span class="prep-item">'+e+'</span>').join('');
   } else {
-    document.getElementById('detail-recipe').textContent=recipe;
+    // Simple recipe without structure - replace (fiole) here too
+    const simpleRecipe = recipe.replace(/\(fiole\)/gi, '('+t('fioleLabel')+')');
+    document.getElementById('detail-recipe').textContent=simpleRecipe;
   }
+  // Update detail labels
+  document.querySelector('.detail-recipe-label').textContent = t('recipe');
   const btn=document.getElementById('detail-serve-btn');
-  if(canMake){btn.classList.remove('disabled');btn.textContent='🍹 Servir !';}
-  else{btn.classList.add('disabled');btn.textContent='Rupture de stock';}
+  if(canMake){btn.classList.remove('disabled');btn.textContent=t('serve');}
+  else{btn.classList.add('disabled');btn.textContent=t('outOfStockBtn');}
+  // Update close button
+  document.querySelector('.detail-btn.cancel').textContent = t('close');
   document.getElementById('detail-overlay').classList.add('active');
 };
 window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pendingServe;
@@ -1066,7 +1249,7 @@ window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pending
       el.classList.add('just-served');
       setTimeout(() => el.classList.remove('just-served'), 500);
     }
-    showToast('🍹 Cocktail servi !');
+    showToast(t('served'));
     pendingServe = null;
   } else {
     // Comportement localStorage classique
@@ -1074,7 +1257,7 @@ window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pending
     document.getElementById('detail-overlay').classList.remove('active');
     const el=document.getElementById(`cc-${mixId}-${idx}`);
     if(el){el.classList.add('just-served');setTimeout(()=>el.classList.remove('just-served'),500);}
-    showToast('🍹 Cocktail servi !');pendingServe=null;
+    showToast(t('served'));pendingServe=null;
   }
 };
 window.closeDetail=()=>{pendingServe=null;document.getElementById('detail-overlay').classList.remove('active');};
@@ -1371,7 +1554,8 @@ window.dc = (mid, i) => {
   renderAdmin();
 };
 
-// Initialiser le système d'identification
+// Initialiser l'i18n et le système d'identification
+updateLanguageDisplay();
 initUsername();
 
 // Modifier ws.onopen pour s'enregistrer automatiquement

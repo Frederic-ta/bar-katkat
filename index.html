@@ -13,6 +13,355 @@
   --ok:#4ecca3; --warn:#f0a500; --danger:#e94560;
   --glow:rgba(233,69,96,.15);
 }
+
+/* ===== I18N TOGGLE ===== */
+.lang-toggle {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 6px 8px;
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  width: 44px;
+  height: 44px;
+}
+.lang-toggle:hover {
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 0 20px rgba(255,255,255,.1);
+}
+
+/* User display */
+.user-display {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: .85em;
+  font-weight: 600;
+  color: var(--text);
+}
+.user-display .user-name {
+  color: var(--accent);
+}
+.user-display .edit-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  border: none;
+  color: var(--sub);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8em;
+  transition: all .2s;
+}
+.user-display .edit-btn:hover {
+  background: rgba(255,255,255,.1);
+  color: var(--text);
+}
+
+/* Leaderboard button */
+.leaderboard-btn {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 40;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  color: var(--warn);
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+.leaderboard-btn:hover {
+  background: rgba(240,165,0,.1);
+  border-color: var(--warn);
+  box-shadow: 0 0 20px rgba(240,165,0,.2);
+}
+
+/* Username popup */
+.username-popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0,0,0,.8);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.username-popup.active {
+  display: flex;
+}
+.username-form {
+  background: linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.username-form h3 {
+  font-size: 1.4em;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.username-form p {
+  font-size: .9em;
+  color: var(--sub);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.username-form .input-group {
+  margin-bottom: 20px;
+}
+.username-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  font-size: 1em;
+  text-align: center;
+  font-weight: 600;
+}
+.username-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(233,69,96,.1);
+}
+.username-form .error {
+  color: var(--danger);
+  font-size: .85em;
+  margin-top: 8px;
+  display: none;
+}
+.username-form .submit-btn {
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, var(--ok), #3ab88a);
+  color: #000;
+  font-size: .95em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s;
+  box-shadow: 0 4px 16px rgba(78,204,163,.3);
+}
+.username-form .submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(78,204,163,.4);
+}
+.username-form .submit-btn:active {
+  transform: translateY(0);
+}
+.username-form .submit-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Leaderboard overlay */
+.leaderboard-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0,0,0,.8);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.leaderboard-overlay.active {
+  display: flex;
+}
+.leaderboard-panel {
+  background: linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.leaderboard-header {
+  padding: 24px 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--card-border);
+}
+.leaderboard-header h3 {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--warn);
+  margin-bottom: 4px;
+}
+.leaderboard-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+.leaderboard-section {
+  margin-bottom: 24px;
+}
+.leaderboard-section h4 {
+  font-size: .9em;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+.leaderboard-item .rank {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-size: .8em;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.leaderboard-item.first .rank {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+.leaderboard-item.second .rank {
+  background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+}
+.leaderboard-item.third .rank {
+  background: linear-gradient(135deg, #cd7f32, #deb887);
+}
+.leaderboard-item .name {
+  flex: 1;
+  margin-left: 12px;
+  font-weight: 600;
+}
+.leaderboard-item .count {
+  color: var(--ok);
+  font-weight: 700;
+}
+.cocktail-star {
+  text-align: center;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.cocktail-star .cocktail-name {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--warn);
+  margin-bottom: 4px;
+}
+.cocktail-star .cocktail-count {
+  color: var(--sub);
+  font-size: .85em;
+}
+.history-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  font-size: .85em;
+}
+.history-item .user {
+  font-weight: 600;
+  color: var(--accent);
+}
+.history-item .cocktail {
+  color: var(--text);
+  margin-left: 8px;
+}
+.history-item .time {
+  color: var(--sub);
+  font-size: .8em;
+}
+.leaderboard-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  text-align: center;
+}
+.leaderboard-close {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.leaderboard-close:hover {
+  background: rgba(255,255,255,.12);
+}
+
+/* Mobile responsive pour nouvelles fonctionnalités */
+@media (max-width:480px) {
+  .user-display { top: 16px; right: 16px; padding: 6px 10px; font-size: .8em; }
+  .leaderboard-btn { top: 70px; left: 16px; width: 40px; height: 40px; font-size: 1.1em; }
+  .lang-toggle { top: 16px; width: 40px; height: 40px; font-size: 1.1em; }
+  .username-form { padding: 24px; }
+  .leaderboard-content { padding: 16px 20px; }
+  .history-list { max-height: 150px; }
+}
 body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh;
   background-image:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.08) 0%,transparent 60%); }
 
@@ -234,6 +583,18 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 
 <!-- BAR -->
 <div id="bar-content">
+  <!-- I18N TOGGLE -->
+  <button class="lang-toggle" id="lang-toggle" onclick="toggleLanguage()" title="Switch language">🇫🇷</button>
+  
+  <!-- USER DISPLAY -->
+  <div class="user-display" id="user-display" style="display: none;">
+    <span class="user-name" id="user-name"></span>
+    <button class="edit-btn" id="edit-username-btn" onclick="showUsernamePopup(true)">✏️</button>
+  </div>
+  
+  <!-- LEADERBOARD BUTTON -->
+  <button class="leaderboard-btn" onclick="showLeaderboard()">🏆</button>
+  
   <div class="bar-header" id="title">
     <h1>Sip Happens at Fred's 🍹</h1>
     <small>Tape un mix, choisis ton cocktail !</small>
@@ -263,7 +624,189 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   <div id="admin-panel"></div>
 </div>
 
+<!-- USERNAME POPUP -->
+<div class="username-popup" id="username-popup">
+  <div class="username-form">
+    <h3 id="username-title">👋 Salut toi !</h3>
+    <p id="username-desc">Choisis ton pseudo pour profiter du bar et accéder au classement.</p>
+    <div class="input-group">
+      <input type="text" id="username-input" placeholder="Ton pseudo" maxlength="20" autocomplete="off">
+      <div class="error" id="username-error"></div>
+    </div>
+    <button class="submit-btn" id="username-submit" onclick="submitUsername()">C'est parti ! 🚀</button>
+  </div>
+</div>
+
+<!-- LEADERBOARD OVERLAY -->
+<div class="leaderboard-overlay" id="leaderboard-overlay">
+  <div class="leaderboard-panel">
+    <div class="leaderboard-header">
+      <h3 id="leaderboard-title">🏆 Classement</h3>
+    </div>
+    <div class="leaderboard-content">
+      <div class="leaderboard-section">
+        <h4 id="top-drinkers-title">🏆 Top buveurs</h4>
+        <div id="top-drinkers"></div>
+      </div>
+      
+      <div class="leaderboard-section">
+        <h4 id="cocktail-star-title">🍹 Cocktail star</h4>
+        <div class="cocktail-star" id="cocktail-star">
+          <div class="cocktail-name">-</div>
+          <div class="cocktail-count">Aucune commande</div>
+        </div>
+      </div>
+      
+      <div class="leaderboard-section">
+        <h4 id="history-title">📜 Historique</h4>
+        <div class="history-list" id="history-list">
+          <div style="text-align: center; color: var(--sub); padding: 20px;">
+            Aucune commande pour le moment
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="leaderboard-footer">
+      <button class="leaderboard-close" id="leaderboard-close-btn" onclick="hideLeaderboard()">Fermer</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ===== I18N SYSTEM =====
+const I18N = {
+  fr: {
+    subtitle: 'Tape un mix, choisis ton cocktail !',
+    stock: 'Stock',
+    fioles: 'fioles',
+    fiole: 'fiole',
+    outOfStock: 'Plus de stock pour ce mix',
+    recipe: 'RECETTE',
+    preparation: 'Préparation :',
+    glass: 'Verre 250ml',
+    serve: '🍹 Servir !',
+    close: 'Fermer',
+    outOfStockBtn: 'Rupture de stock',
+    served: '🍹 Cocktail servi !',
+    reset: '🔄 Reset',
+    admin: '🔧 Admin',
+    addMix: 'Ajouter',
+    addSoft: 'Ajouter',
+    deleteMix: 'Supprimer ?',
+    resetAll: 'Tout reset ?',
+    chooseNickname: 'Ton pseudo ?',
+    minChars: '2 caractères minimum',
+    letsGo: "C'est parti !",
+    taken: 'Ce pseudo est déjà pris',
+    leaderboard: 'Classement',
+    topDrinkers: '🏆 Top buveurs',
+    cocktailStar: '🍹 Cocktail star',
+    history: '📜 Historique',
+    noDrinks: 'Personne n\'a encore bu !',
+    drinks: 'cocktails',
+    drink: 'cocktail',
+    alcool: 'Alcool',
+    noAlc: 'Sans alc.',
+    fioleLabel: 'fiole',
+    addLabel: 'À ajouter :',
+    changeNickname: 'Changer de pseudo',
+    days: 'Jours',
+    hours: 'Heures',
+    min: 'Min',
+    sec: 'Sec',
+    opening: 'Ouverture le',
+    hello: 'Salut toi !',
+    chooseNicknameDesc: 'Choisis ton pseudo pour profiter du bar et accéder au classement.',
+    orders: 'commandes',
+    order: 'commande',
+    noOrdersYet: 'Aucune commande pour le moment',
+    nobody: 'Aucune commande',
+  },
+  en: {
+    subtitle: 'Pick a mix, choose your cocktail!',
+    stock: 'Stock',
+    fioles: 'bottles',
+    fiole: 'bottle',
+    outOfStock: 'Out of stock for this mix',
+    recipe: 'RECIPE',
+    preparation: 'How to make:',
+    glass: '250ml glass',
+    serve: '🍹 Serve!',
+    close: 'Close',
+    outOfStockBtn: 'Out of stock',
+    served: '🍹 Cocktail served!',
+    reset: '🔄 Reset',
+    admin: '🔧 Admin',
+    addMix: 'Add',
+    addSoft: 'Add',
+    deleteMix: 'Delete?',
+    resetAll: 'Reset all?',
+    chooseNickname: 'Your nickname?',
+    minChars: '2 characters minimum',
+    letsGo: "Let's go!",
+    taken: 'This nickname is already taken',
+    leaderboard: 'Leaderboard',
+    topDrinkers: '🏆 Top drinkers',
+    cocktailStar: '🍹 Most popular',
+    history: '📜 History',
+    noDrinks: 'Nobody drank yet!',
+    drinks: 'cocktails',
+    drink: 'cocktail',
+    alcool: 'Alcohol',
+    noAlc: 'No alc.',
+    fioleLabel: 'bottle',
+    addLabel: 'Add:',
+    changeNickname: 'Change nickname',
+    days: 'Days',
+    hours: 'Hours',
+    min: 'Min',
+    sec: 'Sec',
+    opening: 'Opening on',
+    hello: 'Hello there!',
+    chooseNicknameDesc: 'Choose your nickname to enjoy the bar and access the leaderboard.',
+    orders: 'orders',
+    order: 'order',
+    noOrdersYet: 'No orders yet',
+    nobody: 'No orders',
+  }
+};
+
+let lang = localStorage.getItem('siphappens_lang') || 'fr';
+function t(key) {
+  return I18N[lang][key] || key;
+}
+
+function toggleLanguage() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  localStorage.setItem('siphappens_lang', lang);
+  updateLanguageDisplay();
+  
+  // Re-render everything with new language
+  updateCountdown();
+  renderTabs();
+  renderCocktails();
+  updateUserDisplay();
+  updateLeaderboardData();
+}
+
+function updateLanguageDisplay() {
+  document.getElementById('lang-toggle').textContent = lang === 'fr' ? '🇫🇷' : '🇬🇧';
+  document.querySelector('.bar-header small').textContent = t('subtitle');
+  
+  // Update username popup
+  document.getElementById('username-title').textContent = '👋 ' + t('hello');
+  document.getElementById('username-desc').textContent = t('chooseNicknameDesc');
+  document.getElementById('username-input').placeholder = t('chooseNickname');
+  document.getElementById('username-submit').textContent = t('letsGo');
+  
+  // Update leaderboard
+  document.getElementById('leaderboard-title').textContent = '🏆 ' + t('leaderboard');
+  document.getElementById('top-drinkers-title').textContent = t('topDrinkers');
+  document.getElementById('cocktail-star-title').textContent = t('cocktailStar');
+  document.getElementById('history-title').textContent = t('history');
+  document.getElementById('leaderboard-close-btn').textContent = t('close');
+}
+
 const DEFAULT_MIXES = [
   { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
     combos:[
@@ -361,16 +904,303 @@ const DEFAULT_SOFTS = [
 ];
 
 let MIXES,SOFTS,state,activeTab;
+
+// Variables pour l'identification et le classement simulé
+let currentUsername = null;
+let leaderboardData = { history: [], topDrinkers: [], cocktailStar: null };
+const FAKE_USERS = ['Alex', 'Léa', 'Nico', 'Sarah', 'Max', 'Chloé', 'Tom', 'Emma'];
+let fakeActivityTimer = null;
+
 function loadAll(){try{const s=JSON.parse(localStorage.getItem('chezfred_v1'));if(s&&s.mixes&&s.softs&&s.stock){MIXES=s.mixes;SOFTS=s.softs;state=s.stock;return;}}catch(e){}
 MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));state={mixes:{},softs:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);}
 function saveAll(){localStorage.setItem('chezfred_v1',JSON.stringify({mixes:MIXES,softs:SOFTS,stock:state}));}
-loadAll(); activeTab=MIXES[0]?.id||'';
+
+// Gestion du classement simulé
+function loadLeaderboardData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('chezfred_demo_leaderboard') || '{}');
+    if (saved.history) {
+      leaderboardData.history = saved.history;
+    }
+  } catch(e) {}
+  
+  // Si pas d'historique, générer quelques fausses commandes initiales
+  if (leaderboardData.history.length === 0) {
+    generateInitialHistory();
+  }
+}
+
+function saveLeaderboardData() {
+  localStorage.setItem('chezfred_demo_leaderboard', JSON.stringify(leaderboardData));
+}
+
+function generateInitialHistory() {
+  const now = Date.now();
+  const cocktails = [];
+  
+  // Collecter tous les cocktails disponibles
+  MIXES.forEach(mix => {
+    mix.combos.forEach(combo => {
+      cocktails.push(combo.name);
+    });
+  });
+  
+  // Générer 5-8 commandes récentes
+  const count = 5 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < count; i++) {
+    const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
+    const fakeCocktail = cocktails[Math.floor(Math.random() * cocktails.length)];
+    const fakeTime = now - (i * 60000) - Math.random() * 300000; // Entre maintenant et 5-25 min ago
+    
+    leaderboardData.history.unshift({
+      username: fakeUser,
+      cocktailName: fakeCocktail,
+      timestamp: fakeTime
+    });
+  }
+  
+  saveLeaderboardData();
+}
+
+function addFakeOrder() {
+  const cocktails = [];
+  
+  // Collecter tous les cocktails disponibles
+  MIXES.forEach(mix => {
+    mix.combos.forEach(combo => {
+      cocktails.push(combo.name);
+    });
+  });
+  
+  if (cocktails.length === 0) return;
+  
+  const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
+  const fakeCocktail = cocktails[Math.floor(Math.random() * cocktails.length)];
+  
+  leaderboardData.history.unshift({
+    username: fakeUser,
+    cocktailName: fakeCocktail,
+    timestamp: Date.now()
+  });
+  
+  // Garder max 100 entrées
+  if (leaderboardData.history.length > 100) {
+    leaderboardData.history = leaderboardData.history.slice(0, 100);
+  }
+  
+  saveLeaderboardData();
+  updateLeaderboardData();
+}
+
+function startFakeActivity() {
+  function scheduleNext() {
+    const delay = 8000 + Math.random() * 7000; // 8-15 secondes
+    fakeActivityTimer = setTimeout(() => {
+      addFakeOrder();
+      scheduleNext();
+    }, delay);
+  }
+  
+  scheduleNext();
+}
+
+function stopFakeActivity() {
+  if (fakeActivityTimer) {
+    clearTimeout(fakeActivityTimer);
+    fakeActivityTimer = null;
+  }
+}
+
+// === GESTION DU PSEUDO ===
+function initUsername() {
+  const savedUsername = localStorage.getItem('siphappens_demo_username');
+  if (savedUsername && savedUsername.trim().length >= 2) {
+    currentUsername = savedUsername.trim();
+    updateUserDisplay();
+  } else {
+    showUsernamePopup(false);
+  }
+}
+
+function showUsernamePopup(isEdit = false) {
+  const popup = document.getElementById('username-popup');
+  const input = document.getElementById('username-input');
+  const error = document.getElementById('username-error');
+  
+  if (isEdit) {
+    input.value = currentUsername || '';
+  } else {
+    input.value = '';
+  }
+  
+  error.style.display = 'none';
+  error.textContent = '';
+  
+  popup.classList.add('active');
+  input.focus();
+}
+
+function submitUsername() {
+  const input = document.getElementById('username-input');
+  const error = document.getElementById('username-error');
+  const submitBtn = document.getElementById('username-submit');
+  
+  const username = input.value.trim();
+  
+  if (username.length < 2) {
+    error.textContent = t('minChars');
+    error.style.display = 'block';
+    return;
+  }
+  
+  if (username.length > 20) {
+    error.textContent = lang === 'fr' ? 'Le pseudo ne peut pas dépasser 20 caractères' : 'Nickname cannot exceed 20 characters';
+    error.style.display = 'block';
+    return;
+  }
+  
+  // Pas de vérification anti-doublon en mode demo
+  currentUsername = username;
+  localStorage.setItem('siphappens_demo_username', username);
+  
+  updateUserDisplay();
+  hideUsernamePopup();
+  showToast('👋 ' + (lang === 'fr' ? 'Salut ' : 'Hello ') + username + ' !');
+}
+
+function hideUsernamePopup() {
+  document.getElementById('username-popup').classList.remove('active');
+  const submitBtn = document.getElementById('username-submit');
+  submitBtn.disabled = false;
+  submitBtn.textContent = t('letsGo');
+}
+
+function updateUserDisplay() {
+  const display = document.getElementById('user-display');
+  const nameEl = document.getElementById('user-name');
+  
+  if (currentUsername) {
+    nameEl.textContent = currentUsername;
+    display.style.display = 'flex';
+  } else {
+    display.style.display = 'none';
+  }
+}
+
+// === GESTION DU CLASSEMENT ===
+function showLeaderboard() {
+  updateLeaderboardData();
+  document.getElementById('leaderboard-overlay').classList.add('active');
+}
+
+function hideLeaderboard() {
+  document.getElementById('leaderboard-overlay').classList.remove('active');
+}
+
+function updateLeaderboardData() {
+  if (!leaderboardData.history) return;
+  
+  // Compter les cocktails par utilisateur
+  const userCounts = {};
+  const cocktailCounts = {};
+  
+  leaderboardData.history.forEach(entry => {
+    userCounts[entry.username] = (userCounts[entry.username] || 0) + 1;
+    cocktailCounts[entry.cocktailName] = (cocktailCounts[entry.cocktailName] || 0) + 1;
+  });
+  
+  // Top buveurs
+  const topDrinkers = Object.entries(userCounts)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 10);
+  
+  const topDrinkersHtml = topDrinkers.length > 0 
+    ? topDrinkers.map(([username, count], index) => {
+        const classes = ['first', 'second', 'third'][index] ? `leaderboard-item ${['first', 'second', 'third'][index]}` : 'leaderboard-item';
+        return `<div class="${classes}">
+          <div class="rank">${index + 1}</div>
+          <div class="name">${username}</div>
+          <div class="count">${count}</div>
+        </div>`;
+      }).join('')
+    : `<div style="text-align: center; color: var(--sub); padding: 20px;">${t('noDrinks')}</div>`;
+  
+  document.getElementById('top-drinkers').innerHTML = topDrinkersHtml;
+  
+  // Cocktail star
+  const cocktailStar = Object.entries(cocktailCounts)
+    .sort(([,a], [,b]) => b - a)[0];
+  
+  if (cocktailStar) {
+    const orderText = cocktailStar[1] > 1 ? t('orders') : t('order');
+    document.getElementById('cocktail-star').innerHTML = `
+      <div class="cocktail-name">${cocktailStar[0]}</div>
+      <div class="cocktail-count">${cocktailStar[1]} ${orderText}</div>
+    `;
+  } else {
+    document.getElementById('cocktail-star').innerHTML = `
+      <div class="cocktail-name">-</div>
+      <div class="cocktail-count">${t('nobody')}</div>
+    `;
+  }
+  
+  // Historique
+  const historyHtml = leaderboardData.history.length > 0
+    ? leaderboardData.history.slice(0, 50).map(entry => {
+        const time = new Date(entry.timestamp);
+        const timeStr = time.toLocaleTimeString(lang === 'fr' ? 'fr-FR' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        return `<div class="history-item">
+          <div>
+            <span class="user">${entry.username}</span>
+            <span class="cocktail">${entry.cocktailName}</span>
+          </div>
+          <div class="time">${timeStr}</div>
+        </div>`;
+      }).join('')
+    : `<div style="text-align: center; color: var(--sub); padding: 20px;">${t('noOrdersYet')}</div>`;
+  
+  document.getElementById('history-list').innerHTML = historyHtml;
+}
+
+// Gestion des événements
+document.getElementById('username-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    submitUsername();
+  }
+});
+
+document.getElementById('username-popup').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) {
+    // Empêcher la fermeture si pas de pseudo
+    if (!currentUsername) return;
+    hideUsernamePopup();
+  }
+});
+
+document.getElementById('leaderboard-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) {
+    hideLeaderboard();
+  }
+});
+
+loadAll(); 
+loadLeaderboardData();
+activeTab=MIXES[0]?.id||'';
 
 // Countdown
 const LAUNCH=new Date('2026-04-05T12:00:00+02:00');
 function spawnParticles(){const e=['🍹','🍸','🧊','🍋','🫚','🥭','🍊','☕','🥂','🌿','🍍'];const c=document.getElementById('particles');for(let i=0;i<15;i++){const p=document.createElement('div');p.className='particle';p.textContent=e[Math.floor(Math.random()*e.length)];p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=(-Math.random()*15)+'s';p.style.fontSize=(1+Math.random()*1.2)+'em';c.appendChild(p);}}
 function launchBar(){document.getElementById('countdown-screen').style.display='none';document.getElementById('bar-content').classList.add('active');}
-function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return;}document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');setTimeout(updateCountdown,1000);}
+function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return;}document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');
+  // Update labels
+  const units = document.querySelectorAll('#countdown-timer .unit .label');
+  if(units.length >= 4) {
+    units[0].textContent = t('days');
+    units[1].textContent = t('hours');
+    units[2].textContent = t('min');
+    units[3].textContent = t('sec');
+  }
+  setTimeout(updateCountdown,1000);}
 let tapC=0,tapT;document.getElementById('countdown-logo').addEventListener('click',()=>{tapC++;clearTimeout(tapT);if(tapC>=3){tapC=0;launchBar();return;}tapT=setTimeout(()=>tapC=0,600);});
 spawnParticles();updateCountdown();
 
@@ -382,18 +1212,19 @@ function renderTabs(){
   document.getElementById('tabBar').innerHTML=MIXES.map(m=>`<div class="tab ${m.id===activeTab?'active':''}" onclick="switchTab('${m.id}')">
     <div class="tab-emoji">${m.emoji}</div>
     <div class="tab-name">${m.name.replace('Mix ','')}</div>
-    <div class="tab-type ${m.alc?'type-alc':'type-na'}">${m.alc?'Alcool':'Sans alc.'}</div>
+    <div class="tab-type ${m.alc?'type-alc':'type-na'}">${m.alc?t('alcool'):t('noAlc')}</div>
   </div>`).join('');
 }
 
 function renderCocktails(){
   const m=MIXES.find(x=>x.id===activeTab);if(!m)return;
   const ms=state.mixes[m.id]||0;
+  const fioleText = ms > 1 ? t('fioles') : t('fiole');
   let h=`<div class="section-header">
     <div class="sec-emoji">${m.emoji}</div>
     <div class="sec-info"><h2>${m.name}</h2>
-    <div class="sec-stock">Stock : <strong class="${stockClass(ms)}">${ms} fiole${ms>1?'s':''}</strong></div></div></div>`;
-  if(ms<=0) h+=`<div class="oos-banner">⚠️ Plus de stock pour ce mix</div>`;
+    <div class="sec-stock">${t('stock')} : <strong class="${stockClass(ms)}">${ms} ${fioleText}</strong></div></div></div>`;
+  if(ms<=0) h+=`<div class="oos-banner">⚠️ ${t('outOfStock')}</div>`;
   h+=m.combos.map((c,i)=>{
     const ss=state.softs[c.soft]||0,can=ms>0&&ss>0,si=SOFTS.find(s=>s.id===c.soft);
     const w=ss<=0?` — <span style="color:var(--danger)">${si?si.name:'diluant'} épuisé</span>`:'';
@@ -430,29 +1261,57 @@ window.serveCocktail=(mixId,softId,idx)=>{
     // Find the diluant (first item with ml) and the rest
     let diluant='', extras=[];
     addParts.forEach(p=>{
-      const t=p.trim();
-      if(t) extras.push(t);
+      const pt=p.trim();
+      if(pt) extras.push(pt);
     });
+    // Replace (fiole) with translated version
+    const fioleReplaced = mixParts[0].replace(/\(fiole\)/gi, '('+t('fioleLabel')+')');
     document.getElementById('detail-recipe').innerHTML=
-      '<span class="fiole">'+mixParts[0]+'</span>'+
+      '<span class="fiole">'+fioleReplaced+'</span>'+
       '<span class="fiole-ingredients">'+mixParts[1]+'</span>'+
-      '<span class="prep-label">Préparation :</span>'+
-      '<span class="prep-item">Verre 250ml</span>'+
+      '<span class="prep-label">'+t('preparation')+'</span>'+
+      '<span class="prep-item">'+t('glass')+'</span>'+
       extras.map(e=>'<span class="prep-item">'+e+'</span>').join('');
   } else {
-    document.getElementById('detail-recipe').textContent=recipe;
+    // Simple recipe without structure - replace (fiole) here too
+    const simpleRecipe = recipe.replace(/\(fiole\)/gi, '('+t('fioleLabel')+')');
+    document.getElementById('detail-recipe').textContent=simpleRecipe;
   }
+  // Update detail labels
+  document.querySelector('.detail-recipe-label').textContent = t('recipe');
   const btn=document.getElementById('detail-serve-btn');
-  if(canMake){btn.classList.remove('disabled');btn.textContent='🍹 Servir !';}
-  else{btn.classList.add('disabled');btn.textContent='Rupture de stock';}
+  if(canMake){btn.classList.remove('disabled');btn.textContent=t('serve');}
+  else{btn.classList.add('disabled');btn.textContent=t('outOfStockBtn');}
+  // Update close button
+  document.querySelector('.detail-btn.cancel').textContent = t('close');
   document.getElementById('detail-overlay').classList.add('active');
 };
 window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pendingServe;
+  const m=MIXES.find(x=>x.id===mixId);
+  const cocktailName = m.combos[idx].name;
+  
+  // Ajouter à l'historique si on a un username
+  if (currentUsername && cocktailName) {
+    leaderboardData.history.unshift({
+      username: currentUsername,
+      cocktailName: cocktailName,
+      timestamp: Date.now()
+    });
+    
+    // Garder max 100 entrées
+    if (leaderboardData.history.length > 100) {
+      leaderboardData.history = leaderboardData.history.slice(0, 100);
+    }
+    
+    saveLeaderboardData();
+    updateLeaderboardData();
+  }
+  
   state.mixes[mixId]--;state.softs[softId]--;saveAll();renderTabs();renderCocktails();
   document.getElementById('detail-overlay').classList.remove('active');
   const el=document.getElementById(`cc-${mixId}-${idx}`);
   if(el){el.classList.add('just-served');setTimeout(()=>el.classList.remove('just-served'),500);}
-  showToast('🍹 Cocktail servi !');pendingServe=null;};
+  showToast(t('served'));pendingServe=null;};
 window.closeDetail=()=>{pendingServe=null;document.getElementById('detail-overlay').classList.remove('active');};
 document.getElementById('detail-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDetail();});
 
@@ -510,17 +1369,22 @@ window.sss=(id,v)=>{state.softs[id]=Math.max(0,parseInt(v)||0);saveAll();};
 window.addMix=()=>{const n=document.getElementById('nm-n').value.trim(),e=document.getElementById('nm-e').value.trim()||'🍹',
 s=parseInt(document.getElementById('nm-s').value)||10,a=document.getElementById('nm-a').value==='true';if(!n)return;
 const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();MIXES.push({id,emoji:e,name:n,alc:a,stock:s,combos:[]});
-state.mixes[id]=s;saveAll();renderAdmin();showToast('✅ Mix ajouté');};
-window.deleteMix=(id)=>{if(!confirm('Supprimer ?'))return;MIXES.splice(MIXES.findIndex(m=>m.id===id),1);delete state.mixes[id];saveAll();renderAdmin();showToast('🗑 Supprimé');};
+state.mixes[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Mix ajouté' : 'Mix added'));};
+window.deleteMix=(id)=>{if(!confirm(t('deleteMix')))return;MIXES.splice(MIXES.findIndex(m=>m.id===id),1);delete state.mixes[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
 window.addSoft=()=>{const n=document.getElementById('ns-n').value.trim(),e=document.getElementById('ns-e').value.trim()||'🧊',
 s=parseInt(document.getElementById('ns-s').value)||20;if(!n)return;const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();
-SOFTS.push({id,emoji:e,name:n,stock:s});state.softs[id]=s;saveAll();renderAdmin();showToast('✅ Diluant ajouté');};
-window.deleteSoft=(id)=>{if(!confirm('Supprimer ?'))return;SOFTS.splice(SOFTS.findIndex(d=>d.id===id),1);delete state.softs[id];saveAll();renderAdmin();showToast('🗑 Supprimé');};
+SOFTS.push({id,emoji:e,name:n,stock:s});state.softs[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Diluant ajouté' : 'Diluent added'));};
+window.deleteSoft=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;SOFTS.splice(SOFTS.findIndex(d=>d.id===id),1);delete state.softs[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
 window.ac=(mid)=>{const n=document.getElementById('cn-'+mid).value.trim(),r=document.getElementById('cr-'+mid).value.trim(),
 ic=document.getElementById('ci-'+mid).value.trim()||'🍹',s=document.getElementById('cs-'+mid).value;if(!n||!r)return;
-MIXES.find(x=>x.id===mid).combos.push({name:n,recipe:r,soft:s,icon:ic});saveAll();renderAdmin();showToast('✅ Cocktail ajouté');};
+MIXES.find(x=>x.id===mid).combos.push({name:n,recipe:r,soft:s,icon:ic});saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Cocktail ajouté' : 'Cocktail added'));};
 window.dc=(mid,i)=>{MIXES.find(x=>x.id===mid).combos.splice(i,1);saveAll();renderAdmin();};
-window.resetAll=()=>{if(!confirm('Tout reset ?'))return;localStorage.removeItem('chezfred_v1');loadAll();activeTab=MIXES[0]?.id||'';saveAll();renderAdmin();renderTabs();renderCocktails();showToast('🔄 Reset');};
+window.resetAll=()=>{if(!confirm(t('resetAll')))return;localStorage.removeItem('chezfred_v1');localStorage.removeItem('chezfred_demo_leaderboard');loadAll();loadLeaderboardData();activeTab=MIXES[0]?.id||'';saveAll();renderAdmin();renderTabs();renderCocktails();showToast(t('reset'));};
+
+// Initialisation
+updateLanguageDisplay();
+initUsername();
+startFakeActivity();
 </script>
 </body>
 </html>
