@@ -285,7 +285,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 /* Leaderboard button */
 .leaderboard-btn {
   position: fixed;
-  top: 72px;
+  top: 20px;
   left: 20px;
   z-index: 40;
   width: 44px;
@@ -557,9 +557,8 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 /* Mobile responsive pour nouvelles fonctionnalités */
 @media (max-width:480px) {
   .user-display { top: 16px; right: 16px; padding: 6px 10px; font-size: .8em; }
-  .leaderboard-btn { top: 62px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
-  .lang-toggle { top: 16px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
-  .titles-btn { top: 114px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
+  .leaderboard-btn { top: 16px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
+  .titles-btn { top: 58px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
   .username-form { padding: 24px; }
   .leaderboard-content { padding: 16px 20px; }
   .history-list { max-height: 150px; }
@@ -568,7 +567,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 /* ===== SYSTÈME DE TITRES =====*/
 .titles-btn {
   position: fixed;
-  top: 124px;
+  top: 72px;
   left: 20px;
   z-index: 40;
   width: 44px;
@@ -664,7 +663,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 <!-- BAR -->
 <div id="bar-content">
   <!-- I18N TOGGLE -->
-  <button class="lang-toggle" id="lang-toggle" onclick="toggleLanguage()" title="Switch language">🇫🇷</button>
+  <!-- lang toggle removed, language is chosen in username popup -->
   
   <!-- USER DISPLAY -->
   <div class="user-display" id="user-display" style="display: none;">
@@ -720,6 +719,10 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
     <div class="input-group">
       <input type="text" id="username-input" placeholder="Ton pseudo" maxlength="20" autocomplete="off">
       <div class="error" id="username-error"></div>
+    </div>
+    <div id="popup-title-selector" style="display:none;margin-bottom:16px;">
+      <p style="font-size:.85em;color:var(--sub);margin-bottom:8px;" id="popup-title-label">🎖️ Ton titre :</p>
+      <div id="popup-title-list" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:120px;overflow-y:auto;"></div>
     </div>
     <button class="submit-btn" id="username-submit" onclick="submitUsername()">C'est parti ! 🚀</button>
   </div>
@@ -1125,11 +1128,33 @@ function showUsernamePopup(isEdit = false) {
   const popup = document.getElementById('username-popup');
   const input = document.getElementById('username-input');
   const error = document.getElementById('username-error');
+  const titleSel = document.getElementById('popup-title-selector');
+  const titleList = document.getElementById('popup-title-list');
+  
+  document.getElementById('lang-fr').style.borderColor = lang==='fr' ? 'var(--accent)' : 'var(--card-border)';
+  document.getElementById('lang-fr').style.color = lang==='fr' ? 'var(--text)' : 'var(--sub)';
+  document.getElementById('lang-en').style.borderColor = lang==='en' ? 'var(--accent)' : 'var(--card-border)';
+  document.getElementById('lang-en').style.color = lang==='en' ? 'var(--text)' : 'var(--sub)';
   
   if (isEdit) {
     input.value = currentUsername || '';
+    document.getElementById('username-title').textContent = lang==='fr' ? '✏️ Modifier' : '✏️ Edit';
+    document.getElementById('username-submit').textContent = lang==='fr' ? '✅ Sauvegarder' : '✅ Save';
+    const unlocked = JSON.parse(localStorage.getItem('siphappens_titles') || '[]');
+    if (unlocked.length > 0 && typeof TITLES !== 'undefined') {
+      const activeTitle = localStorage.getItem('siphappens_active_title') || '';
+      titleList.innerHTML = '<button onclick="selectTitlePopup(null)" style="padding:4px 10px;border-radius:8px;border:1px solid '+(activeTitle?'var(--card-border)':'var(--accent)')+';background:'+(activeTitle?'var(--card)':'rgba(var(--accent-rgb,110,69,226),.2)')+';font-size:.8em;cursor:pointer;color:var(--text);">'+(lang==='fr'?'Aucun':'None')+'</button>' + 
+        TITLES.filter(t=>unlocked.includes(t.id)).map(t=>{
+          const isActive = t.id === activeTitle;
+          return `<button onclick="selectTitlePopup('${t.id}')" style="padding:4px 10px;border-radius:8px;border:1px solid ${isActive?'var(--accent)':'var(--card-border)'};background:${isActive?'rgba(var(--accent-rgb,110,69,226),.2)':'var(--card)'};font-size:.8em;cursor:pointer;color:var(--text);" title="${t.desc[lang]}">${t.emoji} ${t.name[lang]}</button>`;
+        }).join('');
+      titleSel.style.display = 'block';
+    } else {
+      titleSel.style.display = 'none';
+    }
   } else {
     input.value = '';
+    titleSel.style.display = 'none';
   }
   
   error.style.display = 'none';
@@ -1137,6 +1162,16 @@ function showUsernamePopup(isEdit = false) {
   
   popup.classList.add('active');
   input.focus();
+}
+
+function selectTitlePopup(titleId) {
+  if (titleId) {
+    localStorage.setItem('siphappens_active_title', titleId);
+  } else {
+    localStorage.removeItem('siphappens_active_title');
+  }
+  showUsernamePopup(true);
+  if (typeof updateUserDisplay === 'function') updateUserDisplay();
 }
 
 function submitUsername() {
