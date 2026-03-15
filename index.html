@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Bar KatKat 🍹</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#1a1a2e; --card:#16213e; --accent:#e94560; --green:#0f3460;
+  --text:#eee; --sub:#aaa; --ok:#4ecca3; --warn:#f0a500; --danger:#e94560;
+}
+body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; padding:12px; }
+h1 { text-align:center; font-size:1.8em; padding:16px 0 8px; cursor:default; user-select:none; }
+h1 small { display:block; font-size:.45em; color:var(--sub); font-weight:normal; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; padding:12px 0; }
+.card { background:var(--card); border-radius:16px; padding:18px 14px; text-align:center; cursor:pointer;
+  transition:transform .15s,box-shadow .15s; position:relative; }
+.card:active { transform:scale(.96); }
+.card .emoji { font-size:2.6em; }
+.card .name { font-size:1.1em; font-weight:600; margin:6px 0 4px; }
+.card .stock { font-size:2em; font-weight:700; }
+.card .badge { position:absolute; top:10px; right:10px; font-size:.7em; padding:2px 8px; border-radius:10px; font-weight:600; }
+.badge-na { background:#0f3460; color:#4ecca3; }
+.badge-alc { background:#3a0a1e; color:#e94560; }
+.stock-ok { color:var(--ok); }
+.stock-warn { color:var(--warn); }
+.stock-danger { color:var(--danger); }
+
+/* Modal */
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:10; justify-content:center; align-items:center; padding:16px; }
+.overlay.active { display:flex; }
+.modal { background:var(--card); border-radius:20px; max-width:420px; width:100%; max-height:85vh; overflow-y:auto; padding:20px; }
+.modal h2 { font-size:1.4em; text-align:center; margin-bottom:4px; }
+.modal .sub { text-align:center; color:var(--sub); font-size:.85em; margin-bottom:14px; }
+.combo-btn { display:flex; align-items:center; justify-content:space-between; background:var(--bg); border:none; color:var(--text);
+  width:100%; padding:14px 16px; border-radius:12px; margin:8px 0; font-size:1em; cursor:pointer; transition:background .15s; }
+.combo-btn:active { background:#2a2a4e; }
+.combo-btn .combo-name { font-weight:600; }
+.combo-btn .combo-add { color:var(--sub); font-size:.85em; text-align:right; max-width:55%; }
+.combo-btn.disabled { opacity:.35; pointer-events:none; }
+.close-btn { display:block; margin:16px auto 0; background:var(--accent); border:none; color:#fff; padding:10px 32px;
+  border-radius:12px; font-size:1em; cursor:pointer; }
+
+/* Soft drinks */
+.soft-section { margin-top:20px; }
+.soft-section h3 { font-size:1em; color:var(--sub); margin-bottom:8px; text-align:center; }
+.soft-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; }
+.soft-item { background:var(--card); border-radius:12px; padding:10px; text-align:center; font-size:.85em; }
+.soft-item .soft-name { color:var(--sub); font-size:.8em; }
+.soft-item .soft-count { font-size:1.4em; font-weight:700; margin:2px 0; }
+.soft-ctrl { display:flex; justify-content:center; gap:8px; margin-top:4px; }
+.soft-ctrl button { width:32px; height:32px; border-radius:50%; border:none; font-size:1.1em; cursor:pointer; font-weight:700; }
+.soft-ctrl .minus { background:#3a0a1e; color:var(--danger); }
+.soft-ctrl .plus { background:#0a2e1e; color:var(--ok); }
+
+/* Toast */
+.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ok); color:#000;
+  padding:10px 24px; border-radius:12px; font-weight:600; font-size:.95em; z-index:20; opacity:0; transition:opacity .3s; pointer-events:none; }
+.toast.show { opacity:1; }
+
+@media(min-width:600px) { .grid { grid-template-columns:repeat(4,1fr); } }
+</style>
+</head>
+<body>
+
+<h1 id="title">Bar KatKat 🍹<small>Choisis ton mix, compose ton cocktail !</small></h1>
+
+<div class="grid" id="mixGrid"></div>
+
+<div class="soft-section">
+  <h3>🧊 Station diluants</h3>
+  <div class="soft-grid" id="softGrid"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MIXES = [
+  { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
+    combos:[
+      { name:'Tropical Fizz', add:'+ tonic', soft:'tonic' },
+      { name:'Tropical Ananas', add:'+ jus ananas', soft:'ananas' },
+      { name:'Tropical Mangue', add:'+ jus mangue', soft:'mangue' },
+    ]},
+  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
+    combos:[
+      { name:'Virgin Mojito', add:'+ eau gazeuse + menthe + lime', soft:'gazeuse' },
+      { name:'Fresh Tonic', add:'+ tonic', soft:'tonic' },
+    ]},
+  { id:'maitai', emoji:'🏝', name:'Mix Mai Tai', alc:true, stock:10,
+    combos:[
+      { name:'Mai Tai classique', add:'+ jus ananas', soft:'ananas' },
+      { name:'Mai Tai Tropical', add:'+ jus mangue', soft:'mangue' },
+      { name:'Mai Tai Ginger', add:'+ ginger beer', soft:'ginger' },
+    ]},
+  { id:'passion', emoji:'🍑', name:'Mix Passion', alc:true, stock:10,
+    combos:[
+      { name:'Pornstar Martini', add:'+ prosecco', soft:'prosecco' },
+      { name:'Passion Orange', add:'+ jus orange', soft:'orange' },
+      { name:'Passion Mangue', add:'+ jus mangue', soft:'mangue' },
+      { name:'Passion Tonic', add:'+ tonic', soft:'tonic' },
+      { name:'Passion Ananas', add:'+ jus ananas', soft:'ananas' },
+    ]},
+  { id:'ginger', emoji:'🫚', name:'Mix Ginger', alc:true, stock:8,
+    combos:[
+      { name:'Moscow Mule', add:'+ ginger beer + lime', soft:'ginger' },
+      { name:'Ginger Sunrise', add:'+ jus orange', soft:'orange' },
+      { name:'Ginger Ananas', add:'+ jus ananas', soft:'ananas' },
+    ]},
+  { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:12,
+    combos:[
+      { name:'Sunset classique', add:'+ jus orange 🌅', soft:'orange' },
+      { name:'Sunset Ananas', add:'+ jus ananas', soft:'ananas' },
+      { name:'Sunset Tonic', add:'+ tonic', soft:'tonic' },
+    ]},
+  { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:10,
+    combos:[
+      { name:'Espresso Martini', add:'+ café froid', soft:'cafe' },
+      { name:'Espresso Orange', add:'+ jus orange', soft:'orange' },
+      { name:'Espresso Ginger', add:'+ ginger beer', soft:'ginger' },
+    ]},
+];
+
+const SOFTS = [
+  { id:'ginger', emoji:'🫚', name:'Ginger beer', stock:30 },
+  { id:'orange', emoji:'🍊', name:'Jus orange', stock:30 },
+  { id:'gazeuse', emoji:'💧', name:'Eau gazeuse', stock:20 },
+  { id:'tonic', emoji:'🧊', name:'Tonic', stock:30 },
+  { id:'ananas', emoji:'🍍', name:'Jus ananas', stock:30 },
+  { id:'cafe', emoji:'☕', name:'Café froid', stock:10 },
+  { id:'prosecco', emoji:'🥂', name:'Prosecco', stock:8 },
+  { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
+];
+
+// State
+let state = loadState();
+
+function defaultState() {
+  const s = { mixes:{}, softs:{} };
+  MIXES.forEach(m => s.mixes[m.id] = m.stock);
+  SOFTS.forEach(d => s.softs[d.id] = d.stock);
+  return s;
+}
+function loadState() {
+  try { const s = JSON.parse(localStorage.getItem('barkatkat')); if(s && s.mixes && s.softs) return s; } catch(e){}
+  return defaultState();
+}
+function saveState() { localStorage.setItem('barkatkat', JSON.stringify(state)); }
+
+function stockClass(n) { return n <= 0 ? 'stock-danger' : n <= 3 ? 'stock-warn' : 'stock-ok'; }
+
+function renderMixes() {
+  const grid = document.getElementById('mixGrid');
+  grid.innerHTML = MIXES.map(m => {
+    const s = state.mixes[m.id];
+    return `<div class="card" onclick="openMix('${m.id}')">
+      <span class="badge ${m.alc?'badge-alc':'badge-na'}">${m.alc?'🔴 Alcool':'🟢 Sans alcool'}</span>
+      <div class="emoji">${m.emoji}</div>
+      <div class="name">${m.name}</div>
+      <div class="stock ${stockClass(s)}">${s}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSofts() {
+  const grid = document.getElementById('softGrid');
+  grid.innerHTML = SOFTS.map(d => {
+    const s = state.softs[d.id];
+    return `<div class="soft-item">
+      <div class="soft-name">${d.emoji} ${d.name}</div>
+      <div class="soft-count ${stockClass(s)}">${s}</div>
+      <div class="soft-ctrl">
+        <button class="minus" onclick="adjSoft('${d.id}',-1)">−</button>
+        <button class="plus" onclick="adjSoft('${d.id}',1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function adjSoft(id, d) {
+  state.softs[id] = Math.max(0, state.softs[id] + d);
+  saveState(); renderSofts();
+}
+
+function openMix(id) {
+  const m = MIXES.find(x => x.id === id);
+  const s = state.mixes[id];
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <h2>${m.emoji} ${m.name}</h2>
+    <div class="sub">Stock: <strong class="${stockClass(s)}">${s} fioles</strong></div>
+    ${m.combos.map(c => {
+      const softAvail = state.softs[c.soft] > 0;
+      const canMake = s > 0 && softAvail;
+      return `<button class="combo-btn ${canMake?'':'disabled'}" onclick="makeCombo('${id}','${c.soft}')">
+        <span class="combo-name">${c.name}</span>
+        <span class="combo-add">${c.add}${!softAvail?' ⚠️':''}</span>
+      </button>`;
+    }).join('')}
+    <button class="close-btn" onclick="closeModal()">Fermer</button>
+  `;
+  document.getElementById('overlay').classList.add('active');
+}
+
+function makeCombo(mixId, softId) {
+  if(state.mixes[mixId] <= 0 || state.softs[softId] <= 0) return;
+  state.mixes[mixId]--;
+  state.softs[softId]--;
+  saveState();
+  renderMixes(); renderSofts();
+  closeModal();
+  showToast('🍹 Cocktail servi !');
+}
+
+function closeModal() { document.getElementById('overlay').classList.remove('active'); }
+document.getElementById('overlay').addEventListener('click', e => { if(e.target === e.currentTarget) closeModal(); });
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+// Reset: long press on title (3s)
+let pressTimer;
+const title = document.getElementById('title');
+title.addEventListener('touchstart', () => { pressTimer = setTimeout(() => { if(confirm('Remettre tout le stock à zéro ?')) { state = defaultState(); saveState(); renderMixes(); renderSofts(); showToast('🔄 Stock réinitialisé'); } }, 3000); });
+title.addEventListener('touchend', () => clearTimeout(pressTimer));
+title.addEventListener('mousedown', () => { pressTimer = setTimeout(() => { if(confirm('Remettre tout le stock à zéro ?')) { state = defaultState(); saveState(); renderMixes(); renderSofts(); showToast('🔄 Stock réinitialisé'); } }, 3000); });
+title.addEventListener('mouseup', () => clearTimeout(pressTimer));
+
+renderMixes();
+renderSofts();
+</script>
+</body>
+</html>
