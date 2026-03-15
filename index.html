@@ -844,6 +844,87 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   .cocktail-card .cc-icon { font-size:2.2em; }
   #admin-panel { max-width:620px; }
 }
+
+/* ===== TUTORIAL OVERLAY ===== */
+.tutorial-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .8);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.tutorial-overlay.active {
+  display: flex;
+}
+.tutorial-bubble {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
+  position: relative;
+}
+.tutorial-counter {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: .75em;
+  color: var(--sub);
+  font-weight: 600;
+}
+.tutorial-emoji {
+  font-size: 3em;
+  margin-bottom: 16px;
+  display: block;
+}
+.tutorial-text {
+  font-size: .9em;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.tutorial-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.tutorial-skip {
+  background: none;
+  border: none;
+  color: var(--sub);
+  font-size: .8em;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color .2s;
+}
+.tutorial-skip:hover {
+  color: var(--text);
+}
+
+/* Mobile responsive pour tutoriel */
+@media (max-width: 480px) {
+  .tutorial-bubble {
+    max-width: 300px;
+    padding: 24px;
+  }
+  .tutorial-emoji {
+    font-size: 2.5em;
+    margin-bottom: 14px;
+  }
+  .tutorial-text {
+    font-size: .85em;
+  }
+}
 </style>
 </head>
 <body>
@@ -918,6 +999,19 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 <!-- ADMIN -->
 <div id="admin-overlay">
   <div id="admin-panel"></div>
+</div>
+
+<!-- TUTORIAL OVERLAY -->
+<div class="tutorial-overlay" id="tutorial-overlay">
+  <div class="tutorial-bubble">
+    <div class="tutorial-counter" id="tutorial-counter">1/6</div>
+    <div class="tutorial-emoji" id="tutorial-emoji">🎉</div>
+    <div class="tutorial-text" id="tutorial-text"></div>
+    <div class="tutorial-actions">
+      <button class="detail-btn ok" id="tutorial-next" onclick="nextTutorialStep()">Suivant →</button>
+      <button class="tutorial-skip" onclick="skipTutorial()">Passer</button>
+    </div>
+  </div>
 </div>
 
 <!-- USERNAME POPUP -->
@@ -1060,6 +1154,22 @@ const I18N = {
     equip: 'Équiper',
     equipped: 'Équipé',
     titleEquipped: 'Titre équipé !',
+    // Tutorial
+    tutorialNext: 'Suivant →',
+    tutorialSkip: 'Passer',
+    tutorialFinish: 'C\'est parti ! 🍹',
+    tutorial1Title: 'Bienvenue !',
+    tutorial1Text: 'Bienvenue au bar ! Ici tu commandes tes cocktails, tu cumules des points et tu grimpes dans le classement. Let\'s go !',
+    tutorial2Title: 'Les mix',
+    tutorial2Text: 'En haut, tu trouveras les différents mix. Chaque onglet correspond à un type de cocktail. Scroll pour voir Softs et Bières aussi !',
+    tutorial3Title: 'Commander',
+    tutorial3Text: 'Tape sur un cocktail pour voir sa fiche. Tu y trouveras la description et la recette complète. Appuie sur Servir pour le commander !',
+    tutorial4Title: 'Points',
+    tutorial4Text: 'Chaque boisson te rapporte des points : 🍹 Cocktail alcoolisé = 3 pts, 🍹 Sans alcool = 2 pts, 🍺 Bière = 2 pts, 🥤 Soft = 1 pt',
+    tutorial5Title: 'Classement & Titres',
+    tutorial5Text: 'Appuie sur 🏆 pour voir le classement en temps réel. Appuie sur 🎖️ pour découvrir tous les titres à débloquer. Plus tu bois, plus tu débloques !',
+    tutorial6Title: 'Ton profil',
+    tutorial6Text: 'En haut à droite, tu peux modifier ton pseudo, changer de langue et équiper un titre. Amuse-toi bien ! 🎉',
   },
   en: {
     subtitle: 'Pick a mix, choose your cocktail!',
@@ -1116,6 +1226,22 @@ const I18N = {
     equip: 'Equip',
     equipped: 'Equipped',
     titleEquipped: 'Title equipped!',
+    // Tutorial
+    tutorialNext: 'Next →',
+    tutorialSkip: 'Skip',
+    tutorialFinish: 'Let\'s go! 🍹',
+    tutorial1Title: 'Welcome!',
+    tutorial1Text: 'Welcome to the bar! Order cocktails, earn points and climb the leaderboard. Let\'s go!',
+    tutorial2Title: 'The mixes',
+    tutorial2Text: 'At the top, you\'ll find different mixes. Each tab is a cocktail type. Scroll to see Soft drinks and Beers too!',
+    tutorial3Title: 'Ordering',
+    tutorial3Text: 'Tap a cocktail to see its details. You\'ll find the description and full recipe. Press Serve to order it!',
+    tutorial4Title: 'Points',
+    tutorial4Text: 'Every drink earns you points: 🍹 Alcoholic cocktail = 3 pts, 🍹 Non-alcoholic = 2 pts, 🍺 Beer = 2 pts, 🥤 Soft = 1 pt',
+    tutorial5Title: 'Leaderboard & Titles',
+    tutorial5Text: 'Press 🏆 to see the live leaderboard. Press 🎖️ to discover all titles to unlock. The more you drink, the more you unlock!',
+    tutorial6Title: 'Your profile',
+    tutorial6Text: 'Top right, you can edit your nickname, switch language and equip a title. Have fun! 🎉',
   }
 };
 
@@ -1907,6 +2033,11 @@ function submitUsername() {
   updateUserDisplay();
   hideUsernamePopup();
   showToast('👋 ' + (lang === 'fr' ? 'Salut ' : 'Hello ') + username + ' !');
+  
+  // Show tutorial if first time
+  if (!localStorage.getItem('siphappens_tutorial_done')) {
+    setTimeout(() => showTutorial(), 500);
+  }
 }
 
 function hideUsernamePopup() {
@@ -2061,6 +2192,12 @@ document.getElementById('leaderboard-overlay').addEventListener('click', functio
 document.getElementById('titles-overlay').addEventListener('click', function(e) {
   if (e.target === e.currentTarget) {
     hideTitles();
+  }
+});
+
+document.getElementById('tutorial-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) {
+    skipTutorial();
   }
 });
 
@@ -2421,6 +2558,7 @@ window.resetAll=()=>{if(!confirm(t('resetAll')))return;
   localStorage.removeItem('siphappens_titles');
   localStorage.removeItem('siphappens_active_title');
   localStorage.removeItem('siphappens_lang');
+  localStorage.removeItem('siphappens_tutorial_done');
   currentUsername=null;userTitles=[];activeTitle=null;
   leaderboardData={history:[],topDrinkers:[],cocktailStar:null};
   lang='fr';
@@ -2494,6 +2632,66 @@ if (leaderboardData.history.length === 0) {
 }
 
 startFakeActivity();
+
+// ===== TUTORIAL SYSTEM =====
+let currentTutorialStep = 1;
+const TUTORIAL_STEPS = [
+  { emoji: '🎉', titleKey: 'tutorial1Title', textKey: 'tutorial1Text' },
+  { emoji: '🥭', titleKey: 'tutorial2Title', textKey: 'tutorial2Text' },
+  { emoji: '👆', titleKey: 'tutorial3Title', textKey: 'tutorial3Text' },
+  { emoji: '⭐', titleKey: 'tutorial4Title', textKey: 'tutorial4Text' },
+  { emoji: '🏆', titleKey: 'tutorial5Title', textKey: 'tutorial5Text' },
+  { emoji: '✏️', titleKey: 'tutorial6Title', textKey: 'tutorial6Text' }
+];
+
+function showTutorial() {
+  if (localStorage.getItem('siphappens_tutorial_done')) {
+    return; // Tutorial already completed
+  }
+  
+  currentTutorialStep = 1;
+  updateTutorialDisplay();
+  document.getElementById('tutorial-overlay').classList.add('active');
+}
+
+function updateTutorialDisplay() {
+  const step = TUTORIAL_STEPS[currentTutorialStep - 1];
+  if (!step) return;
+  
+  document.getElementById('tutorial-counter').textContent = `${currentTutorialStep}/6`;
+  document.getElementById('tutorial-emoji').textContent = step.emoji;
+  document.getElementById('tutorial-text').textContent = t(step.textKey);
+  
+  const nextBtn = document.getElementById('tutorial-next');
+  if (currentTutorialStep === 6) {
+    nextBtn.textContent = t('tutorialFinish');
+  } else {
+    nextBtn.textContent = t('tutorialNext');
+  }
+}
+
+function nextTutorialStep() {
+  if (currentTutorialStep >= 6) {
+    // Tutorial finished
+    closeTutorial();
+    return;
+  }
+  
+  currentTutorialStep++;
+  updateTutorialDisplay();
+}
+
+function skipTutorial() {
+  closeTutorial();
+}
+
+function closeTutorial() {
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  localStorage.setItem('siphappens_tutorial_done', '1');
+}
+
+window.nextTutorialStep = nextTutorialStep;
+window.skipTutorial = skipTutorial;
 </script>
 </body>
 </html>
