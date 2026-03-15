@@ -1981,18 +1981,17 @@ function updateLeaderboardData() {
     ? topDrinkers.map(([username, stats], index) => {
         const classes = ['first', 'second', 'third'][index] ? `leaderboard-item ${['first', 'second', 'third'][index]}` : 'leaderboard-item';
         
-        // Afficher titre + nom si on a un titre
-        let displayName = username;
+        let titleLine = '';
         if (stats.title) {
           const title = TITLES.find(t => t.id === stats.title);
           if (title) {
-            displayName = `${title.emoji} ${username}`;
+            titleLine = `<div style="font-size:.7em;color:var(--sub);font-weight:400;margin-top:1px;">${title.emoji} ${title.name[lang]}</div>`;
           }
         }
         
         return `<div class="${classes}">
           <div class="rank">${index + 1}</div>
-          <div class="name">${displayName}</div>
+          <div class="name"><div>${username}</div>${titleLine}</div>
           <div class="count">${stats.points} pts</div>
         </div>`;
       }).join('')
