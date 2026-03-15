@@ -268,6 +268,10 @@ const DEFAULT_MIXES = [
         desc:'Rebellion tropicale en bouche. L\'ananas vient renforcer le mix pour un combo 100% fruité et sans compromis.' },
       { name:'Mangue Ta Vie', recipe:'80ml Mix Tropical + 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
         desc:'Doux, onctueux, réconfortant. La mangue enveloppe le mix tropical dans un câlin sucré.' },
+      { name:'Tropical Sunrise', recipe:'80ml Mix Tropical + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
+        desc:'Le tropical rencontre l\'agrume. Un lever de soleil fruité, lumineux et vitaminé.' },
+      { name:'Bubble Paradise', recipe:'80ml Mix Tropical + 120ml eau gazeuse + glaçons', soft:'gazeuse', icon:'💧',
+        desc:'Version allégée et pétillante du mix tropical. Rafraîchissant, léger, parfait pour enchaîner.' },
     ]},
   { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
     combos:[
@@ -275,6 +279,12 @@ const DEFAULT_MIXES = [
         desc:'Le classique indémodable version sans alcool. Menthe fraîche, lime, bulles — tout le plaisir, zéro regret.' },
       { name:'Fraîchitude', recipe:'80ml Mix Fresh + 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
         desc:'Simple, frais, efficace. Le tonic donne du peps au mix fresh pour un combo désaltérant.' },
+      { name:'Green Juice', recipe:'80ml Mix Fresh + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊',
+        desc:'Le fresh qui prend des vitamines. Orange + menthe = le smoothie du barman.' },
+      { name:'Fresh Colada', recipe:'80ml Mix Fresh + 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        desc:'Ananas et fraîcheur mentholée, comme une piña colada qui a choisi le bon côté de la Force.' },
+      { name:'Mangue Zen', recipe:'80ml Mix Fresh + 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        desc:'La douceur de la mangue + la fraîcheur de la menthe. Zen, fruité, et totalement addictif.' },
     ]},
   { id:'maitai', emoji:'🏝', name:'Mix Mai Tai', alc:true, stock:10,
     combos:[
@@ -284,6 +294,10 @@ const DEFAULT_MIXES = [
         desc:'Le Mai Tai qui a rencontré une mangue et qui n\'est jamais revenu. Exotique et addictif.' },
       { name:'Tai Piquant', recipe:'60ml Mix Mai Tai + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
         desc:'Le tiki rencontre le gingembre. Épicé, pétillant, avec la profondeur du rhum. Ça réveille.' },
+      { name:'Tai Sunrise', recipe:'60ml Mix Mai Tai + 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊',
+        desc:'Le Mai Tai qui se lève tôt. L\'orange illumine les rhums pour un tiki version brunch.' },
+      { name:'Tai & Tonic', recipe:'60ml Mix Mai Tai + 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        desc:'Le tiki en mode light. Le tonic étire les saveurs de rhum et d\'orgeat, frais et sec.' },
     ]},
   { id:'passion', emoji:'🍑', name:'Mix Passion', alc:true, stock:10,
     combos:[
@@ -306,6 +320,10 @@ const DEFAULT_MIXES = [
         desc:'Le sunrise version gingembre. L\'orange adoucit le piquant pour un réveil en douceur.' },
       { name:'Pique & Piquant', recipe:'50ml Mix Ginger + 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
         desc:'Le gingembre qui pique, l\'ananas qui adoucit. Un équilibre épicé-sucré addictif.' },
+      { name:'Ginger Mango', recipe:'50ml Mix Ginger + 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        desc:'Le piquant du gingembre adouci par la mangue veloutée. Un duo exotique qui fonctionne à merveille.' },
+      { name:'Ginger Highball', recipe:'50ml Mix Ginger + 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        desc:'Le ginger mix version longue et raffinée. Le tonic allonge, les bulles dansent, le gingembre parle.' },
     ]},
   { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:12,
     combos:[
@@ -315,6 +333,10 @@ const DEFAULT_MIXES = [
         desc:'Le sunset prend une tournure tropicale avec l\'ananas. Doux, coloré, et parfait pour finir la journée.' },
       { name:'Crépuscule Fizz', recipe:'60ml Mix Sunset + 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
         desc:'Le sunset allégé par le tonic. Pétillant, léger, avec juste ce qu\'il faut de couleur.' },
+      { name:'Sunset Exotique', recipe:'60ml Mix Sunset + 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
+        desc:'Le coucher de soleil prend des airs de plage thaïlandaise. Mangue + sunset = carte postale en verre.' },
+      { name:'Sunset Mule', recipe:'60ml Mix Sunset + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
+        desc:'Le sunset qui kick. La ginger beer ajoute du piquant au dégradé fruité. Épicé et coloré.' },
     ]},
   { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:10,
     combos:[
@@ -324,6 +346,10 @@ const DEFAULT_MIXES = [
         desc:'Café + orange, le combo improbable qui marche. Acidulé, amer, surprenant — pour les aventuriers.' },
       { name:'Ginger Buzz', recipe:'50ml Mix Espresso + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
         desc:'Le café rencontre le gingembre pour un buzz épicé. Pétillant et corsé, il envoie du lourd.' },
+      { name:'Espresso Tonic', recipe:'50ml Mix Espresso + 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
+        desc:'Le combo tendance des coffee shops branchés. Le tonic fait mousser le café, c\'est amer, frais et addictif.' },
+      { name:'Café Tropical', recipe:'50ml Mix Espresso + 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
+        desc:'Café + ananas, le mariage improbable qui surprend tout le monde. Acidulé, torréfié, unique.' },
     ]},
 ];
 const DEFAULT_SOFTS = [
