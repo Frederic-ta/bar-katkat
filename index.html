@@ -1982,8 +1982,9 @@ function updateLeaderboardData() {
         const classes = ['first', 'second', 'third'][index] ? `leaderboard-item ${['first', 'second', 'third'][index]}` : 'leaderboard-item';
         
         let titleLine = '';
-        if (stats.title) {
-          const title = TITLES.find(t => t.id === stats.title);
+        const titleId = (username === currentUsername && activeTitle) ? activeTitle : stats.title;
+        if (titleId) {
+          const title = TITLES.find(t => t.id === titleId);
           if (title) {
             titleLine = `<div style="font-size:.7em;color:var(--sub);font-weight:400;margin-top:1px;">${title.emoji} ${title.name[lang]}</div>`;
           }
