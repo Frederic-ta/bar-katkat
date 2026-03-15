@@ -110,8 +110,12 @@ const DEFAULT_SOFTS = [
 let globalState = {
   mixes: JSON.parse(JSON.stringify(DEFAULT_MIXES)),
   softs: JSON.parse(JSON.stringify(DEFAULT_SOFTS)),
-  stock: {}
+  stock: {},
+  history: []
 };
+
+// Tracker des pseudos connectés
+const connectedUsernames = new Set();
 
 // Chemin du fichier de sauvegarde
 const STATE_FILE = path.join(__dirname, 'state.json');
@@ -123,6 +127,10 @@ function loadState() {
       const saved = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
       if (saved && saved.mixes && saved.softs && saved.stock) {
         globalState = saved;
+        // S'assurer que history existe
+        if (!globalState.history) {
+          globalState.history = [];
+        }
         console.log('📂 État chargé depuis state.json');
         return;
       }
@@ -135,6 +143,7 @@ function loadState() {
   console.log('🆕 Initialisation avec l\'état par défaut');
   globalState.stock.mixes = {};
   globalState.stock.softs = {};
+  globalState.history = [];
   globalState.mixes.forEach(m => globalState.stock.mixes[m.id] = m.stock);
   globalState.softs.forEach(s => globalState.stock.softs[s.id] = s.stock);
   saveState();
@@ -193,6 +202,7 @@ const server = app.listen(PORT, () => {
 // WebSocket Server
 const wss = new WebSocket.Server({ server });
 const clients = new Set();
+const clientUsernames = new Map(); // ws -> username mapping
 
 // Broadcast à tous les clients connectés
 function broadcast(message) {
@@ -223,12 +233,50 @@ wss.on('connection', (ws) => {
       console.log('📨 Message reçu:', message.type);
       
       switch (message.type) {
+        case 'check_username':
+          // Vérifier si le pseudo est disponible
+          const isAvailable = !connectedUsernames.has(message.username);
+          ws.send(JSON.stringify({
+            type: isAvailable ? 'username_ok' : 'username_taken'
+          }));
+          console.log(`👤 Vérification pseudo: ${message.username} → ${isAvailable ? 'OK' : 'PRIS'}`);
+          break;
+
+        case 'register':
+          // Enregistrer un utilisateur
+          if (message.username && !connectedUsernames.has(message.username)) {
+            connectedUsernames.add(message.username);
+            clientUsernames.set(ws, message.username);
+            console.log(`📝 Utilisateur enregistré: ${message.username}`);
+          }
+          break;
+
         case 'serve':
           // Servir un cocktail
           if (globalState.stock.mixes[message.mixId] > 0 && 
               globalState.stock.softs[message.softId] > 0) {
             globalState.stock.mixes[message.mixId]--;
             globalState.stock.softs[message.softId]--;
+            
+            // Ajouter à l'historique si un username est fourni
+            if (message.username && message.comboIdx !== undefined) {
+              const mix = globalState.mixes.find(m => m.id === message.mixId);
+              const combo = mix && mix.combos[message.comboIdx];
+              if (combo) {
+                const historyEntry = {
+                  username: message.username,
+                  cocktailName: combo.name,
+                  mixName: mix.name,
+                  timestamp: Date.now()
+                };
+                globalState.history.unshift(historyEntry); // Ajouter au début pour les plus récents
+                // Garder seulement les 100 dernières entrées
+                if (globalState.history.length > 100) {
+                  globalState.history = globalState.history.slice(0, 100);
+                }
+              }
+            }
+            
             saveState();
             
             // Broadcast la nouvelle state à tous
@@ -237,7 +285,7 @@ wss.on('connection', (ws) => {
               state: globalState
             });
             
-            console.log(`🍹 Cocktail servi: ${message.mixId} + ${message.softId}`);
+            console.log(`🍹 Cocktail servi: ${message.mixId} + ${message.softId}${message.username ? ' pour ' + message.username : ''}`);
           }
           break;
           
@@ -283,12 +331,26 @@ wss.on('connection', (ws) => {
   // Déconnexion
   ws.on('close', () => {
     clients.delete(ws);
-    console.log(`❌ Client déconnecté (${clients.size} restant)`);
+    // Retirer le pseudo des utilisateurs connectés
+    const username = clientUsernames.get(ws);
+    if (username) {
+      connectedUsernames.delete(username);
+      clientUsernames.delete(ws);
+      console.log(`❌ Client déconnecté: ${username} (${clients.size} restant)`);
+    } else {
+      console.log(`❌ Client déconnecté (${clients.size} restant)`);
+    }
   });
   
   ws.on('error', (error) => {
     console.error('❌ Erreur WebSocket:', error.message);
     clients.delete(ws);
+    // Nettoyer aussi en cas d'erreur
+    const username = clientUsernames.get(ws);
+    if (username) {
+      connectedUsernames.delete(username);
+      clientUsernames.delete(ws);
+    }
   });
 });
 
