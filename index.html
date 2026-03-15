@@ -11,8 +11,33 @@
   --text:#eee; --sub:#aaa; --ok:#4ecca3; --warn:#f0a500; --danger:#e94560;
 }
 body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; padding:12px; }
-h1 { text-align:center; font-size:1.8em; padding:16px 0 8px; cursor:default; user-select:none; }
-h1 small { display:block; font-size:.45em; color:var(--sub); font-weight:normal; }
+
+/* ========== COUNTDOWN TEASER ========== */
+#countdown-screen {
+  position:fixed; inset:0; z-index:100; background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:24px;
+}
+#countdown-screen .logo { font-size:4em; margin-bottom:12px; animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+#countdown-screen h1 { font-size:2em; margin-bottom:4px; }
+#countdown-screen .tagline { color:var(--sub); font-size:1em; margin-bottom:32px; font-style:italic; }
+#countdown-timer { display:flex; gap:16px; margin-bottom:32px; }
+#countdown-timer .unit { background:var(--card); border-radius:16px; padding:16px 20px; min-width:72px; }
+#countdown-timer .unit .num { font-size:2.4em; font-weight:700; color:var(--accent); }
+#countdown-timer .unit .label { font-size:.75em; color:var(--sub); text-transform:uppercase; letter-spacing:1px; }
+#countdown-screen .tease { color:var(--sub); font-size:.85em; margin-top:8px; }
+#countdown-screen .tease span { color:var(--accent); }
+.particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.particle { position:absolute; font-size:1.4em; opacity:.15; animation:drift linear infinite; }
+@keyframes drift { 0%{transform:translateY(100vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
+
+/* ========== BAR CONTENT (hidden until launch) ========== */
+#bar-content { display:none; }
+#bar-content.active { display:block; }
+
+h1.bar-title { text-align:center; font-size:1.8em; padding:16px 0 8px; cursor:default; user-select:none; }
+h1.bar-title small { display:block; font-size:.45em; color:var(--sub); font-weight:normal; }
 .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; padding:12px 0; }
 .card { background:var(--card); border-radius:16px; padding:18px 14px; text-align:center; cursor:pointer;
   transition:transform .15s,box-shadow .15s; position:relative; }
@@ -26,8 +51,6 @@ h1 small { display:block; font-size:.45em; color:var(--sub); font-weight:normal;
 .stock-ok { color:var(--ok); }
 .stock-warn { color:var(--warn); }
 .stock-danger { color:var(--danger); }
-
-/* Modal */
 .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:10; justify-content:center; align-items:center; padding:16px; }
 .overlay.active { display:flex; }
 .modal { background:var(--card); border-radius:20px; max-width:420px; width:100%; max-height:85vh; overflow-y:auto; padding:20px; }
@@ -41,8 +64,6 @@ h1 small { display:block; font-size:.45em; color:var(--sub); font-weight:normal;
 .combo-btn.disabled { opacity:.35; pointer-events:none; }
 .close-btn { display:block; margin:16px auto 0; background:var(--accent); border:none; color:#fff; padding:10px 32px;
   border-radius:12px; font-size:1em; cursor:pointer; }
-
-/* Soft drinks */
 .soft-section { margin-top:20px; }
 .soft-section h3 { font-size:1em; color:var(--sub); margin-bottom:8px; text-align:center; }
 .soft-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; }
@@ -53,33 +74,90 @@ h1 small { display:block; font-size:.45em; color:var(--sub); font-weight:normal;
 .soft-ctrl button { width:32px; height:32px; border-radius:50%; border:none; font-size:1.1em; cursor:pointer; font-weight:700; }
 .soft-ctrl .minus { background:#3a0a1e; color:var(--danger); }
 .soft-ctrl .plus { background:#0a2e1e; color:var(--ok); }
-
-/* Toast */
 .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ok); color:#000;
   padding:10px 24px; border-radius:12px; font-weight:600; font-size:.95em; z-index:20; opacity:0; transition:opacity .3s; pointer-events:none; }
 .toast.show { opacity:1; }
-
 @media(min-width:600px) { .grid { grid-template-columns:repeat(4,1fr); } }
 </style>
 </head>
 <body>
 
-<h1 id="title">Bar KatKat 🍹<small>Choisis ton mix, compose ton cocktail !</small></h1>
-
-<div class="grid" id="mixGrid"></div>
-
-<div class="soft-section">
-  <h3>🧊 Station diluants</h3>
-  <div class="soft-grid" id="softGrid"></div>
+<!-- ========== COUNTDOWN TEASER ========== -->
+<div id="countdown-screen">
+  <div class="particles" id="particles"></div>
+  <div class="logo">🍹</div>
+  <h1>Bar KatKat</h1>
+  <div class="tagline">Something's brewing...</div>
+  <div id="countdown-timer">
+    <div class="unit"><div class="num" id="cd-days">--</div><div class="label">Jours</div></div>
+    <div class="unit"><div class="num" id="cd-hours">--</div><div class="label">Heures</div></div>
+    <div class="unit"><div class="num" id="cd-mins">--</div><div class="label">Min</div></div>
+    <div class="unit"><div class="num" id="cd-secs">--</div><div class="label">Sec</div></div>
+  </div>
+  <div class="tease">🔒 Ouverture le <span>5 avril à 11h30</span></div>
 </div>
 
-<div class="overlay" id="overlay">
-  <div class="modal" id="modal"></div>
+<!-- ========== BAR CONTENT ========== -->
+<div id="bar-content">
+  <h1 class="bar-title" id="title">Bar KatKat 🍹<small>Choisis ton mix, compose ton cocktail !</small></h1>
+  <div class="grid" id="mixGrid"></div>
+  <div class="soft-section">
+    <h3>🧊 Station diluants</h3>
+    <div class="soft-grid" id="softGrid"></div>
+  </div>
+  <div class="overlay" id="overlay">
+    <div class="modal" id="modal"></div>
+  </div>
+  <div class="toast" id="toast"></div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
+// ========== COUNTDOWN ==========
+const LAUNCH = new Date('2025-04-05T11:30:00+02:00'); // 5 avril 11h30 heure Paris
+// Fix: 2026
+LAUNCH.setFullYear(2026);
+
+function spawnParticles() {
+  const emojis = ['🍹','🍸','🧊','🍋','🫚','🥭','🍊','☕','🥂','🌿','🍍'];
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (-Math.random() * 15) + 's';
+    p.style.fontSize = (1 + Math.random() * 1.2) + 'em';
+    container.appendChild(p);
+  }
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = LAUNCH - now;
+  if (diff <= 0) {
+    document.getElementById('countdown-screen').style.display = 'none';
+    document.getElementById('bar-content').classList.add('active');
+    initBar();
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  requestAnimationFrame(() => setTimeout(updateCountdown, 1000));
+}
+
+spawnParticles();
+updateCountdown();
+
+// ========== BAR APP ==========
+function initBar() {
+
 const MIXES = [
   { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
     combos:[
@@ -137,7 +215,6 @@ const SOFTS = [
   { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
 ];
 
-// State
 let state = loadState();
 
 function defaultState() {
@@ -182,12 +259,13 @@ function renderSofts() {
   }).join('');
 }
 
-function adjSoft(id, d) {
+// Expose functions globally
+window.adjSoft = function(id, d) {
   state.softs[id] = Math.max(0, state.softs[id] + d);
   saveState(); renderSofts();
-}
+};
 
-function openMix(id) {
+window.openMix = function(id) {
   const m = MIXES.find(x => x.id === id);
   const s = state.mixes[id];
   const modal = document.getElementById('modal');
@@ -205,9 +283,9 @@ function openMix(id) {
     <button class="close-btn" onclick="closeModal()">Fermer</button>
   `;
   document.getElementById('overlay').classList.add('active');
-}
+};
 
-function makeCombo(mixId, softId) {
+window.makeCombo = function(mixId, softId) {
   if(state.mixes[mixId] <= 0 || state.softs[softId] <= 0) return;
   state.mixes[mixId]--;
   state.softs[softId]--;
@@ -215,9 +293,9 @@ function makeCombo(mixId, softId) {
   renderMixes(); renderSofts();
   closeModal();
   showToast('🍹 Cocktail servi !');
-}
+};
 
-function closeModal() { document.getElementById('overlay').classList.remove('active'); }
+window.closeModal = function() { document.getElementById('overlay').classList.remove('active'); };
 document.getElementById('overlay').addEventListener('click', e => { if(e.target === e.currentTarget) closeModal(); });
 
 function showToast(msg) {
@@ -226,9 +304,8 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1500);
 }
 
-// Reset: long press on title (3s)
-let pressTimer;
 const title = document.getElementById('title');
+let pressTimer;
 title.addEventListener('touchstart', () => { pressTimer = setTimeout(() => { if(confirm('Remettre tout le stock à zéro ?')) { state = defaultState(); saveState(); renderMixes(); renderSofts(); showToast('🔄 Stock réinitialisé'); } }, 3000); });
 title.addEventListener('touchend', () => clearTimeout(pressTimer));
 title.addEventListener('mousedown', () => { pressTimer = setTimeout(() => { if(confirm('Remettre tout le stock à zéro ?')) { state = defaultState(); saveState(); renderMixes(); renderSofts(); showToast('🔄 Stock réinitialisé'); } }, 3000); });
@@ -236,6 +313,8 @@ title.addEventListener('mouseup', () => clearTimeout(pressTimer));
 
 renderMixes();
 renderSofts();
+
+} // end initBar
 </script>
 </body>
 </html>
