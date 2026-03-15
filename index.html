@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Chez Fred 🍹</title>
+<title>Sip Happens 🍹</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -213,7 +213,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 <div id="countdown-screen">
   <div class="particles" id="particles"></div>
   <div class="logo" id="countdown-logo">🍹</div>
-  <h1>Chez Fred</h1>
+  <h1>Sip Happens</h1>
   <div class="tagline">Something's brewing...</div>
   <div id="countdown-timer">
     <div class="unit"><div class="num" id="cd-days">--</div><div class="label">Jours</div></div>
@@ -221,13 +221,13 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
     <div class="unit"><div class="num" id="cd-mins">--</div><div class="label">Min</div></div>
     <div class="unit"><div class="num" id="cd-secs">--</div><div class="label">Sec</div></div>
   </div>
-  <div class="tease">🔒 Ouverture le <span>5 avril à 11h30</span></div>
+  <div class="tease">🔒 Ouverture le <span>5 avril à 12h00</span></div>
 </div>
 
 <!-- BAR -->
 <div id="bar-content">
   <div class="bar-header" id="title">
-    <h1>Chez Fred 🍹</h1>
+    <h1>Sip Happens 🍹</h1>
     <small>Tape un mix, choisis ton cocktail !</small>
   </div>
   <div class="tab-bar" id="tabBar"></div>
@@ -318,7 +318,7 @@ function saveAll(){localStorage.setItem('chezfred_v1',JSON.stringify({mixes:MIXE
 loadAll(); activeTab=MIXES[0]?.id||'';
 
 // Countdown
-const LAUNCH=new Date('2026-04-05T11:30:00+02:00');
+const LAUNCH=new Date('2026-04-05T12:00:00+02:00');
 function spawnParticles(){const e=['🍹','🍸','🧊','🍋','🫚','🥭','🍊','☕','🥂','🌿','🍍'];const c=document.getElementById('particles');for(let i=0;i<15;i++){const p=document.createElement('div');p.className='particle';p.textContent=e[Math.floor(Math.random()*e.length)];p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=(-Math.random()*15)+'s';p.style.fontSize=(1+Math.random()*1.2)+'em';c.appendChild(p);}}
 function launchBar(){document.getElementById('countdown-screen').style.display='none';document.getElementById('bar-content').classList.add('active');}
 function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return;}document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');setTimeout(updateCountdown,1000);}
