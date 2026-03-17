@@ -63,9 +63,9 @@
 | 🥭 Tropical | 6 |
 | 🌿 Fresh | 8 |
 | 🍊 Sunset | 12 |
-| 🏝 Mai Tai | 12 |
-| 🍑 Passion | 14 |
-| 🫚 Ginger | 12 |
+| 🏝 Mai Tai | 10 |
+| 🍑 Passion | 15 |
+| 🫚 Ginger | 13 |
 | **Total** | **64** |
 
 ---
@@ -120,24 +120,24 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 12×100 + 12×70 = 2040ml | 3 bouteilles de 1L |
+| Vodka | 15×100 + 13×100 + 12×70 = 3640ml | 4 bouteilles de 1L |
 | Vodka vanille | 12×100 = 1200ml | 2 bouteilles de 70cl |
-| Rhum brun | 12×50 = 600ml | 1 bouteille de 70cl |
-| Rhum blanc | 12×40 = 480ml | 1 bouteille de 70cl |
-| Curaçao / Triple sec | 12×30 = 360ml | 1 bouteille de 50cl |
+| Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
+| Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
+| Curaçao bleu | 10×30 = 300ml | ✅ En stock |
 | Liqueur de pêche | 12×50 = 600ml | 1 bouteille de 70cl |
 | Kahlúa | 6×55 = 330ml | 1 bouteille de 50cl |
 
 ### Sirops
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Sirop passion | 6×25 + 14×30 = 570ml | 1 bouteille de 70cl |
+| Sirop passion | 6×25 + 15×30 = 600ml | 1 bouteille de 70cl |
 | Sirop mangue | 6×25 = 150ml | 1 bouteille de 25cl |
 | Sirop menthe | 8×20 = 160ml | 1 bouteille de 25cl |
-| Sirop vanille | 14×20 = 280ml | 1 bouteille de 50cl |
-| Sirop gingembre | 12×30 = 360ml | 1 bouteille de 50cl |
+| Sirop vanille | 15×20 = 300ml | 1 bouteille de 50cl |
+| Sirop gingembre | 13×30 = 390ml | 1 bouteille de 50cl |
 | Sirop sucre de canne | 8×15 = 120ml | 1 bouteille de 25cl |
-| Sirop orgeat | 12×25 = 300ml | 1 bouteille de 50cl |
+| Sirop orgeat | 10×25 = 250ml | 1 bouteille de 50cl |
 | Grenadine | 12×20 = 240ml | 1 bouteille de 50cl |
 
 ### Station du jour J (diluants)

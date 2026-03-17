@@ -15,15 +15,15 @@
 
 | Catégorie | Estimé |
 |---|---|
-| 🍾 Alcools | ~95€ |
+| 🍾 Alcools | ~85€ |
 | 🧴 Sirops | ~35€ |
 | 🥤 Diluants & softs | ~45€ |
 | 🥫 Softs (Coca, Ice Tea) | ~8€ |
 | 🧊 Glaçons | ~10€ |
-| **Sous-total restant** | **~193€** |
+| **Sous-total restant** | **~183€** |
 
 ---
 
-## Total estimé : ~275€ (~14€/personne pour 20 invités)
+## Total estimé : ~265€ (~13€/personne pour 20 invités)
 
 *Dernière mise à jour : 17 mars 2026*
