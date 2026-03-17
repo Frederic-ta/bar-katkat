@@ -34,7 +34,7 @@
 - 25ml sirop orgeat
 
 **🍑 Mix Passion (150ml)**
-- 100ml vodka vanille
+- 100ml rhum vanille arrangé
 - 30ml sirop passion
 - 20ml sirop vanille
 
@@ -49,6 +49,11 @@
 - 20ml grenadine
 - 10ml jus d'orange
 
+**🌸 Mix Sureau (150ml)**
+- 80ml gin
+- 40ml sirop fleur de sureau
+- 30ml sirop de pêche
+
 **☕ Mix Espresso (120ml)**
 - 55ml vodka
 - 45ml Kahlúa
@@ -62,15 +67,23 @@
 |-----|----------|
 | 🥭 Tropical | 6 |
 | 🌿 Fresh | 8 |
-| 🍊 Sunset | 12 |
+| 🍊 Sunset | 10 |
 | 🏝 Mai Tai | 10 |
-| 🍑 Passion | 15 |
-| 🫚 Ginger | 13 |
+| 🍑 Passion | 10 |
+| 🫚 Ginger | 10 |
+| 🌸 Sureau | 10 |
 | **Total** | **64** |
 
 ---
 
 ## 🎴 Carte des combos (verre de 360ml)
+
+### 🌸 Mix Sureau (150ml) +
+| Combo | Ajouter |
+|---|---|
+| Hugo Royal | 200ml prosecco + menthe |
+| Gin Fizz Floral | 200ml tonic + glaçons |
+| Sureau Tropical | 200ml jus d'ananas + glaçons |
 
 ### 🏝 Mix Mai Tai (145ml) +
 | Combo | Ajouter |
@@ -120,35 +133,39 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 15×100 + 13×100 + 12×70 = 3640ml | 4 bouteilles de 1L |
+| Vodka | 10×100 + 10×70 = 1700ml | 2 bouteilles de 1L |
 | Vodka vanille | 12×100 = 1200ml | 2 bouteilles de 70cl |
 | Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
 | Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
 | Curaçao bleu | 10×30 = 300ml | ✅ En stock |
+| Gin | 10×80 = 800ml | 1 bouteille (~10€) + stock |
+| Rhum vanille arrangé | 10×100 = 1000ml | ✅ En stock (1L) |
 | Liqueur de pêche | 12×50 = 600ml | 1 bouteille de 70cl |
 | Kahlúa | 6×55 = 330ml | 1 bouteille de 50cl |
 
 ### Sirops
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Sirop passion | 6×25 + 15×30 = 600ml | 1 bouteille de 70cl |
+| Sirop passion | 6×25 + 10×30 = 450ml | 1 bouteille de 50cl |
 | Sirop mangue | 6×25 = 150ml | 1 bouteille de 25cl |
 | Sirop menthe | 8×20 = 160ml | 1 bouteille de 25cl |
-| Sirop vanille | 15×20 = 300ml | 1 bouteille de 50cl |
-| Sirop gingembre | 13×30 = 390ml | 1 bouteille de 50cl |
+| Sirop vanille | 10×20 = 200ml | 1 bouteille de 25cl |
+| Sirop gingembre | 10×30 = 300ml | 1 bouteille de 50cl |
 | Sirop sucre de canne | 8×15 = 120ml | 1 bouteille de 25cl |
 | Sirop orgeat | 10×25 = 250ml | 1 bouteille de 50cl |
+| Sirop fleur de sureau | 10×40 = 400ml | ✅ En stock |
+| Sirop de pêche | 10×30 = 300ml | ✅ En stock |
 | Grenadine | 12×20 = 240ml | 1 bouteille de 50cl |
 
 ### Station du jour J (diluants)
 | Diluant | Sert principalement pour | Quantité |
 |---|---|---|
-| Ginger beer | 🫚 Ginger | ~5L |
+| Ginger beer | 🫚 Ginger | ~4L |
 | Jus d'orange | 🍊 Sunset | ~4L |
 | Eau gazeuse | 🌿 Fresh | ~3L |
 | Tonic | 🥭 Tropical | ~4L |
 | Jus d'ananas | 🏝 Mai Tai | ~4L |
-| Prosecco | 🍑 Passion | 2 bouteilles |
+| Prosecco | 🍑 Passion + 🌸 Sureau | 3 bouteilles |
 | Jus de mangue | Option secondaire | ~3L |
 | Citrons verts | 🫚 Ginger + 🌿 Fresh (dans fioles + garniture) | 10-12 |
 | Menthe fraîche | 🌿 Fresh | 1 botte |
