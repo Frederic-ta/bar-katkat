@@ -62,13 +62,13 @@
 
 | Mix | Quantité |
 |-----|----------|
-| 🥭 Tropical | 8 |
+| 🥭 Tropical | 6 |
 | 🌿 Fresh | 6 |
-| ☕ Espresso | 10 |
+| ☕ Espresso | 6 |
 | 🍊 Sunset | 12 |
-| 🏝 Mai Tai | 10 |
-| 🍑 Passion | 10 |
-| 🫚 Ginger | 8 |
+| 🏝 Mai Tai | 12 |
+| 🍑 Passion | 12 |
+| 🫚 Ginger | 10 |
 | **Total** | **64** |
 
 ---
@@ -130,28 +130,28 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 8×80 + 12×55 + 10×55 = 1850ml | 2 bouteilles de 1L |
-| Vodka vanille | 10×80 = 800ml | 1 bouteille de 1L |
-| Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
-| Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
-| Curaçao / Triple sec | 10×30 = 300ml | 1 bouteille de 50cl |
+| Vodka | 10×80 + 12×55 + 6×55 = 1790ml | 2 bouteilles de 1L |
+| Vodka vanille | 12×80 = 960ml | 1 bouteille de 1L |
+| Rhum brun | 12×50 = 600ml | 1 bouteille de 70cl |
+| Rhum blanc | 12×40 = 480ml | 1 bouteille de 70cl |
+| Curaçao / Triple sec | 12×30 = 360ml | 1 bouteille de 50cl |
 | Liqueur de pêche | 12×45 = 540ml | 1 bouteille de 70cl |
-| Kahlúa | 10×45 = 450ml | 1 bouteille de 70cl |
+| Kahlúa | 6×45 = 270ml | 1 bouteille de 50cl |
 
 ### Sirops
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Sirop passion | 8×25 + 10×20 = 400ml | 1 bouteille de 50cl |
-| Sirop mangue | 8×25 = 200ml | 1 bouteille de 25cl |
+| Sirop passion | 6×25 + 12×20 = 390ml | 1 bouteille de 50cl |
+| Sirop mangue | 6×25 = 150ml | 1 bouteille de 25cl |
 | Sirop menthe | 6×20 = 120ml | 1 bouteille de 25cl |
-| Sirop vanille | 10×15 + 10×10 = 250ml | 1 bouteille de 25cl |
-| Sirop gingembre | 8×20 = 160ml | 1 bouteille de 25cl |
+| Sirop vanille | 12×15 + 6×10 = 240ml | 1 bouteille de 25cl |
+| Sirop gingembre | 10×20 = 200ml | 1 bouteille de 25cl |
 | Sirop sucre de canne | 6×10 = 60ml | 1 bouteille de 25cl |
-| Sirop citron vert | 6×15 + 8×15 = 210ml | 1 bouteille de 25cl |
-| Sirop orgeat | 10×15 = 150ml | 1 bouteille de 25cl |
-| Sirop amande | 10×10 = 100ml | 1 bouteille de 25cl |
+| Sirop citron vert | 6×15 + 10×15 = 240ml | 1 bouteille de 25cl |
+| Sirop orgeat | 12×15 = 180ml | 1 bouteille de 25cl |
+| Sirop amande | 12×10 = 120ml | 1 bouteille de 25cl |
 | Sirop orange | 12×10 = 120ml | 1 bouteille de 25cl |
-| Sirop café | 10×10 = 100ml | 1 bouteille de 25cl |
+| Sirop café | 6×10 = 60ml | 1 bouteille de 25cl |
 | Grenadine | 12×15 = 180ml | 1 bouteille de 25cl |
 
 ### Station du jour J (diluants)
