@@ -61,12 +61,11 @@
 | Mix | Quantité |
 |-----|----------|
 | 🥭 Tropical | 6 |
-| 🌿 Fresh | 6 |
-| ☕ Espresso | 6 |
+| 🌿 Fresh | 8 |
 | 🍊 Sunset | 12 |
 | 🏝 Mai Tai | 12 |
-| 🍑 Passion | 12 |
-| 🫚 Ginger | 10 |
+| 🍑 Passion | 14 |
+| 🫚 Ginger | 12 |
 | **Total** | **64** |
 
 ---
@@ -102,13 +101,6 @@
 | Sunset tropical | 200ml jus d'ananas + glaçons |
 | Sunset tonic | 200ml tonic + glaçons |
 
-### ☕ Mix Espresso (150ml) +
-| Combo | Ajouter |
-|---|---|
-| Espresso Martini | 150ml café froid + glaçons |
-| Espresso & cream | 100ml café froid + 100ml lait |
-| White Russian | 200ml lait + glaçons |
-
 ### 🥭 Mix Tropical (150ml) +
 | Combo | Ajouter |
 |---|---|
@@ -128,7 +120,7 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 10×100 + 12×70 + 6×65 = 2230ml | 3 bouteilles de 1L |
+| Vodka | 12×100 + 12×70 = 2040ml | 3 bouteilles de 1L |
 | Vodka vanille | 12×100 = 1200ml | 2 bouteilles de 70cl |
 | Rhum brun | 12×50 = 600ml | 1 bouteille de 70cl |
 | Rhum blanc | 12×40 = 480ml | 1 bouteille de 70cl |
@@ -139,27 +131,25 @@
 ### Sirops
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Sirop passion | 6×25 + 12×30 = 510ml | 1 bouteille de 70cl |
+| Sirop passion | 6×25 + 14×30 = 570ml | 1 bouteille de 70cl |
 | Sirop mangue | 6×25 = 150ml | 1 bouteille de 25cl |
-| Sirop menthe | 6×20 = 120ml | 1 bouteille de 25cl |
-| Sirop vanille | 12×20 + 6×20 = 360ml | 1 bouteille de 50cl |
-| Sirop gingembre | 10×30 = 300ml | 1 bouteille de 50cl |
-| Sirop sucre de canne | 6×15 = 90ml | 1 bouteille de 25cl |
+| Sirop menthe | 8×20 = 160ml | 1 bouteille de 25cl |
+| Sirop vanille | 14×20 = 280ml | 1 bouteille de 50cl |
+| Sirop gingembre | 12×30 = 360ml | 1 bouteille de 50cl |
+| Sirop sucre de canne | 8×15 = 120ml | 1 bouteille de 25cl |
 | Sirop orgeat | 12×25 = 300ml | 1 bouteille de 50cl |
 | Grenadine | 12×20 = 240ml | 1 bouteille de 50cl |
 
 ### Station du jour J (diluants)
 | Diluant | Sert principalement pour | Quantité |
 |---|---|---|
-| Ginger beer | 🫚 Ginger | ~4L |
+| Ginger beer | 🫚 Ginger | ~5L |
 | Jus d'orange | 🍊 Sunset | ~4L |
 | Eau gazeuse | 🌿 Fresh | ~3L |
 | Tonic | 🥭 Tropical | ~4L |
 | Jus d'ananas | 🏝 Mai Tai | ~4L |
-| Café froid | ☕ Espresso | ~2L |
 | Prosecco | 🍑 Passion | 2 bouteilles |
 | Jus de mangue | Option secondaire | ~3L |
-| Lait | ☕ Espresso | ~2L |
 | Citrons verts | 🫚 Ginger + 🌿 Fresh (dans fioles + garniture) | 10-12 |
 | Menthe fraîche | 🌿 Fresh | 1 botte |
 | Glaçons | Tout | 3 sacs minimum |

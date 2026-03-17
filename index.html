@@ -1312,7 +1312,7 @@ const DEFAULT_MIXES = [
       { name:'Bubble Paradise', name_en:'Bubble Paradise', recipe:'🥭 Mix Tropical (fiole) : 25ml sirop mangue + 25ml sirop passion + 100ml eau — À ajouter : 120ml eau gazeuse + glaçons', soft:'gazeuse', icon:'💧',
         tag:'Léger et rafraîchissant', tag_en:'Light and refreshing', desc:'Version allégée et pétillante du mix tropical. Rafraîchissant, léger, parfait pour enchaîner.', desc_en:'Light and sparkling version of the tropical mix. Refreshing, light, perfect for chaining.' },
     ]},
-  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
+  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:8,
     combos:[
       { name:'Virgin Mojito', name_en:'Virgin Mojito', recipe:'🌿 Mix Fresh (fiole) : 20ml sirop menthe + 15ml sirop sucre de canne + 15ml jus citron vert frais + 100ml eau — À ajouter : 120ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃',
         tag:'Le classique sans alcool', tag_en:'The classic non-alcoholic', desc:'Le classique indémodable version sans alcool. Menthe fraîche, lime, bulles — tout le plaisir, zéro regret.', desc_en:'The timeless classic in non-alcoholic version. Fresh mint, lime, bubbles — all the pleasure, zero regret.' },
@@ -1372,15 +1372,6 @@ const DEFAULT_MIXES = [
         tag:'Sunset façon Thaï', tag_en:'Thai beach sunset', desc:'Le coucher de soleil prend des airs de plage thaïlandaise. Mangue + sunset = carte postale en verre.', desc_en:'The sunset takes on Thai beach vibes. Mango + sunset = postcard in a glass.' },
       { name:'Sunset Mule', name_en:'Sunset Mule', recipe:'🍊 Mix Sunset (fiole) : 70ml vodka + 50ml liqueur pêche + 20ml grenadine + 10ml jus d\'orange — À ajouter : 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
         tag:'Sunset qui kick', tag_en:'Sunset with a kick', desc:'Le sunset qui kick. La ginger beer ajoute du piquant au dégradé fruité. Épicé et coloré.', desc_en:'The sunset that kicks. The ginger beer adds spice to the fruity gradient. Spicy and colorful.' },
-    ]},
-  { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:6,
-    combos:[
-      { name:'Espresso Martini', name_en:'Espresso Martini', recipe:'☕ Mix Espresso (fiole) : 65ml vodka + 55ml Kahlúa + 20ml sirop vanille + 10ml café froid — À ajouter : 30ml café froid + glaçons + shaker', soft:'cafe', icon:'☕',
-        tag:'Élégance caféinée', tag_en:'Caffeinated elegance', desc:'Le cocktail qui te garde éveillé pour danser. Vodka, café, liqueur de café — secoué, pas remué. Élégance caféinée.', desc_en:'The cocktail that keeps you awake for dancing. Vodka, coffee, coffee liqueur — shaken, not stirred. Caffeinated elegance.' },
-      { name:'Ginger Buzz', name_en:'Ginger Buzz', recipe:'☕ Mix Espresso (fiole) : 65ml vodka + 55ml Kahlúa + 20ml sirop vanille + 10ml café froid — À ajouter : 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Café épicé & pétillant', tag_en:'Spicy & sparkling coffee', desc:'Le café rencontre le gingembre pour un buzz épicé. Pétillant et corsé, il envoie du lourd.', desc_en:'Coffee meets ginger for a spicy buzz. Sparkling and full-bodied, it hits hard.' },
-      { name:'Espresso Tonic', name_en:'Espresso Tonic', recipe:'☕ Mix Espresso (fiole) : 65ml vodka + 55ml Kahlúa + 20ml sirop vanille + 10ml café froid — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Le combo tendance', tag_en:'The trendy combo', desc:'Le combo tendance des coffee shops branchés. Le tonic fait mousser le café, c\'est amer, frais et addictif.', desc_en:'The trendy combo from hip coffee shops. The tonic makes the coffee foam, it\'s bitter, fresh and addictive.' },
     ]},
 ];
 const DEFAULT_SOFTS = [
@@ -1450,7 +1441,6 @@ const TITLES = [
   
   // Catégories spéciales
   { id:'tropical_fan', emoji:'🏝️', name:{fr:'Team Tropical',en:'Team Tropical'}, desc:{fr:'Tous les cocktails Tropical goûtés',en:'All Tropical cocktails tasted'}, condition:'all_tropical' },
-  { id:'espresso_fan', emoji:'☕', name:{fr:'Espresso Yourself',en:'Espresso Yourself'}, desc:{fr:'Tous les cocktails Espresso goûtés',en:'All Espresso cocktails tasted'}, condition:'all_espresso' },
   { id:'sunset_fan', emoji:'🌅', name:{fr:'Sunset Lover',en:'Sunset Lover'}, desc:{fr:'Tous les cocktails Sunset goûtés',en:'All Sunset cocktails tasted'}, condition:'all_sunset' },
   
   // Styles de consommation
@@ -1620,7 +1610,6 @@ function getUserStats(username) {
     drink_counts: {},
     categories: {
       tropical: new Set(),
-      espresso: new Set(), 
       sunset: new Set()
     }
   };
@@ -1662,9 +1651,7 @@ function getUserStats(username) {
     if (drinkName.includes('Tropical') || drinkName.includes('Tropi') || drinkName.includes('Ananas') || drinkName.includes('Mangue')) {
       stats.categories.tropical.add(drinkName);
     }
-    if (drinkName.includes('Espresso') || drinkName.includes('Buzz')) {
-      stats.categories.espresso.add(drinkName);
-    }
+
     if (drinkName.includes('Sunset') || drinkName.includes('Soleil') || drinkName.includes('Crépuscule')) {
       stats.categories.sunset.add(drinkName);
     }
@@ -1748,8 +1735,7 @@ function checkTitleConditions(stats) {
       case 'all_tropical':
         unlocked = stats.categories.tropical.size >= 3; // Au moins 3 cocktails tropical
         break;
-      case 'all_espresso':
-        unlocked = stats.categories.espresso.size >= 2; // Au moins 2 cocktails espresso
+
         break;
       case 'all_sunset':
         unlocked = stats.categories.sunset.size >= 3; // Au moins 3 cocktails sunset
