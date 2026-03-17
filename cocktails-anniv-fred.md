@@ -21,9 +21,9 @@
 
 **🌿 Mix Fresh (150ml)**
 - 20ml sirop menthe
-- 10ml sirop sucre de canne
-- 15ml sirop citron vert
-- 105ml eau
+- 15ml sirop sucre de canne
+- 15ml jus citron vert frais
+- 100ml eau
 
 ### Avec alcool (pas d'eau, sirops réduits)
 
@@ -31,8 +31,7 @@
 - 50ml rhum brun
 - 40ml rhum blanc
 - 30ml curaçao
-- 15ml sirop orgeat
-- 10ml sirop amande
+- 25ml sirop orgeat
 
 **🍑 Mix Passion (115ml)**
 - 80ml vodka vanille
@@ -42,19 +41,17 @@
 **🫚 Mix Ginger (115ml)**
 - 80ml vodka
 - 20ml sirop gingembre
-- 15ml sirop citron vert
+- 15ml jus citron vert frais
 
-**🍊 Mix Sunset (125ml)**
-- 55ml vodka
+**🍊 Mix Sunset (120ml)**
+- 60ml vodka
 - 45ml liqueur pêche
 - 15ml grenadine
-- 10ml sirop orange
 
 **☕ Mix Espresso (120ml)**
 - 55ml vodka
 - 45ml Kahlúa
-- 10ml sirop vanille
-- 10ml sirop café
+- 15ml sirop vanille
 
 ---
 
@@ -130,7 +127,7 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 10×80 + 12×55 + 6×55 = 1790ml | 2 bouteilles de 1L |
+| Vodka | 10×80 + 12×60 + 6×55 = 1850ml | 2 bouteilles de 1L |
 | Vodka vanille | 12×80 = 960ml | 1 bouteille de 1L |
 | Rhum brun | 12×50 = 600ml | 1 bouteille de 70cl |
 | Rhum blanc | 12×40 = 480ml | 1 bouteille de 70cl |
@@ -144,14 +141,10 @@
 | Sirop passion | 6×25 + 12×20 = 390ml | 1 bouteille de 50cl |
 | Sirop mangue | 6×25 = 150ml | 1 bouteille de 25cl |
 | Sirop menthe | 6×20 = 120ml | 1 bouteille de 25cl |
-| Sirop vanille | 12×15 + 6×10 = 240ml | 1 bouteille de 25cl |
+| Sirop vanille | 12×15 + 6×15 = 270ml | 1 bouteille de 50cl |
 | Sirop gingembre | 10×20 = 200ml | 1 bouteille de 25cl |
-| Sirop sucre de canne | 6×10 = 60ml | 1 bouteille de 25cl |
-| Sirop citron vert | 6×15 + 10×15 = 240ml | 1 bouteille de 25cl |
-| Sirop orgeat | 12×15 = 180ml | 1 bouteille de 25cl |
-| Sirop amande | 12×10 = 120ml | 1 bouteille de 25cl |
-| Sirop orange | 12×10 = 120ml | 1 bouteille de 25cl |
-| Sirop café | 6×10 = 60ml | 1 bouteille de 25cl |
+| Sirop sucre de canne | 6×15 = 90ml | 1 bouteille de 25cl |
+| Sirop orgeat | 12×25 = 300ml | 1 bouteille de 50cl |
 | Grenadine | 12×15 = 180ml | 1 bouteille de 25cl |
 
 ### Station du jour J (diluants)
@@ -166,7 +159,7 @@
 | Prosecco | 🍑 Passion | 1 bouteille |
 | Jus de mangue | Option secondaire | ~2L |
 | Lait | ☕ Espresso | ~1L |
-| Limes | 🫚 Ginger + 🌿 Fresh | 6-8 |
+| Citrons verts | 🫚 Ginger + 🌿 Fresh (dans fioles + garniture) | 10-12 |
 | Menthe fraîche | 🌿 Fresh | 1 botte |
 | Glaçons | Tout | 3 sacs minimum |
 
