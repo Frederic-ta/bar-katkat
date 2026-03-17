@@ -118,7 +118,8 @@
 | Combo | Ajouter |
 |---|---|
 | Tropical fizz | 200ml tonic ou eau gazeuse + glaçons |
-| Tropical juice | 200ml jus d'ananas + glaçons |
+| Mangue Ta Vie | 200ml jus de mangue + glaçons |
+| Bubble Paradise | 200ml eau gazeuse + glaçons |
 
 ### 🌿 Mix Fresh (150ml) +
 | Combo | Ajouter |
