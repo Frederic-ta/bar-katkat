@@ -1,56 +1,60 @@
 # 🍹 Bar à Mix — Anniversaire Fred (5 avril 2026)
 
 ## Concept
-- Fioles de 200ml contenant ~150ml de concentré
+- Fioles pré-diluées (max 200ml)
 - Les invités versent la fiole dans un verre (250ml max) + diluant + glaçons
 - Système modulaire : chaque mix peut se combiner avec différents diluants
 - ~20 personnes, 64 fioles au total
+- Sans alcool = dilués à l'eau dans la fiole (préparer la veille, frigo)
+- Avec alcool = plus d'alcool, moins de sirop, pas d'eau (préparables 3-4 jours avant)
 
 ---
 
-## 📐 Dosages par fiole (150ml de concentré)
+## 📐 Dosages par fiole
 
-### Sans alcool
+### Sans alcool (pré-dilués à l'eau)
 
 **🥭 Mix Tropical (150ml)**
-- 75ml sirop mangue
-- 75ml sirop passion
+- 25ml sirop mangue
+- 25ml sirop passion
+- 100ml eau
 
 **🌿 Mix Fresh (150ml)**
-- 60ml sirop menthe
-- 40ml sirop sucre de canne
-- 50ml sirop citron vert
+- 20ml sirop menthe
+- 10ml sirop sucre de canne
+- 15ml sirop citron vert
+- 105ml eau
 
-### Avec alcool
+### Avec alcool (pas d'eau, sirops réduits)
 
-**🏝 Mix Mai Tai (150ml)**
-- 45ml rhum brun
-- 35ml rhum blanc
+**🏝 Mix Mai Tai (145ml)**
+- 50ml rhum brun
+- 40ml rhum blanc
 - 30ml curaçao
-- 20ml sirop orgeat
-- 20ml sirop amande
+- 15ml sirop orgeat
+- 10ml sirop amande
 
-**🍑 Mix Passion (150ml)**
-- 60ml vodka vanille
-- 50ml sirop passion
-- 40ml sirop vanille
+**🍑 Mix Passion (115ml)**
+- 80ml vodka vanille
+- 20ml sirop passion
+- 15ml sirop vanille
 
-**🫚 Mix Ginger (150ml)**
-- 60ml vodka
-- 50ml sirop gingembre
-- 40ml sirop citron vert
+**🫚 Mix Ginger (115ml)**
+- 80ml vodka
+- 20ml sirop gingembre
+- 15ml sirop citron vert
 
-**🍊 Mix Sunset (150ml)**
-- 50ml vodka
-- 40ml liqueur pêche
-- 30ml grenadine
-- 30ml sirop orange
+**🍊 Mix Sunset (125ml)**
+- 55ml vodka
+- 45ml liqueur pêche
+- 15ml grenadine
+- 10ml sirop orange
 
-**☕ Mix Espresso (150ml)**
-- 50ml vodka
-- 40ml Kahlúa
-- 30ml sirop vanille
-- 30ml sirop café
+**☕ Mix Espresso (120ml)**
+- 55ml vodka
+- 45ml Kahlúa
+- 10ml sirop vanille
+- 10ml sirop café
 
 ---
 
@@ -71,53 +75,53 @@
 
 ## 🎴 Carte des combos (verre de 250ml)
 
-### 🏝 Mix Mai Tai (90ml concentré) +
+### 🏝 Mix Mai Tai (145ml) +
 | Combo | Ajouter |
 |---|---|
-| Mai Tai classique | 160ml jus d'ananas |
-| Mai Tai tropical | 160ml jus de mangue |
-| Mai Tai ginger | 160ml ginger beer |
+| Mai Tai classique | 105ml jus d'ananas + glaçons |
+| Mai Tai tropical | 105ml jus de mangue + glaçons |
+| Mai Tai ginger | 105ml ginger beer + glaçons |
 
-### 🍑 Mix Passion (85ml concentré) +
+### 🍑 Mix Passion (115ml) +
 | Combo | Ajouter |
 |---|---|
 | Pornstar Martini | 80ml prosecco + glaçons |
-| Passion tropical | 165ml jus de mangue |
-| Passion tonic | 165ml tonic |
-| Passion orange | 165ml jus d'orange |
+| Passion tropical | 135ml jus de mangue + glaçons |
+| Passion tonic | 135ml tonic + glaçons |
+| Passion orange | 135ml jus d'orange + glaçons |
 
-### 🫚 Mix Ginger (70ml concentré) +
+### 🫚 Mix Ginger (115ml) +
 | Combo | Ajouter |
 |---|---|
-| Moscow Mule | 180ml ginger beer + lime |
-| Ginger sunrise | 180ml jus d'orange |
-| Ginger tropical | 180ml jus d'ananas |
+| Moscow Mule | 135ml ginger beer + lime |
+| Ginger sunrise | 135ml jus d'orange + glaçons |
+| Ginger tropical | 135ml jus d'ananas + glaçons |
 
-### 🍊 Mix Sunset (75ml concentré) +
+### 🍊 Mix Sunset (125ml) +
 | Combo | Ajouter |
 |---|---|
-| Sunset classique | 175ml jus d'orange |
-| Sunset tropical | 175ml jus d'ananas |
-| Sunset tonic | 175ml tonic |
+| Sunset classique | 125ml jus d'orange + glaçons |
+| Sunset tropical | 125ml jus d'ananas + glaçons |
+| Sunset tonic | 125ml tonic + glaçons |
 
-### ☕ Mix Espresso (75ml concentré) +
+### ☕ Mix Espresso (120ml) +
 | Combo | Ajouter |
 |---|---|
 | Espresso Martini | 100ml café froid + glaçons |
 | Espresso & cream | 100ml café froid + lait |
-| White Russian | 175ml lait |
+| White Russian | 130ml lait + glaçons |
 
-### 🥭 Mix Tropical (80ml concentré) +
+### 🥭 Mix Tropical (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Tropical fizz | 170ml tonic ou eau gazeuse |
-| Tropical juice | 170ml jus d'ananas |
+| Tropical fizz | 100ml tonic ou eau gazeuse + glaçons |
+| Tropical juice | 100ml jus d'ananas + glaçons |
 
-### 🌿 Mix Fresh (50ml concentré) +
+### 🌿 Mix Fresh (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Virgin Mojito | 200ml eau gazeuse + menthe + lime |
-| Fresh lemonade | 200ml limonade |
+| Virgin Mojito | 100ml eau gazeuse + menthe + lime |
+| Fresh lemonade | 100ml limonade + glaçons |
 
 ---
 
@@ -126,29 +130,29 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 8×60 + 12×50 + 10×50 = 1580ml | 2 bouteilles de 1L |
-| Vodka vanille | 10×60 = 600ml | 1 bouteille de 70cl |
-| Rhum brun | 10×45 = 450ml | 1 bouteille de 70cl |
-| Rhum blanc | 10×35 = 350ml | 1 bouteille de 70cl |
+| Vodka | 8×80 + 12×55 + 10×55 = 1850ml | 2 bouteilles de 1L |
+| Vodka vanille | 10×80 = 800ml | 1 bouteille de 1L |
+| Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
+| Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
 | Curaçao / Triple sec | 10×30 = 300ml | 1 bouteille de 50cl |
-| Liqueur de pêche | 12×40 = 480ml | 1 bouteille de 70cl |
-| Kahlúa | 10×40 = 400ml | 1 bouteille de 70cl |
+| Liqueur de pêche | 12×45 = 540ml | 1 bouteille de 70cl |
+| Kahlúa | 10×45 = 450ml | 1 bouteille de 70cl |
 
 ### Sirops
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Sirop passion | 8×75 + 10×50 = 1100ml | 2 bouteilles de 70cl |
-| Sirop mangue | 8×75 = 600ml | 1 bouteille de 70cl |
-| Sirop menthe | 6×60 = 360ml | 1 bouteille de 50cl |
-| Sirop vanille | 10×40 + 10×30 = 700ml | 1 bouteille de 70cl |
-| Sirop gingembre | 8×50 = 400ml | 1 bouteille de 50cl |
-| Sirop sucre de canne | 6×40 = 240ml | 1 bouteille de 50cl |
-| Sirop citron vert | 6×50 + 8×40 = 620ml | 1 bouteille de 70cl |
-| Sirop orgeat | 10×20 = 200ml | 1 bouteille de 25cl |
-| Sirop amande | 10×20 = 200ml | 1 bouteille de 25cl |
-| Sirop orange | 12×30 = 360ml | 1 bouteille de 50cl |
-| Sirop café | 10×30 = 300ml | 1 bouteille de 50cl |
-| Grenadine | 12×30 = 360ml | 1 bouteille de 50cl |
+| Sirop passion | 8×25 + 10×20 = 400ml | 1 bouteille de 50cl |
+| Sirop mangue | 8×25 = 200ml | 1 bouteille de 25cl |
+| Sirop menthe | 6×20 = 120ml | 1 bouteille de 25cl |
+| Sirop vanille | 10×15 + 10×10 = 250ml | 1 bouteille de 25cl |
+| Sirop gingembre | 8×20 = 160ml | 1 bouteille de 25cl |
+| Sirop sucre de canne | 6×10 = 60ml | 1 bouteille de 25cl |
+| Sirop citron vert | 6×15 + 8×15 = 210ml | 1 bouteille de 25cl |
+| Sirop orgeat | 10×15 = 150ml | 1 bouteille de 25cl |
+| Sirop amande | 10×10 = 100ml | 1 bouteille de 25cl |
+| Sirop orange | 12×10 = 120ml | 1 bouteille de 25cl |
+| Sirop café | 10×10 = 100ml | 1 bouteille de 25cl |
+| Grenadine | 12×15 = 180ml | 1 bouteille de 25cl |
 
 ### Station du jour J (diluants)
 | Diluant | Sert principalement pour | Quantité |
@@ -161,9 +165,22 @@
 | Café froid | ☕ Espresso | ~1L |
 | Prosecco | 🍑 Passion | 1 bouteille |
 | Jus de mangue | Option secondaire | ~2L |
+| Lait | ☕ Espresso | ~1L |
 | Limes | 🫚 Ginger + 🌿 Fresh | 6-8 |
 | Menthe fraîche | 🌿 Fresh | 1 botte |
 | Glaçons | Tout | 3 sacs minimum |
+
+### Softs & Bières
+| Boisson | Quantité |
+|---|---|
+| Coca | 6 canettes |
+| Orangina | 6 canettes |
+| Ice Tea | 6 canettes |
+| Jus d'orange | 2L |
+| Jus d'ananas | 2L |
+| Jus de mangue | 2L |
+| Eau | ∞ |
+| Affligem | 4 bouteilles |
 
 ### Déco fioles (optionnel)
 | Mix | Déco |
@@ -183,16 +200,17 @@
 ---
 
 ## 📝 Notes
-- Conservation fioles concentrées (sans jus) : plusieurs semaines
-- Si ajout de jus dans les fioles : max 2-3 jours au frigo
+- **Sans alcool** : préparer la veille, conserver au frigo (24-48h max)
+- **Avec alcool** : préparables 3-4 jours avant (l'alcool conserve)
 - Préparer la menthe et les limes le jour J
 - Prévoir beaucoup de glaçons (3 sacs minimum pour 20 personnes)
 - Les invités peuvent aussi mixer entre eux pour inventer des combos
+- ⚠️ Préparer 1 fiole test de chaque mix quelques jours avant pour goûter !
 
-## 📱 App Tablette "Bar KatKat"
-- Web app HTML/CSS/JS locale (pas de serveur)
-- Fonctionnalités : menu interactif, combos suggérés, stock en temps réel, instructions de préparation
-- Tourne sur tablette, les invités se servent eux-mêmes
-- TODO : créer le fichier HTML
+## 📱 App "Sip Happens at Fred's"
+- Web app sur GitHub Pages : `frederic-ta.github.io/bar-katkat`
+- Version serveur local (`server/`) avec WebSocket pour le jour J
+- Fonctionnalités : menu interactif, combos, stock temps réel, points, titres, leaderboard
+- i18n FR/EN, pseudos, 24 achievements, confettis
 
-*Dernière mise à jour : 15 mars 2026*
+*Dernière mise à jour : 17 mars 2026*
