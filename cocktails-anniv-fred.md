@@ -15,8 +15,7 @@
 ### Sans alcool (pré-dilués à l'eau)
 
 **🥭 Mix Tropical (150ml)**
-- 25ml sirop mangue
-- 25ml sirop passion
+- 50ml sirop mangue-passion
 - 100ml eau
 
 **🌿 Mix Fresh (150ml)**
@@ -35,13 +34,11 @@
 
 **🍑 Mix Passion (150ml)**
 - 100ml rhum vanille arrangé
-- 30ml sirop passion
-- 20ml sirop vanille
+- 50ml sirop mangue-passion
 
 **🫚 Mix Ginger (150ml)**
-- 100ml vodka
-- 30ml sirop gingembre
-- 20ml jus citron vert frais
+- 110ml vodka
+- 40ml jus citron vert
 
 **🍊 Mix Sunset (150ml)**
 - 70ml vodka
@@ -134,7 +131,7 @@
 ### Alcools
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Vodka | 10×100 + 10×70 = 1700ml | 2 bouteilles de 1L |
+| Vodka | 10×110 + 10×70 = 1800ml | 2 bouteilles de 1L |
 | Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
 | Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
 | Curaçao bleu | 10×30 = 300ml | ✅ En stock |
@@ -145,13 +142,10 @@
 ### Sirops
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
-| Sirop passion | 6×25 + 10×30 = 450ml | 1 bouteille de 50cl |
-| Sirop mangue | 6×25 = 150ml | 1 bouteille de 25cl |
 | Sirop menthe | 8×20 = 160ml | 1 bouteille de 25cl |
-| Sirop vanille | 10×20 = 200ml | 1 bouteille de 25cl |
-| Sirop gingembre | 10×30 = 300ml | 1 bouteille de 50cl |
 | Sirop sucre de canne | 8×15 = 120ml | 1 bouteille de 25cl |
 | Sirop orgeat | 10×25 = 250ml | 1 bouteille de 50cl |
+| Sirop mangue-passion | 6×50 + 10×50 = 800ml | ✅ En stock (1.4L) |
 | Sirop fleur de sureau | 10×40 = 400ml | ✅ En stock |
 | Sirop de pêche | 10×30 = 300ml | ✅ En stock |
 | Grenadine | 10×20 = 200ml | 1 bouteille de 25cl |
@@ -166,7 +160,8 @@
 | Jus d'ananas | 🏝 Mai Tai | ~4L |
 | Prosecco | 🍑 Passion + 🌸 Sureau | 3 bouteilles |
 | Jus de mangue | Option secondaire | ~3L |
-| Citrons verts | 🫚 Ginger + 🌿 Fresh (dans fioles + garniture) | 10-12 |
+| Jus citron vert (bouteille) | 🫚 Ginger + 🌿 Fresh (dans fioles) | ~1L |
+| Citrons verts (déco) | Garniture | 5-6 |
 | Menthe fraîche | 🌿 Fresh | 1 botte |
 | Glaçons | Tout | 3 sacs minimum |
 
