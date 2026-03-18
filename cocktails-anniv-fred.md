@@ -135,14 +135,12 @@
 | Ingrédient | Besoin | À acheter |
 |---|---|---|
 | Vodka | 10×100 + 10×70 = 1700ml | 2 bouteilles de 1L |
-| Vodka vanille | 12×100 = 1200ml | 2 bouteilles de 70cl |
 | Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
 | Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
 | Curaçao bleu | 10×30 = 300ml | ✅ En stock |
 | Gin | 10×80 = 800ml | 1 bouteille (~10€) + stock |
 | Rhum vanille arrangé | 10×100 = 1000ml | ✅ En stock (1L) |
-| Liqueur de pêche | 12×50 = 600ml | 1 bouteille de 70cl |
-| Kahlúa | 6×55 = 330ml | 1 bouteille de 50cl |
+| Liqueur de pêche | 10×50 = 500ml | 1 bouteille de 70cl |
 
 ### Sirops
 | Ingrédient | Besoin | À acheter |
@@ -156,7 +154,7 @@
 | Sirop orgeat | 10×25 = 250ml | 1 bouteille de 50cl |
 | Sirop fleur de sureau | 10×40 = 400ml | ✅ En stock |
 | Sirop de pêche | 10×30 = 300ml | ✅ En stock |
-| Grenadine | 12×20 = 240ml | 1 bouteille de 50cl |
+| Grenadine | 10×20 = 200ml | 1 bouteille de 25cl |
 
 ### Station du jour J (diluants)
 | Diluant | Sert principalement pour | Quantité |
@@ -176,13 +174,11 @@
 | Boisson | Quantité |
 |---|---|
 | Coca | 6 canettes |
-| Orangina | 6 canettes |
 | Ice Tea | 6 canettes |
 | Jus d'orange | 2L |
 | Jus d'ananas | 2L |
 | Jus de mangue | 2L |
 | Eau | ∞ |
-| Affligem | 4 bouteilles |
 
 ### Déco fioles (optionnel)
 | Mix | Déco |
@@ -191,11 +187,9 @@
 | 🍑 Passion | Petit zeste de citron |
 | 🫚 Ginger | Fine rondelle de gingembre |
 | 🍊 Sunset | Petit zeste d'orange |
-| ☕ Espresso | 2-3 grains de café |
 
 ### Matériel
-- 32 fioles 200ml (commandé — casavetro Amazon)
-- 30 fioles 100ml (commandé — casavetro Amazon)
+- 64 fioles 200ml (commandé — casavetro Amazon)
 - Étiquettes
 - Gobelets 360ml
 - Carte des mix imprimée
