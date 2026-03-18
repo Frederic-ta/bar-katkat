@@ -8,7 +8,9 @@
 | mars 2026 | Gobelets 360ml × 50 | 22€ | ✅ |
 | 18 mars 2026 | Grosses courses (alcools, sirops, diluants, softs, bières) | 200€ | ✅ |
 
-**Total dépensé : 282€**
+| 18 mars 2026 | Liqueur de pêche 70cl | 13€ | ✅ |
+
+**Total dépensé : 295€**
 
 ### Détail courses du 18 mars (200€)
 - 32 bouteilles Grimbergen
@@ -48,14 +50,13 @@
 
 | Article | Prix estimé |
 |---|---|
-| Liqueur de pêche (70cl) | ~11€ |
 | Citrons verts déco (5-6) | ~3€ |
 | Menthe fraîche (jour J) | ~2€ |
 | Glaçons × 3 sacs (jour J) | ~9€ |
-| **Sous-total restant** | **~25€** |
+| **Sous-total restant** | **~14€** |
 
 ---
 
-## Total estimé final : ~307€ (~15€/personne pour 20 invités)
+## Total estimé final : ~309€ (~15€/personne pour 20 invités)
 
-*Dernière mise à jour : 18 mars 2026*
+*Dernière mise à jour : 18 mars 2026 (soir)*
