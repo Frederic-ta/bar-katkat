@@ -1,7 +1,7 @@
 # 🍹 Bar à Mix — Anniversaire Fred (5 avril 2026)
 
 ## Concept
-- Fioles pré-diluées (max 200ml)
+- Fioles pré-diluées (max 150ml)
 - Les invités versent la fiole dans un verre (360ml) + diluant + glaçons
 - Système modulaire : chaque mix peut se combiner avec différents diluants
 - ~20 personnes, 64 fioles au total
@@ -79,51 +79,51 @@
 ### 🌸 Mix Sureau (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Hugo Royal | 200ml prosecco + menthe |
-| Gin Fizz Floral | 200ml tonic + glaçons |
-| Sureau Tropical | 200ml jus d'ananas + glaçons |
+| Hugo Royal | 150ml prosecco + menthe |
+| Gin Fizz Floral | 150ml tonic + glaçons |
+| Sureau Tropical | 150ml jus d'ananas + glaçons |
 
 ### 🏝 Mix Mai Tai (145ml) +
 | Combo | Ajouter |
 |---|---|
-| Mai Tai classique | 200ml jus d'ananas + glaçons |
-| Mai Tai tropical | 200ml jus de mangue + glaçons |
-| Mai Tai ginger | 200ml ginger beer + glaçons |
+| Mai Tai classique | 150ml jus d'ananas + glaçons |
+| Mai Tai tropical | 150ml jus de mangue + glaçons |
+| Mai Tai ginger | 150ml ginger beer + glaçons |
 
 ### 🍑 Mix Passion (150ml) +
 | Combo | Ajouter |
 |---|---|
 | Pornstar Martini | 150ml prosecco + glaçons |
-| Passion tropical | 200ml jus de mangue + glaçons |
-| Passion tonic | 200ml tonic + glaçons |
-| Passion orange | 200ml jus d'orange + glaçons |
+| Passion tropical | 150ml jus de mangue + glaçons |
+| Passion tonic | 150ml tonic + glaçons |
+| Passion orange | 150ml jus d'orange + glaçons |
 
 ### 🫚 Mix Ginger (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Moscow Mule | 200ml ginger beer + lime |
-| Ginger sunrise | 200ml jus d'orange + glaçons |
-| Ginger tropical | 200ml jus d'ananas + glaçons |
+| Moscow Mule | 150ml ginger beer + lime |
+| Ginger sunrise | 150ml jus d'orange + glaçons |
+| Ginger tropical | 150ml jus d'ananas + glaçons |
 
 ### 🍊 Mix Sunset (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Sunset classique | 200ml jus d'orange + glaçons |
-| Sunset tropical | 200ml jus d'ananas + glaçons |
-| Sunset tonic | 200ml tonic + glaçons |
+| Sunset classique | 150ml jus d'orange + glaçons |
+| Sunset tropical | 150ml jus d'ananas + glaçons |
+| Sunset tonic | 150ml tonic + glaçons |
 
 ### 🥭 Mix Tropical (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Tropical fizz | 200ml tonic ou eau gazeuse + glaçons |
-| Mangue Ta Vie | 200ml jus de mangue + glaçons |
-| Bubble Paradise | 200ml eau gazeuse + glaçons |
+| Tropical fizz | 150ml tonic ou eau gazeuse + glaçons |
+| Mangue Ta Vie | 150ml jus de mangue + glaçons |
+| Bubble Paradise | 150ml eau gazeuse + glaçons |
 
 ### 🌿 Mix Fresh (150ml) +
 | Combo | Ajouter |
 |---|---|
-| Virgin Mojito | 200ml eau gazeuse + menthe + lime |
-| Fresh lemonade | 200ml limonade + glaçons |
+| Virgin Mojito | 150ml eau gazeuse + menthe + lime |
+| Fresh lemonade | 150ml limonade + glaçons |
 
 ---
 
@@ -149,7 +149,7 @@
 | Sirop mangue-passion | 6×50 + 10×50 = 800ml | ✅ En stock (1.4L) |
 | Sirop fleur de sureau | 10×40 = 400ml | ✅ En stock |
 | Sirop de pêche | 10×30 = 300ml | ✅ En stock |
-| Grenadine | 10×20 = 200ml | 1 bouteille de 25cl |
+| Grenadine | 10×20 = 150ml | 1 bouteille de 25cl |
 
 ### Station du jour J (diluants)
 | Diluant | Sert principalement pour | Quantité |
@@ -185,7 +185,7 @@
 | 🍊 Sunset | Petit zeste d'orange |
 
 ### Matériel
-- 64 fioles 200ml (commandé — casavetro Amazon)
+- 64 fioles 150ml (commandé — casavetro Amazon)
 - Étiquettes
 - Gobelets 360ml
 - Carte des mix imprimée
