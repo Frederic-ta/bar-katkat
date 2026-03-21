@@ -15,14 +15,15 @@
 ### Sans alcool (pré-dilués à l'eau)
 
 **🥭 Mix Tropical (150ml)**
-- 50ml sirop mangue-passion
+- 30ml sirop mangue-passion
+- 20ml jus citron vert
 - 100ml eau
 
 **🌿 Mix Fresh (150ml)**
-- 20ml sirop menthe
-- 15ml sirop sucre de canne
-- 15ml jus citron vert frais
-- 100ml eau
+- 15ml sirop menthe
+- 10ml sirop sucre de canne
+- 20ml jus citron vert
+- 105ml eau
 
 ### Avec alcool (pas d'eau, sirops réduits)
 
