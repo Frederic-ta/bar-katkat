@@ -33,16 +33,12 @@
 - 12 canettes ice tea
 
 ### Stock maison (déjà disponible, 0€)
-- ~50cl gin
-- 3L tonic
-- 1L nectar de mangue
 - 1.5L rhum vanille arrangé
-- 3 canettes ginger beer
-- Grenadine
-- Eau gazeuse
-- Sirop fleur de sureau
-- Sirop de pêche
-- Curaçao bleu (~300ml)
+- 600ml curaçao
+- 600ml grenadine
+- 750ml sirop de pêche
+- 300ml sirop fleur de sureau
+- 6L eau gazeuse
 
 ---
 
@@ -59,4 +55,4 @@
 
 ## Total estimé final : ~309€ (~15€/personne pour 20 invités)
 
-*Dernière mise à jour : 18 mars 2026 (soir)*
+*Dernière mise à jour : 21 mars 2026*

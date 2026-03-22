@@ -49,13 +49,9 @@
 
 **🌸 Mix Sureau (150ml)**
 - 80ml gin
-- 40ml sirop fleur de sureau
+- 30ml sirop fleur de sureau
 - 30ml sirop de pêche
-
-**☕ Mix Espresso (120ml)**
-- 55ml vodka
-- 45ml Kahlúa
-- 15ml sirop vanille
+- 10ml jus citron vert
 
 ---
 
@@ -127,68 +123,60 @@
 
 ---
 
-## 🛒 Liste de courses
+## 🛒 Inventaire complet (21 mars 2026)
 
-### Alcools
-| Ingrédient | Besoin | À acheter |
-|---|---|---|
-| Vodka | 10×110 + 10×70 = 1800ml | 2 bouteilles de 1L |
-| Rhum brun | 10×50 = 500ml | 1 bouteille de 70cl |
-| Rhum blanc | 10×40 = 400ml | 1 bouteille de 70cl |
-| Curaçao bleu | 10×30 = 300ml | ✅ En stock |
-| Gin | 10×80 = 800ml | 1 bouteille (~10€) + stock |
-| Rhum vanille arrangé | 10×100 = 1000ml | ✅ En stock (1L) |
-| Liqueur de pêche | 10×50 = 500ml | 1 bouteille de 70cl |
+### Alcools — ✅ TOUT OK
+| Ingrédient | En stock | Besoin | Status |
+|---|---|---|---|
+| Vodka | 2L (1.5L + 0.5L) | 1.8L | ✅ |
+| Gin | 1.5L | 800ml | ✅ |
+| Rhum ambré | 2L (2 × 1L) | 500ml | ✅ |
+| Rhum blanc | 1L | 400ml | ✅ |
+| Rhum vanille arrangé | 1.5L | 1L | ✅ |
+| Curaçao | 600ml | 300ml | ✅ |
+| Liqueur de pêche | 700ml | 500ml | ✅ |
+| Prosecco | 3L (4 × 75cl) | diluant | ✅ |
 
-### Sirops
-| Ingrédient | Besoin | À acheter |
-|---|---|---|
-| Sirop menthe | 8×20 = 160ml | 1 bouteille de 25cl |
-| Sirop sucre de canne | 8×15 = 120ml | 1 bouteille de 25cl |
-| Sirop orgeat | 10×25 = 250ml | 1 bouteille de 50cl |
-| Sirop mangue-passion | 6×50 + 10×50 = 800ml | ✅ En stock (1.4L) |
-| Sirop fleur de sureau | 10×40 = 400ml | ✅ En stock |
-| Sirop de pêche | 10×30 = 300ml | ✅ En stock |
-| Grenadine | 10×20 = 150ml | 1 bouteille de 25cl |
+### Sirops — ✅ TOUT OK
+| Ingrédient | En stock | Besoin | Status |
+|---|---|---|---|
+| Sirop mangue-passion | 1.4L (2 × 70cl) | 680ml | ✅ |
+| Sirop orgeat | 1L | 250ml | ✅ |
+| Sirop sucre de canne | 700ml | 80ml | ✅ |
+| Sirop menthe | 750ml | 120ml | ✅ |
+| Sirop grenadine | 600ml | 200ml | ✅ |
+| Sirop pêche | 750ml | 300ml | ✅ |
+| Sirop fleur de sureau | 300ml | 300ml | ⚠️ Juste |
 
-### Station du jour J (diluants)
-| Diluant | Sert principalement pour | Quantité |
-|---|---|---|
-| Ginger beer | 🫚 Ginger | ~4L |
-| Jus d'orange | 🍊 Sunset | ~4L |
-| Eau gazeuse | 🌿 Fresh | ~3L |
-| Tonic | 🥭 Tropical | ~4L |
-| Jus d'ananas | 🏝 Mai Tai | ~4L |
-| Prosecco | 🍑 Passion + 🌸 Sureau | 3 bouteilles |
-| Jus de mangue | Option secondaire | ~3L |
-| Jus citron vert (bouteille) | 🫚 Ginger + 🌿 Fresh (dans fioles) | ~1L |
-| Citrons verts (déco) | Garniture | 5-6 |
-| Menthe fraîche | 🌿 Fresh | 1 botte |
-| Glaçons | Tout | 3 sacs minimum |
+### Jus & Diluants — ✅ TOUT OK
+| Ingrédient | En stock | Besoin | Status |
+|---|---|---|---|
+| Tonic | 6L (4 × 1.5L) | diluant | ✅ |
+| Ginger beer | 3.6L (3 × 8 × 150ml) | diluant | ✅ |
+| Jus d'ananas | 4L (4 × 1L) | diluant | ✅ |
+| Jus d'orange | 4L (4 × 1L) | 100ml mix + diluant | ✅ |
+| Jus de mangue | 3L (3 × 1L) | diluant | ✅ |
+| Jus citron vert | 1L | 780ml | ✅ |
+| Eau gazeuse | 6L | diluant | ✅ |
 
-### Softs & Bières
-| Boisson | Quantité |
+### Softs & Bières — ✅ TOUT OK
+| Boisson | En stock |
 |---|---|
-| Coca | 6 canettes |
-| Ice Tea | 6 canettes |
-| Jus d'orange | 2L |
-| Jus d'ananas | 2L |
-| Jus de mangue | 2L |
-| Eau | ∞ |
+| Grimbergen | 32 × 25cl |
+| Coca | 20 × 330ml |
+| Ice Tea | 12 × 330ml |
 
-### Déco fioles (optionnel)
-| Mix | Déco |
+### Matériel — ✅ TOUT OK
+- 64 fioles 200ml (casavetro Amazon)
+- 50 gobelets 360ml
+
+### 🛒 Reste à acheter (jour J uniquement)
+| Article | Prix estimé |
 |---|---|
-| 🏝 Mai Tai | Petit zeste d'orange |
-| 🍑 Passion | Petit zeste de citron |
-| 🫚 Ginger | Fine rondelle de gingembre |
-| 🍊 Sunset | Petit zeste d'orange |
-
-### Matériel
-- 64 fioles 150ml (commandé — casavetro Amazon)
-- Étiquettes
-- Gobelets 360ml
-- Carte des mix imprimée
+| Citrons verts frais (déco) | ~3€ |
+| Menthe fraîche | ~2€ |
+| Glaçons × 3 sacs | ~9€ |
+| **Total restant** | **~14€** |
 
 ---
 
@@ -206,4 +194,4 @@
 - Fonctionnalités : menu interactif, combos, stock temps réel, points, titres, leaderboard
 - i18n FR/EN, pseudos, 24 achievements, confettis
 
-*Dernière mise à jour : 17 mars 2026*
+*Dernière mise à jour : 21 mars 2026*
