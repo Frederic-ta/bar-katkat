@@ -26,7 +26,16 @@ Le serveur affiche un **QR code** dans le terminal — tes invités n'ont qu'à 
 ```bash
 # Changer le port
 PORT=8080 node server.js
+
+# Avec QR code WiFi auto (les invités scannent → connexion WiFi directe)
+WIFI_SSID="NomDuWifi" WIFI_PASS="MotDePasse" node server.js
 ```
+
+## Page d'accueil `/welcome`
+
+Va sur `http://<ton-ip>:3000/welcome` — une page stylée avec les QR codes (WiFi + Bar) que tu peux :
+- Afficher sur un écran/TV
+- Imprimer et poser sur la table
 
 ## Tips soirée
 

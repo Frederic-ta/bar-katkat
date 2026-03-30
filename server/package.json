@@ -10,7 +10,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "ws": "^8.14.2",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode-terminal": "^0.12.0",
+    "qrcode": "^1.5.3"
   },
   "keywords": ["bar", "cocktails", "websocket", "realtime"],
   "author": "Fred",

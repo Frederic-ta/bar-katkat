@@ -9,6 +9,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const STATE_FILE = path.join(__dirname, 'state.json');
 
+// ===== WIFI CONFIG =====
+// Remplis ces valeurs avec ton WiFi de soirée !
+const WIFI_SSID = process.env.WIFI_SSID || '';
+const WIFI_PASS = process.env.WIFI_PASS || '';
+const WIFI_TYPE = process.env.WIFI_TYPE || 'WPA'; // WPA, WEP, ou nopass
+
 // ===== STATE =====
 let globalState = { stock: {}, history: [], connectedUsers: [] };
 
@@ -44,6 +50,63 @@ app.use(express.json());
 
 app.get('/api/state', (req, res) => res.json(globalState));
 
+// Page d'accueil avec QR codes (WiFi + Bar) — affichable sur écran/imprimable
+const QRCode = require('qrcode');
+app.get('/welcome', async (req, res) => {
+  const localIP = getLocalIP();
+  const barUrl = `http://${localIP}:${PORT}`;
+  const barQR = await QRCode.toDataURL(barUrl, { width: 300, margin: 2 });
+
+  let wifiQR = '';
+  let wifiBlock = '';
+  if (WIFI_SSID) {
+    const wifiString = `WIFI:T:${WIFI_TYPE};S:${WIFI_SSID};P:${WIFI_PASS};;`;
+    wifiQR = await QRCode.toDataURL(wifiString, { width: 300, margin: 2 });
+    wifiBlock = `
+      <div class="qr-card">
+        <div class="qr-step">1</div>
+        <h2>📶 Connecte-toi au WiFi</h2>
+        <img src="${wifiQR}" alt="WiFi QR" />
+        <p class="ssid">${WIFI_SSID}</p>
+        <p class="hint">Scanne → connexion auto</p>
+      </div>`;
+  }
+
+  res.send(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🍹 Sip Happens at Fred's</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#eee;font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:30px}
+h1{font-size:2em;text-align:center}
+h1 small{display:block;font-size:.4em;color:#aaa;margin-top:4px}
+.qr-cards{display:flex;gap:30px;flex-wrap:wrap;justify-content:center}
+.qr-card{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:30px;text-align:center;min-width:280px;position:relative}
+.qr-card h2{font-size:1.1em;margin-bottom:16px;color:#ddd}
+.qr-card img{border-radius:16px;width:250px;height:250px}
+.qr-step{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:#e94560;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.85em}
+.ssid{font-size:1.2em;font-weight:700;margin-top:12px;color:#4ecca3}
+.hint{color:#aaa;font-size:.8em;margin-top:6px}
+.url{font-family:monospace;font-size:.9em;color:#f0a500;margin-top:8px}
+</style></head><body>
+<h1>🍹 Sip Happens at Fred's<small>5 avril 2026</small></h1>
+<div class="qr-cards">
+  ${wifiBlock}
+  <div class="qr-card">
+    <div class="qr-step">${WIFI_SSID ? '2' : '1'}</div>
+    <h2>🍹 Ouvre le bar</h2>
+    <img src="${barQR}" alt="Bar QR" />
+    <p class="url">${barUrl}</p>
+    <p class="hint">Scanne → choisis ton cocktail</p>
+  </div>
+</div>
+</body></html>`);
+});
+
 // ===== HTTP SERVER =====
 const server = app.listen(PORT, () => {
   const localIP = getLocalIP();
@@ -54,10 +117,24 @@ const server = app.listen(PORT, () => {
   console.log(`📱 Local:  http://localhost:${PORT}`);
   console.log(`🌐 Réseau: ${url}`);
   console.log('');
-  console.log('📱 QR Code pour tes invités :');
+
+  // QR WiFi (si configuré)
+  if (WIFI_SSID) {
+    const wifiString = `WIFI:T:${WIFI_TYPE};S:${WIFI_SSID};P:${WIFI_PASS};;`;
+    console.log(`📶 WiFi : ${WIFI_SSID}`);
+    console.log('   Scanne ce QR pour se connecter au WiFi :');
+    qrcode.generate(wifiString, { small: true });
+    console.log('');
+  } else {
+    console.log('💡 Astuce : lance avec WIFI_SSID et WIFI_PASS pour un QR WiFi auto');
+    console.log('   Exemple : WIFI_SSID="MonWifi" WIFI_PASS="motdepasse" node server.js');
+    console.log('');
+  }
+
+  // QR Bar
+  console.log('🍹 QR Code du bar :');
   qrcode.generate(url, { small: true });
   console.log('');
-  console.log('💡 Tout le monde doit être sur le même WiFi !');
   console.log(`👥 Connectés: 0`);
   console.log('');
 });
