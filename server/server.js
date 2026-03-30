@@ -7,494 +7,150 @@ const { networkInterfaces } = require('os');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Configuration par défaut - synchronisée avec la version principale
-const DEFAULT_MIXES = [
-  { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
-    combos:[
-      { name:'Tropi-Kat 🐱', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Fruité & pétillant', desc:'Un mix fruité et pétillant qui te transporte direct sous les cocotiers. Le tonic apporte le fizz, le tropical fait le reste.' },
-      { name:'L\'Ananas-rchiste', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'100% fruité, sans compromis', desc:'Rebellion tropicale en bouche. L\'ananas vient renforcer le mix pour un combo 100% fruité et sans compromis.' },
-      { name:'Mangue Ta Vie', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Doux et onctueux', desc:'Doux, onctueux, réconfortant. La mangue enveloppe le mix tropical dans un câlin sucré.' },
-      { name:'Tropical Sunrise', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
-        tag:'Fruité & vitaminé', desc:'Le tropical rencontre l\'agrume. Un lever de soleil fruité, lumineux et vitaminé.' },
-      { name:'Bubble Paradise', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 120ml eau gazeuse + glaçons', soft:'gazeuse', icon:'💧',
-        tag:'Léger et rafraîchissant', desc:'Version allégée et pétillante du mix tropical. Rafraîchissant, léger, parfait pour enchaîner.' },
-    ]},
-  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
-    combos:[
-      { name:'Virgin Mojito', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 120ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃',
-        tag:'Le classique sans alcool', desc:'Le classique indémodable version sans alcool. Menthe fraîche, lime, bulles — tout le plaisir, zéro regret.' },
-      { name:'Fraîchitude', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Fresh & tonic, simple', desc:'Simple, frais, efficace. Le tonic donne du peps au mix fresh pour un combo désaltérant.' },
-      { name:'Fresh Colada', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Menthe & ananas, frais total', desc:'Ananas et fraîcheur mentholée, comme une piña colada qui a choisi le bon côté de la Force.' },
-      { name:'Mangue Zen', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Douceur mangue-menthe', desc:'La douceur de la mangue + la fraîcheur de la menthe. Zen, fruité, et totalement addictif.' },
-    ]},
-  { id:'maitai', emoji:'🏝', name:'Mix Mai Tai', alc:true, stock:10,
-    combos:[
-      { name:'Mai Tai Classique', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 80ml jus d\'ananas + glaçons pilés', soft:'ananas', icon:'🍍',
-        tag:'Le roi du tiki', desc:'Le roi des cocktails tiki. Rhums, curaçao, orgeat et ananas — un voyage en Polynésie dans ton verre.' },
-      { name:'Mai Oh Mai', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Tiki exotique à la mangue', desc:'Le Mai Tai qui a rencontré une mangue et qui n\'est jamais revenu. Exotique et addictif.' },
-      { name:'Tai Piquant', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Tiki épicé au gingembre', desc:'Le tiki rencontre le gingembre. Épicé, pétillant, avec la profondeur du rhum. Ça réveille.' },
-      { name:'Tai & Tonic', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Tiki version light', desc:'Le tiki en mode light. Le tonic étire les saveurs de rhum et d\'orgeat, frais et sec.' },
-    ]},
-  { id:'passion', emoji:'🍑', name:'Mix Passion', alc:true, stock:10,
-    combos:[
-      { name:'Pornstar Martini', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : shot de prosecco à côté', soft:'prosecco', icon:'🥂',
-        tag:'Glamour & passion', desc:'Le cocktail star des soirées. Passion, vanille, et un shot de prosecco à descendre entre deux gorgées. Glamour.' },
-      { name:'Passionnément Orange', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊',
-        tag:'Vitaminé & fruité', desc:'La passion fruit rencontre l\'orange pour un duo vitaminé et légèrement sucré. Solaire.' },
-      { name:'Fruit Défendu', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Tentation passion-mangue', desc:'Passion + mangue = tentation pure. Onctueux, sucré, et juste ce qu\'il faut d\'interdit.' },
-      { name:'Crush Fizz', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Passion pétillante', desc:'La passion version pétillante. Le tonic allège et les bulles font danser le fruit.' },
-      { name:'Ananas Désir', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Coup de foudre tropical', desc:'Quand la passion rencontre l\'ananas, c\'est le coup de foudre tropical. Frais et envoûtant.' },
-    ]},
-  { id:'ginger', emoji:'🫚', name:'Mix Ginger', alc:true, stock:8,
-    combos:[
-      { name:'Moscow Mule', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 120ml ginger beer + lime + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Le classique iconique', desc:'Le classique absolu. Vodka, ginger beer, lime — simple, efficace, iconique. Servi dans un mug en cuivre si t\'as la classe.' },
-      { name:'Lever de Gingembre', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
-        tag:'Sunrise épicé', desc:'Le sunrise version gingembre. L\'orange adoucit le piquant pour un réveil en douceur.' },
-      { name:'Pique & Piquant', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Épicé-sucré addictif', desc:'Le gingembre qui pique, l\'ananas qui adoucit. Un équilibre épicé-sucré addictif.' },
-      { name:'Ginger Mango', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Exotique & piquant', desc:'Le piquant du gingembre adouci par la mangue veloutée. Un duo exotique qui fonctionne à merveille.' },
-      { name:'Ginger Highball', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Long drink raffiné', desc:'Le ginger mix version longue et raffinée. Le tonic allonge, les bulles dansent, le gingembre parle.' },
-    ]},
-  { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:12,
-    combos:[
-      { name:'Sunset de Fred', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 100ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
-        tag:'La signature du patron', desc:'La signature du patron. Orange, grenadine et coucher de soleil dans un verre. Le cocktail qui donne le smile.' },
-      { name:'Soleil Couchant', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Sunset tropical', desc:'Le sunset prend une tournure tropicale avec l\'ananas. Doux, coloré, et parfait pour finir la journée.' },
-      { name:'Crépuscule Fizz', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Sunset pétillant', desc:'Le sunset allégé par le tonic. Pétillant, léger, avec juste ce qu\'il faut de couleur.' },
-      { name:'Sunset Exotique', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Sunset façon Thaï', desc:'Le coucher de soleil prend des airs de plage thaïlandaise. Mangue + sunset = carte postale en verre.' },
-      { name:'Sunset Mule', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Sunset qui kick', desc:'Le sunset qui kick. La ginger beer ajoute du piquant au dégradé fruité. Épicé et coloré.' },
-    ]},
-  { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:10,
-    combos:[
-      { name:'Espresso Martini', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café — À ajouter : 30ml café froid + glaçons + shaker', soft:'cafe', icon:'☕',
-        tag:'Élégance caféinée', desc:'Le cocktail qui te garde éveillé pour danser. Vodka, café, liqueur de café — secoué, pas remué. Élégance caféinée.' },
-      { name:'Ginger Buzz', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Café épicé & pétillant', desc:'Le café rencontre le gingembre pour un buzz épicé. Pétillant et corsé, il envoie du lourd.' },
-      { name:'Espresso Tonic', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Le combo tendance', desc:'Le combo tendance des coffee shops branchés. Le tonic fait mousser le café, c\'est amer, frais et addictif.' },
-    ]},
-];
-
-const DEFAULT_SOFTS = [
-  { id:'ginger', emoji:'🫚', name:'Ginger beer', stock:30 },
-  { id:'orange', emoji:'🍊', name:'Jus orange', stock:30 },
-  { id:'gazeuse', emoji:'💧', name:'Eau gazeuse', stock:20 },
-  { id:'tonic', emoji:'🧊', name:'Tonic', stock:30 },
-  { id:'ananas', emoji:'🍍', name:'Jus ananas', stock:30 },
-  { id:'cafe', emoji:'☕', name:'Café froid', stock:10 },
-  { id:'prosecco', emoji:'🥂', name:'Prosecco', stock:8 },
-  { id:'mangue', emoji:'🥭', name:'Jus mangue', stock:20 },
-];
-
-const STANDALONE_SOFTS = [
-  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20 },
-  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15 },
-  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15 },
-  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20 },
-  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15 },
-  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15 },
-  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true },
-];
-
-const BEERS = [
-  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4 },
-];
-
-// État global du serveur
-let globalState = {
-  mixes: JSON.parse(JSON.stringify(DEFAULT_MIXES)),
-  softs: JSON.parse(JSON.stringify(DEFAULT_SOFTS)),
-  standalone_softs: JSON.parse(JSON.stringify(STANDALONE_SOFTS)),
-  beers: JSON.parse(JSON.stringify(BEERS)),
-  stock: {},
-  history: []
-};
-
-// Tracker des pseudos connectés
-const connectedUsernames = new Set();
-
-// Chemin du fichier de sauvegarde
 const STATE_FILE = path.join(__dirname, 'state.json');
 
-// Charger l'état depuis le fichier
+// ===== STATE =====
+let globalState = { stock: {}, history: [], connectedUsers: [] };
+
 function loadState() {
   try {
     if (fs.existsSync(STATE_FILE)) {
-      const saved = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-      if (saved && saved.mixes && saved.softs && saved.stock) {
-        globalState = saved;
-        // S'assurer que toutes les nouvelles structures existent
-        if (!globalState.history) {
-          globalState.history = [];
-        }
-        if (!globalState.standalone_softs) {
-          globalState.standalone_softs = JSON.parse(JSON.stringify(STANDALONE_SOFTS));
-        }
-        if (!globalState.beers) {
-          globalState.beers = JSON.parse(JSON.stringify(BEERS));
-        }
-        if (!globalState.stock.standalone_softs) {
-          globalState.stock.standalone_softs = {};
-        }
-        if (!globalState.stock.beers) {
-          globalState.stock.beers = {};
-        }
-        // Initialiser les stocks manquants
-        globalState.standalone_softs.forEach(s => {
-          if (globalState.stock.standalone_softs[s.id] === undefined) {
-            globalState.stock.standalone_softs[s.id] = s.stock;
-          }
-        });
-        globalState.beers.forEach(b => {
-          if (globalState.stock.beers[b.id] === undefined) {
-            globalState.stock.beers[b.id] = b.stock;
-          }
-        });
-        console.log('📂 État chargé depuis state.json');
-        return;
-      }
+      globalState = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+      console.log('📂 État chargé depuis state.json');
     }
-  } catch (error) {
-    console.log('⚠️  Erreur lecture state.json:', error.message);
-  }
-  
-  // Init par défaut si pas de fichier valide
-  console.log('🆕 Initialisation avec l\'état par défaut');
-  globalState.stock.mixes = {};
-  globalState.stock.softs = {};
-  globalState.stock.standalone_softs = {};
-  globalState.stock.beers = {};
-  globalState.history = [];
-  globalState.mixes.forEach(m => globalState.stock.mixes[m.id] = m.stock);
-  globalState.softs.forEach(s => globalState.stock.softs[s.id] = s.stock);
-  globalState.standalone_softs.forEach(s => globalState.stock.standalone_softs[s.id] = s.stock);
-  globalState.beers.forEach(b => globalState.stock.beers[b.id] = b.stock);
-  saveState();
+  } catch (e) { console.error('❌ Erreur chargement état:', e.message); }
 }
 
-// Sauvegarder l'état dans le fichier
 function saveState() {
   try {
     fs.writeFileSync(STATE_FILE, JSON.stringify(globalState, null, 2));
-    console.log('💾 État sauvegardé');
-  } catch (error) {
-    console.error('❌ Erreur sauvegarde:', error.message);
-  }
+  } catch (e) { console.error('❌ Erreur sauvegarde:', e.message); }
 }
 
-// Obtenir l'IP locale
+// ===== NETWORK =====
 function getLocalIP() {
   const interfaces = networkInterfaces();
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name]) {
-      if (iface.family === 'IPv4' && !iface.internal) {
-        return iface.address;
-      }
+      if (iface.family === 'IPv4' && !iface.internal) return iface.address;
     }
   }
   return 'localhost';
 }
 
-// Express - servir les fichiers statiques
+// ===== EXPRESS =====
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-// Route API pour récupérer l'état
-app.get('/api/state', (req, res) => {
-  res.json(globalState);
-});
+app.get('/api/state', (req, res) => res.json(globalState));
 
-// Démarrer le serveur HTTP
+// ===== HTTP SERVER =====
 const server = app.listen(PORT, () => {
   const localIP = getLocalIP();
   const url = `http://${localIP}:${PORT}`;
-  
-  console.log('🍹 Sip Happens at Fred\'s - Serveur démarré !');
   console.log('');
-  console.log(`📱 Accès local: http://localhost:${PORT}`);
-  console.log(`🌐 Accès réseau: ${url}`);
+  console.log('🍹 Sip Happens at Fred\'s — Serveur temps réel');
   console.log('');
-  console.log('📱 Scanner ce QR code avec ton téléphone :');
+  console.log(`📱 Local:  http://localhost:${PORT}`);
+  console.log(`🌐 Réseau: ${url}`);
+  console.log('');
+  console.log('📱 QR Code pour tes invités :');
   qrcode.generate(url, { small: true });
   console.log('');
-  console.log('💡 Assure-toi que tous les appareils sont sur le même WiFi !');
-  console.log('🔧 Admin: maintenir appuyé sur le titre "Sip Happens at Fred\'s"');
+  console.log('💡 Tout le monde doit être sur le même WiFi !');
+  console.log(`👥 Connectés: 0`);
   console.log('');
 });
 
-// WebSocket Server
+// ===== WEBSOCKET =====
 const wss = new WebSocket.Server({ server });
 const clients = new Set();
-const clientUsernames = new Map(); // ws -> username mapping
+const clientUsernames = new Map();
 
-// Broadcast à tous les clients connectés
-function broadcast(message) {
+function broadcast(message, excludeWs = null) {
   const data = JSON.stringify(message);
-  clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
+  clients.forEach(c => {
+    if (c !== excludeWs && c.readyState === WebSocket.OPEN) c.send(data);
   });
-  console.log(`📡 Broadcast: ${message.type} → ${clients.size} client(s)`);
 }
 
-// Connexion WebSocket
+function broadcastUserCount() {
+  broadcast({ type: 'users', count: clients.size, usernames: [...clientUsernames.values()] });
+}
+
 wss.on('connection', (ws) => {
   clients.add(ws);
-  console.log(`🔗 Client connecté (${clients.size} total)`);
-  
+  console.log(`🔗 +1 client (${clients.size} connectés)`);
+  broadcastUserCount();
+
   // Envoyer l'état complet au nouveau client
-  ws.send(JSON.stringify({
-    type: 'sync',
-    state: globalState
-  }));
-  
-  // Gestion des messages
-  ws.on('message', (data) => {
+  ws.send(JSON.stringify({ type: 'sync', state: globalState }));
+
+  ws.on('message', (raw) => {
     try {
-      const message = JSON.parse(data);
-      console.log('📨 Message reçu:', message.type);
-      
-      switch (message.type) {
-        case 'check_username':
-          // Vérifier si le pseudo est disponible
-          const isAvailable = !connectedUsernames.has(message.username);
-          ws.send(JSON.stringify({
-            type: isAvailable ? 'username_ok' : 'username_taken'
-          }));
-          console.log(`👤 Vérification pseudo: ${message.username} → ${isAvailable ? 'OK' : 'PRIS'}`);
-          break;
+      const msg = JSON.parse(raw);
 
+      switch (msg.type) {
         case 'register':
-          // Enregistrer un utilisateur
-          if (message.username && !connectedUsernames.has(message.username)) {
-            connectedUsernames.add(message.username);
-            clientUsernames.set(ws, message.username);
-            console.log(`📝 Utilisateur enregistré: ${message.username}`);
+          if (msg.username) {
+            clientUsernames.set(ws, msg.username);
+            broadcastUserCount();
+            console.log(`👤 ${msg.username} enregistré`);
           }
           break;
 
-        case 'serve':
-          // Servir un cocktail
-          if (globalState.stock.mixes[message.mixId] > 0 && 
-              globalState.stock.softs[message.softId] > 0) {
-            globalState.stock.mixes[message.mixId]--;
-            globalState.stock.softs[message.softId]--;
-            
-            // Ajouter à l'historique si un username est fourni
-            if (message.username && message.comboIdx !== undefined) {
-              const mix = globalState.mixes.find(m => m.id === message.mixId);
-              const combo = mix && mix.combos[message.comboIdx];
-              if (combo) {
-                const historyEntry = {
-                  username: message.username,
-                  cocktailName: combo.name,
-                  mixName: mix.name,
-                  timestamp: Date.now()
-                };
-                globalState.history.unshift(historyEntry); // Ajouter au début pour les plus récents
-                // Garder seulement les 100 dernières entrées
-                if (globalState.history.length > 100) {
-                  globalState.history = globalState.history.slice(0, 100);
-                }
-              }
-            }
-            
-            saveState();
-            
-            // Broadcast la nouvelle state à tous
-            broadcast({
-              type: 'sync',
-              state: globalState
-            });
-            
-            console.log(`🍹 Cocktail servi: ${message.mixId} + ${message.softId}${message.username ? ' pour ' + message.username : ''}`);
+        case 'stock_update':
+          // Client envoie le delta de stock après un service
+          if (msg.stock) globalState.stock = msg.stock;
+          if (msg.historyEntry) {
+            if (!globalState.history) globalState.history = [];
+            globalState.history.unshift(msg.historyEntry);
+            if (globalState.history.length > 200) globalState.history = globalState.history.slice(0, 200);
           }
-          break;
-          
-        case 'admin_update':
-          // Mise à jour depuis l'admin panel
-          if (message.mixes) globalState.mixes = message.mixes;
-          if (message.softs) globalState.softs = message.softs;
-          if (message.stock) globalState.stock = message.stock;
           saveState();
-          
-          // Broadcast la mise à jour
-          broadcast({
-            type: 'sync',
-            state: globalState
-          });
-          
-          console.log('🔧 Mise à jour admin');
-          break;
-          
-        case 'rename':
-          // Transférer l'historique d'un pseudo à un autre
-          if (message.oldUsername && message.newUsername && globalState.history) {
-            globalState.history.forEach(h => { if (h.username === message.oldUsername) h.username = message.newUsername; });
-            // Mettre à jour le Set des pseudos connectés
-            connectedUsernames.delete(message.oldUsername);
-            connectedUsernames.add(message.newUsername);
-            ws.username = message.newUsername;
-            saveState();
-            broadcast({ type: 'sync', state: globalState });
-            console.log(`📝 Rename: ${message.oldUsername} → ${message.newUsername}`);
-          }
+          // Broadcast à tous les AUTRES clients
+          broadcast({ type: 'sync', state: globalState }, ws);
+          const who = msg.historyEntry?.username || '?';
+          const what = msg.historyEntry?.cocktailName || '?';
+          console.log(`🍹 ${who} → ${what}`);
           break;
 
-        case 'serve_soft':
-          // Servir un soft standalone
-          const soft = globalState.standalone_softs.find(s => s.id === message.softId);
-          if (soft && (soft.unlimited || globalState.stock.standalone_softs[message.softId] > 0)) {
-            // Décrémenter seulement si pas unlimited
-            if (!soft.unlimited) {
-              globalState.stock.standalone_softs[message.softId]--;
-            }
-            
-            // Ajouter à l'historique
-            if (message.username && soft.name) {
-              const historyEntry = {
-                username: message.username,
-                cocktailName: soft.name,
-                mixName: 'Soft',
-                timestamp: Date.now()
-              };
-              globalState.history.unshift(historyEntry);
-              if (globalState.history.length > 100) {
-                globalState.history = globalState.history.slice(0, 100);
-              }
-            }
-            
+        case 'full_sync':
+          // Admin push — full state override
+          if (msg.state) {
+            globalState = msg.state;
             saveState();
-            
-            // Broadcast la nouvelle state à tous
-            broadcast({
-              type: 'sync',
-              state: globalState
-            });
-            
-            console.log(`🥤 Soft servi: ${soft.name}${message.username ? ' pour ' + message.username : ''}`);
-          }
-          break;
-          
-        case 'serve_beer':
-          // Servir une bière
-          const beer = globalState.beers.find(b => b.id === message.beerId);
-          if (beer && globalState.stock.beers[message.beerId] > 0) {
-            globalState.stock.beers[message.beerId]--;
-            
-            // Ajouter à l'historique
-            if (message.username && beer.name) {
-              const historyEntry = {
-                username: message.username,
-                cocktailName: beer.name,
-                mixName: 'Bière',
-                timestamp: Date.now()
-              };
-              globalState.history.unshift(historyEntry);
-              if (globalState.history.length > 100) {
-                globalState.history = globalState.history.slice(0, 100);
-              }
-            }
-            
-            saveState();
-            
-            // Broadcast la nouvelle state à tous
-            broadcast({
-              type: 'sync',
-              state: globalState
-            });
-            
-            console.log(`🍺 Bière servie: ${beer.name}${message.username ? ' pour ' + message.username : ''}`);
+            broadcast({ type: 'sync', state: globalState }, ws);
+            console.log('🔧 Sync admin');
           }
           break;
 
         case 'reset':
-          // Reset complet
-          globalState.mixes = JSON.parse(JSON.stringify(DEFAULT_MIXES));
-          globalState.softs = JSON.parse(JSON.stringify(DEFAULT_SOFTS));
-          globalState.standalone_softs = JSON.parse(JSON.stringify(STANDALONE_SOFTS));
-          globalState.beers = JSON.parse(JSON.stringify(BEERS));
-          globalState.stock = { mixes: {}, softs: {}, standalone_softs: {}, beers: {} };
-          globalState.history = [];
-          globalState.mixes.forEach(m => globalState.stock.mixes[m.id] = m.stock);
-          globalState.softs.forEach(s => globalState.stock.softs[s.id] = s.stock);
-          globalState.standalone_softs.forEach(s => globalState.stock.standalone_softs[s.id] = s.stock);
-          globalState.beers.forEach(b => globalState.stock.beers[b.id] = b.stock);
+          globalState = { stock: {}, history: [], connectedUsers: [] };
           saveState();
-          
-          broadcast({
-            type: 'sync',
-            state: globalState
-          });
-          
-          console.log('🔄 Reset effectué');
+          broadcast({ type: 'reset' });
+          console.log('🔄 Reset complet');
           break;
       }
-      
-    } catch (error) {
-      console.error('❌ Erreur traitement message:', error.message);
-    }
+    } catch (e) { console.error('❌ Message invalide:', e.message); }
   });
-  
-  // Déconnexion
+
   ws.on('close', () => {
     clients.delete(ws);
-    // Retirer le pseudo des utilisateurs connectés
     const username = clientUsernames.get(ws);
-    if (username) {
-      connectedUsernames.delete(username);
-      clientUsernames.delete(ws);
-      console.log(`❌ Client déconnecté: ${username} (${clients.size} restant)`);
-    } else {
-      console.log(`❌ Client déconnecté (${clients.size} restant)`);
-    }
+    clientUsernames.delete(ws);
+    broadcastUserCount();
+    console.log(`❌ ${username || 'Anonyme'} déconnecté (${clients.size} restants)`);
   });
-  
-  ws.on('error', (error) => {
-    console.error('❌ Erreur WebSocket:', error.message);
+
+  ws.on('error', (e) => {
     clients.delete(ws);
-    // Nettoyer aussi en cas d'erreur
-    const username = clientUsernames.get(ws);
-    if (username) {
-      connectedUsernames.delete(username);
-      clientUsernames.delete(ws);
-    }
+    clientUsernames.delete(ws);
+    console.error('❌ WS error:', e.message);
   });
 });
 
-// Charger l'état au démarrage
 loadState();
 
-// Nettoyage à l'arrêt
-process.on('SIGINT', () => {
-  console.log('\n🛑 Arrêt du serveur...');
-  saveState();
-  process.exit(0);
-});
-
-process.on('SIGTERM', () => {
-  console.log('\n🛑 Arrêt du serveur...');
-  saveState();
-  process.exit(0);
-});
+process.on('SIGINT', () => { console.log('\n🛑 Arrêt...'); saveState(); process.exit(0); });
+process.on('SIGTERM', () => { console.log('\n🛑 Arrêt...'); saveState(); process.exit(0); });

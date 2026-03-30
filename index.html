@@ -2700,6 +2700,129 @@ function closeTutorial() {
 
 window.nextTutorialStep = nextTutorialStep;
 window.skipTutorial = skipTutorial;
+
+// ===== WEBSOCKET LIVE SYNC =====
+// Auto-détecte si un serveur WS est dispo (mode soirée) sinon reste en localStorage
+(function() {
+  let ws = null;
+  let wsConnected = false;
+  let reconnectTimer = null;
+  const WS_RETRY_MS = 3000;
+
+  // Patch saveAll pour broadcast via WS
+  const _origSaveAll = saveAll;
+  saveAll = function() {
+    _origSaveAll();
+    if (wsConnected && ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        type: 'stock_update',
+        stock: state,
+        historyEntry: (typeof leaderboardData !== 'undefined' && leaderboardData.history && leaderboardData.history.length > 0)
+          ? leaderboardData.history[0] : null
+      }));
+    }
+  };
+
+  function applySync(serverState) {
+    if (serverState.stock) {
+      // Merge server stock into local state
+      if (serverState.stock.mixes) state.mixes = serverState.stock.mixes;
+      if (serverState.stock.softs) state.softs = serverState.stock.softs;
+      if (serverState.stock.standalone_softs) state.standalone_softs = serverState.stock.standalone_softs;
+      if (serverState.stock.beers) state.beers = serverState.stock.beers;
+    }
+    if (serverState.history && typeof leaderboardData !== 'undefined') {
+      leaderboardData.history = serverState.history;
+    }
+    _origSaveAll(); // Save locally too
+    renderTabs();
+    renderCocktails();
+  }
+
+  function connectWS() {
+    // Build WS URL from current page location
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = proto + '//' + location.host;
+
+    try {
+      ws = new WebSocket(wsUrl);
+    } catch(e) { return; }
+
+    ws.onopen = function() {
+      wsConnected = true;
+      console.log('🔗 WebSocket connecté — mode live !');
+      // Register username if available
+      if (currentUsername) {
+        ws.send(JSON.stringify({ type: 'register', username: currentUsername }));
+      }
+      // Show live indicator
+      showLiveIndicator(true);
+    };
+
+    ws.onmessage = function(e) {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.type === 'sync' && msg.state) {
+          applySync(msg.state);
+        } else if (msg.type === 'reset') {
+          localStorage.removeItem('chezfred_v1');
+          location.reload();
+        } else if (msg.type === 'users') {
+          updateConnectedCount(msg.count);
+        }
+      } catch(err) {}
+    };
+
+    ws.onclose = function() {
+      wsConnected = false;
+      showLiveIndicator(false);
+      console.log('📡 WebSocket déconnecté — retry dans 3s');
+      reconnectTimer = setTimeout(connectWS, WS_RETRY_MS);
+    };
+
+    ws.onerror = function() {
+      ws.close();
+    };
+  }
+
+  function showLiveIndicator(on) {
+    let el = document.getElementById('live-indicator');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'live-indicator';
+      el.style.cssText = 'position:fixed;top:8px;right:8px;z-index:100;font-size:.7em;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.5px;pointer-events:none;transition:opacity .3s;';
+      document.body.appendChild(el);
+    }
+    if (on) {
+      el.style.background = 'rgba(78,204,163,.15)';
+      el.style.color = '#4ecca3';
+      el.innerHTML = '● LIVE';
+      el.style.opacity = '1';
+    } else {
+      el.style.background = 'rgba(233,69,96,.15)';
+      el.style.color = '#e94560';
+      el.innerHTML = '○ OFFLINE';
+      el.style.opacity = '0.6';
+    }
+  }
+
+  function updateConnectedCount(count) {
+    let el = document.getElementById('connected-count');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'connected-count';
+      el.style.cssText = 'position:fixed;top:8px;right:80px;z-index:100;font-size:.7em;padding:3px 10px;border-radius:20px;font-weight:600;background:rgba(255,255,255,.06);color:var(--sub);pointer-events:none;';
+      document.body.appendChild(el);
+    }
+    el.textContent = '👥 ' + count;
+  }
+
+  // Tenter la connexion — si pas de serveur, on reste en mode localStorage silencieusement
+  // Ne tenter que si on n'est PAS sur github.io
+  if (!location.hostname.includes('github.io')) {
+    connectWS();
+  }
+})();
 </script>
 </body>
 </html>

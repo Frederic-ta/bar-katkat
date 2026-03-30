@@ -13,209 +13,58 @@
   --ok:#4ecca3; --warn:#f0a500; --danger:#e94560;
   --glow:rgba(233,69,96,.15);
 }
-body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh;
-  background-image:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.08) 0%,transparent 60%); }
-
-/* ===== COUNTDOWN ===== */
-#countdown-screen {
-  position:fixed; inset:0; z-index:100; background:var(--bg);
-  background-image:radial-gradient(ellipse at 50% 40%,rgba(233,69,96,.12) 0%,transparent 60%);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; padding:24px;
-}
-#countdown-screen .logo { font-size:5em; margin-bottom:16px; animation:float 3s ease-in-out infinite; cursor:default; user-select:none;
-  filter:drop-shadow(0 0 20px rgba(233,69,96,.3)); }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-#countdown-screen h1 { font-size:2.2em; font-weight:800; letter-spacing:-.02em; }
-#countdown-screen .tagline { color:var(--sub); font-size:1em; margin-bottom:36px; font-style:italic; }
-#countdown-timer { display:flex; gap:12px; margin-bottom:36px; }
-#countdown-timer .unit { background:var(--card); backdrop-filter:blur(20px); border:1px solid var(--card-border);
-  border-radius:16px; padding:16px 18px; min-width:68px; }
-#countdown-timer .unit .num { font-size:2.2em; font-weight:800; color:var(--accent);
-  text-shadow:0 0 20px rgba(233,69,96,.4); }
-#countdown-timer .unit .label { font-size:.65em; color:var(--sub); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
-#countdown-screen .tease { color:var(--sub); font-size:.85em; margin-top:8px; }
-#countdown-screen .tease span { color:var(--accent); font-weight:600; }
-.particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-.particle { position:absolute; font-size:1.4em; opacity:.12; animation:drift linear infinite; }
-@keyframes drift { 0%{transform:translateY(100vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
-
-/* ===== BAR ===== */
-#bar-content { display:none; }
-#bar-content.active { display:block; }
-
-.bar-header { text-align:center; padding:28px 16px 6px; user-select:none; cursor:default; }
-.bar-header h1 { font-size:1.8em; font-weight:800; letter-spacing:-.02em; }
-.bar-header small { display:block; font-size:.78em; color:var(--sub); font-weight:400; margin-top:6px; }
-
-/* Tabs */
-.tab-bar { display:flex; overflow-x:auto; gap:10px; padding:14px 16px 16px;
-  -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.15) transparent; }
-.tab-bar::-webkit-scrollbar { height:3px; }
-.tab-bar::-webkit-scrollbar-track { background:transparent; }
-.tab-bar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.15); border-radius:4px; }
-
-.tab { flex-shrink:0; background:var(--card); backdrop-filter:blur(12px); border:1px solid var(--card-border);
-  border-radius:16px; padding:12px 20px; text-align:center; cursor:pointer; transition:all .2s; min-width:88px; position:relative; }
-.tab:active { transform:scale(.95); }
-.tab.active { background:rgba(233,69,96,.12); border-color:var(--accent); box-shadow:0 0 20px rgba(233,69,96,.15), inset 0 0 20px rgba(233,69,96,.05); }
-.tab .tab-emoji { font-size:1.6em; filter:grayscale(.3); transition:filter .2s; }
-.tab.active .tab-emoji { filter:grayscale(0) drop-shadow(0 0 8px rgba(255,255,255,.2)); }
-.tab .tab-name { font-size:.7em; font-weight:600; margin-top:4px; color:var(--sub); transition:color .2s; }
-.tab.active .tab-name { color:var(--text); }
-.tab .tab-type { font-size:.55em; font-weight:600; padding:2px 8px; border-radius:20px; margin-top:5px; display:inline-block; letter-spacing:.5px; }
-.tab .type-alc { background:rgba(233,69,96,.15); color:var(--danger); }
-.tab .type-na { background:rgba(78,204,163,.12); color:var(--ok); }
-
-/* Section */
-.cocktail-section { padding:4px 16px 120px; }
-.section-header { display:flex; align-items:center; gap:14px; padding:8px 4px 18px; }
-.section-header .sec-emoji { font-size:2.6em; filter:drop-shadow(0 0 10px rgba(255,255,255,.1)); }
-.section-header .sec-info h2 { font-size:1.25em; font-weight:700; }
-.section-header .sec-stock { font-size:.82em; color:var(--sub); margin-top:2px; }
-.section-header .sec-stock strong { font-weight:700; }
-
-/* Cocktail cards */
-.cocktail-card {
-  background:var(--card); backdrop-filter:blur(12px); border:1px solid var(--card-border);
-  border-radius:18px; padding:16px 18px; margin-bottom:10px;
-  display:flex; align-items:center; gap:14px; cursor:pointer;
-  transition:all .18s; position:relative; overflow:hidden;
-}
-.cocktail-card::before {
-  content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s;
-  background:linear-gradient(135deg, rgba(233,69,96,.06) 0%, rgba(78,204,163,.04) 100%);
-}
-.cocktail-card:active { transform:scale(.98); }
-.cocktail-card:active::before { opacity:1; }
-.cocktail-card.disabled { opacity:.4; }
-.cocktail-card .cc-icon { font-size:2em; flex-shrink:0; width:44px; text-align:center; position:relative; z-index:1; }
-.cocktail-card .cc-body { flex:1; position:relative; z-index:1; }
-.cocktail-card .cc-name { font-size:1em; font-weight:700; }
-.cocktail-card .cc-recipe { font-size:.78em; color:var(--sub); margin-top:4px; line-height:1.5; }
-.cocktail-card .cc-recipe em { color:rgba(78,204,163,.8); font-style:normal; font-weight:500; }
-.cocktail-card .cc-go { flex-shrink:0; width:32px; height:32px; border-radius:50%;
-  background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center;
-  font-size:.85em; color:var(--sub); position:relative; z-index:1; transition:all .2s; }
-.cocktail-card:not(.disabled) .cc-go { color:var(--ok); background:rgba(78,204,163,.1); }
-
-@keyframes served { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
-.cocktail-card.just-served { animation:served .4s ease; }
-
-/* OOS */
-.oos-banner { text-align:center; color:var(--danger); font-size:.82em; padding:10px 16px;
-  margin:4px 0 12px; background:rgba(233,69,96,.08); border:1px solid rgba(233,69,96,.15); border-radius:12px; }
-
-/* Toast */
-.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ok); color:#000;
-  padding:12px 28px; border-radius:14px; font-weight:700; font-size:.9em; z-index:60; opacity:0;
-  transition:opacity .3s; pointer-events:none; box-shadow:0 4px 20px rgba(78,204,163,.3); }
-.toast.show { opacity:1; }
-
-/* Detail card */
-.detail-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
-  z-index:30; justify-content:center; align-items:center; padding:16px; }
-.detail-overlay.active { display:flex; }
-.detail-box { background:linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
-  border:1px solid var(--card-border); border-radius:24px; max-width:360px; width:100%; padding:28px; text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.5); }
-.detail-icon { font-size:3.5em; margin-bottom:10px; filter:drop-shadow(0 0 12px rgba(255,255,255,.1)); }
-.detail-name { font-size:1.5em; font-weight:800; margin-bottom:12px; }
-.detail-desc { font-size:.88em; color:var(--sub); line-height:1.6; margin-bottom:16px; text-align:left; padding:0 4px; }
-.detail-recipe-label { font-size:.7em; color:var(--sub); text-transform:uppercase; letter-spacing:1.5px; font-weight:600; margin-bottom:6px; }
-.detail-recipe { font-size:.82em; color:var(--text); font-weight:500; margin-bottom:24px; padding:14px;
-  background:rgba(255,255,255,.04); border:1px solid var(--card-border); border-radius:12px; text-align:left; line-height:1.7; }
-.detail-recipe .fiole { color:var(--warn); font-weight:700; display:block; margin-bottom:6px; }
-.detail-recipe .fiole-ingredients { color:var(--sub); display:block; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--card-border); }
-.detail-recipe .prep-label { color:var(--ok); font-weight:700; display:block; margin-bottom:4px; font-size:.95em; }
-.detail-recipe .prep-item { color:var(--sub); display:block; padding-left:12px; line-height:1.6; }
-.detail-recipe .prep-item::before { content:'• '; color:var(--ok); }
-.detail-btns { display:flex; gap:12px; justify-content:center; }
-.detail-btn { padding:13px 28px; border-radius:14px; border:none; font-size:.95em; font-weight:700; cursor:pointer; transition:transform .12s; }
-.detail-btn:active { transform:scale(.95); }
-.detail-btn.cancel { background:rgba(255,255,255,.08); color:var(--text); }
-.detail-btn.ok { background:linear-gradient(135deg,var(--ok),#3ab88a); color:#000; box-shadow:0 4px 16px rgba(78,204,163,.25); }
-.detail-btn.ok.disabled { opacity:.35; pointer-events:none; }
-
-/* ===== ADMIN ===== */
-#admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); backdrop-filter:blur(4px);
-  z-index:50; overflow-y:auto; padding:16px; }
-#admin-overlay.active { display:flex; justify-content:center; align-items:flex-start; }
-#admin-panel { background:linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
-  border:1px solid var(--card-border); border-radius:20px; max-width:500px; width:100%; padding:20px; margin:20px auto; }
-#admin-panel h2 { text-align:center; margin-bottom:16px; color:var(--accent); font-weight:800; }
-#admin-panel h3 { margin:16px 0 8px; color:var(--ok); font-size:.95em; font-weight:700; }
-.admin-row { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.04);
-  border:1px solid var(--card-border); border-radius:12px; padding:10px 14px; margin:6px 0; flex-wrap:wrap; }
-.admin-row .admin-label { font-size:.9em; flex:1; min-width:120px; }
-.admin-row .admin-label small { color:var(--sub); }
-.admin-stock-ctrl { display:flex; align-items:center; gap:8px; }
-.admin-stock-ctrl button { width:30px; height:30px; border-radius:50%; border:none; font-size:1em; cursor:pointer; font-weight:700; }
-.admin-stock-ctrl .minus { background:rgba(233,69,96,.15); color:var(--danger); }
-.admin-stock-ctrl .plus { background:rgba(78,204,163,.15); color:var(--ok); }
-.admin-stock-ctrl input[type=number] { width:50px; text-align:center; background:rgba(255,255,255,.06);
-  border:1px solid var(--card-border); color:var(--text); border-radius:8px; padding:4px; font-size:1em; }
-.admin-add-form { background:rgba(255,255,255,.03); border:1px solid var(--card-border); border-radius:14px; padding:14px; margin:8px 0; }
-.admin-add-form label { display:block; font-size:.75em; color:var(--sub); margin:8px 0 2px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
-.admin-add-form input, .admin-add-form select { width:100%; padding:8px 10px; border-radius:10px;
-  border:1px solid var(--card-border); background:rgba(255,255,255,.06); color:var(--text); font-size:.9em; }
-.admin-add-form .row2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.admin-btn { display:inline-block; margin:6px 4px; padding:10px 22px; border-radius:12px; border:none; font-size:.9em; cursor:pointer; font-weight:700; }
-.admin-btn-ok { background:linear-gradient(135deg,var(--ok),#3ab88a); color:#000; }
-.admin-btn-danger { background:rgba(233,69,96,.2); color:var(--danger); border:1px solid rgba(233,69,96,.3); }
-.admin-btn-close { background:rgba(255,255,255,.08); color:var(--text); }
-.admin-delete { cursor:pointer; color:var(--danger); font-size:.8em; margin-left:8px; opacity:.5; transition:opacity .15s; }
-.admin-delete:hover { opacity:1; }
-.admin-combo-row { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.03);
-  border:1px solid var(--card-border); border-radius:8px; padding:6px 10px; margin:4px 0; font-size:.82em; }
-.admin-combo-row span { flex:1; }
-.admin-combo-add { background:rgba(255,255,255,.03); border:1px solid var(--card-border); border-radius:10px; padding:8px; margin:4px 0; }
-.admin-combo-add input, .admin-combo-add select { width:100%; padding:6px 8px; border-radius:8px;
-  border:1px solid var(--card-border); background:rgba(255,255,255,.06); color:var(--text); font-size:.82em; margin:2px 0; }
-.admin-actions { text-align:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--card-border); }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width:480px) {
-  .bar-header h1 { font-size:1.5em; }
-  .tab { padding:10px 14px; min-width:76px; }
-  .tab .tab-emoji { font-size:1.3em; }
-  .tab .tab-name { font-size:.62em; }
-  .section-header .sec-emoji { font-size:2em; }
-  .section-header .sec-info h2 { font-size:1.1em; }
-  .cocktail-card { padding:14px; gap:10px; }
-  .cocktail-card .cc-icon { font-size:1.6em; width:36px; }
-  .cocktail-card .cc-name { font-size:.92em; }
-  .cocktail-card .cc-recipe { font-size:.72em; }
-  #countdown-timer { gap:8px; }
-  #countdown-timer .unit { padding:12px 10px; min-width:55px; }
-  #countdown-timer .unit .num { font-size:1.8em; }
-  #countdown-screen h1 { font-size:1.6em; }
-  #admin-panel { padding:14px; }
-  .admin-add-form .row2 { grid-template-columns:1fr; }
-}
-@media (min-width:481px) and (max-width:1024px) {
-  body { padding:16px; }
-  .bar-header { padding:28px 20px 8px; }
-  .bar-header h1 { font-size:2.1em; }
-  .tab-bar { padding:14px 20px 16px; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .tab { padding:14px 24px; min-width:100px; }
-  .cocktail-section { max-width:680px; margin:0 auto; }
-  .cocktail-card { padding:18px 20px; }
-  .cocktail-card .cc-name { font-size:1.05em; }
-  #admin-panel { max-width:580px; }
-}
-@media (min-width:1025px) {
-  .bar-header h1 { font-size:2.4em; }
-  .tab-bar { justify-content:center; gap:14px; padding:16px 24px; }
-  .tab { padding:16px 30px; }
-  .cocktail-section { max-width:750px; margin:0 auto; }
-  .cocktail-card { padding:20px 22px; border-radius:20px; }
-  .cocktail-card .cc-icon { font-size:2.2em; }
-  #admin-panel { max-width:620px; }
-}
 
 /* ===== I18N TOGGLE ===== */
-.lang-toggle {
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px 4px;
+  gap: 8px;
+}
+.top-bar-left {
+  display: flex;
+  gap: 6px;
+}
+.top-bar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  font-size: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.top-bar-btn:hover {
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 0 12px rgba(255,255,255,.1);
+}
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: .8em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.top-bar-right .user-name { color: var(--accent); }
+.top-bar-right .user-points { color: var(--warn); }
+.top-bar-right .edit-icon { font-size: .75em; color: var(--sub); }
+
+.lang-toggle-unused {
+  display: none;
   position: fixed;
   top: 20px;
   left: 20px;
@@ -240,74 +89,23 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   box-shadow: 0 0 20px rgba(255,255,255,.1);
 }
 
-/* ===== NOUVELLES FONCTIONNALITÉS ===== */
-
 /* User display */
-.user-display {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 8px 12px;
-  font-size: .85em;
-  font-weight: 600;
-  color: var(--text);
-}
-.user-display .user-name {
-  color: var(--accent);
-}
-.user-display .edit-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.06);
-  border: none;
-  color: var(--sub);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: .8em;
-  transition: all .2s;
-}
-.user-display .edit-btn:hover {
-  background: rgba(255,255,255,.1);
-  color: var(--text);
-}
+/* old user-display styles replaced by .top-bar-right */
+
+/* Mini serve popup for softs/beers */
+.mini-serve-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(4px);
+  z-index:100; align-items:center; justify-content:center; padding:20px; }
+.mini-serve-overlay.active { display:flex; }
+.mini-serve-popup { background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--card-border);
+  border-radius:20px; padding:28px 24px 20px; text-align:center; max-width:280px; width:100%;
+  box-shadow:0 20px 50px rgba(0,0,0,.4); }
+.mini-serve-emoji { font-size:3em; margin-bottom:8px; }
+.mini-serve-name { font-size:1.3em; font-weight:800; margin-bottom:6px; }
+.mini-serve-tag { font-size:.85em; color:var(--sub); margin-bottom:20px; font-style:italic; }
+.mini-serve-btns { display:flex; gap:10px; justify-content:center; }
 
 /* Leaderboard button */
-.leaderboard-btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 40;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
-  color: var(--warn);
-  font-size: 1.2em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .2s;
-  box-shadow: 0 4px 12px rgba(0,0,0,.2);
-}
-.leaderboard-btn:hover {
-  background: rgba(240,165,0,.1);
-  border-color: var(--warn);
-  box-shadow: 0 0 20px rgba(240,165,0,.2);
-}
+/* old leaderboard-btn styles replaced by .top-bar-btn */
 
 /* Username popup */
 .username-popup {
@@ -556,17 +354,18 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 
 /* Mobile responsive pour nouvelles fonctionnalités */
 @media (max-width:480px) {
-  .user-display { top: 16px; right: 16px; padding: 6px 10px; font-size: .8em; }
-  .leaderboard-btn { top: 16px; left: 12px; width: 36px; height: 36px; font-size: 1em; }
-  .titles-btn { top: 16px; left: 54px; width: 36px; height: 36px; font-size: 1em; }
+  /* user-display now in top-bar flow */
+  .top-bar { padding: 8px 12px 2px; }
+  .top-bar-btn { width: 32px; height: 32px; font-size: .9em; }
+  .top-bar-right { padding: 4px 10px; font-size: .75em; }
   .username-form { padding: 24px; }
   .leaderboard-content { padding: 16px 20px; }
   .history-list { max-height: 150px; }
 }
 
 /* ===== SYSTÈME DE TITRES =====*/
-.titles-btn {
-  position: fixed;
+.titles-btn-unused {
+  display: none;
   top: 20px;
   left: 72px;
   z-index: 40;
@@ -589,6 +388,210 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   background: rgba(233,69,96,.1);
   border-color: var(--accent);
   box-shadow: 0 0 20px rgba(233,69,96,.2);
+}
+
+.titles-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0,0,0,.8);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.titles-overlay.active {
+  display: flex;
+}
+.titles-panel {
+  background: linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.titles-header {
+  padding: 24px 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--card-border);
+}
+.titles-header h3 {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.titles-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+.title-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  transition: all .2s;
+}
+.title-item.unlocked {
+  background: rgba(78,204,163,.08);
+  border-color: rgba(78,204,163,.2);
+}
+.title-item.active {
+  background: rgba(233,69,96,.08);
+  border-color: rgba(233,69,96,.3);
+  box-shadow: 0 0 20px rgba(233,69,96,.1);
+}
+.title-emoji {
+  font-size: 2em;
+  flex-shrink: 0;
+  filter: grayscale(.8);
+  opacity: .4;
+  transition: all .2s;
+}
+.title-item.unlocked .title-emoji {
+  filter: grayscale(0);
+  opacity: 1;
+}
+.title-info {
+  flex: 1;
+}
+.title-name {
+  font-size: .95em;
+  font-weight: 700;
+  color: var(--sub);
+  margin-bottom: 2px;
+}
+.title-item.unlocked .title-name {
+  color: var(--text);
+}
+.title-desc {
+  font-size: .8em;
+  color: var(--sub);
+  opacity: .7;
+  line-height: 1.4;
+}
+.title-item.locked .title-desc {
+  opacity: .3;
+}
+.title-actions {
+  display: flex;
+  gap: 8px;
+}
+.title-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: .8em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  background: rgba(78,204,163,.15);
+  color: var(--ok);
+}
+.title-btn:hover {
+  background: rgba(78,204,163,.25);
+}
+.title-btn.active-btn {
+  background: rgba(233,69,96,.2);
+  color: var(--accent);
+}
+.titles-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--card-border);
+  text-align: center;
+}
+.titles-close {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.titles-close:hover {
+  background: rgba(255,255,255,.12);
+}
+
+/* ===== ACHIEVEMENT POPUP =====*/
+.achievement-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 90;
+  background: linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border: 2px solid var(--ok);
+  border-radius: 24px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(78,204,163,.3);
+  min-width: 320px;
+  max-width: 90vw;
+  opacity: 0;
+  transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.achievement-popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.achievement-emoji {
+  font-size: 4em;
+  display: block;
+  margin-bottom: 16px;
+  animation: achievementBounce .6s ease;
+}
+@keyframes achievementBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-30px); }
+  60% { transform: translateY(-15px); }
+}
+.achievement-title {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--ok);
+  margin-bottom: 8px;
+}
+.achievement-desc {
+  font-size: .9em;
+  color: var(--sub);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.achievement-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.achievement-btn {
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  font-size: .9em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+.achievement-btn.equip {
+  background: linear-gradient(135deg, var(--ok), #3ab88a);
+  color: #000;
+}
+.achievement-btn.close {
+  background: rgba(255,255,255,.1);
+  color: var(--text);
 }
 
 /* ===== ANIMATIONS CONFETTIS =====*/
@@ -641,6 +644,295 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
     opacity: 0;
   }
 }
+body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh;
+  background-image:radial-gradient(ellipse at 50% 0%,rgba(233,69,96,.08) 0%,transparent 60%); }
+
+/* ===== COUNTDOWN ===== */
+#countdown-screen {
+  position:fixed; inset:0; z-index:100; background:var(--bg);
+  background-image:radial-gradient(ellipse at 50% 40%,rgba(233,69,96,.12) 0%,transparent 60%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:24px;
+}
+#countdown-screen .logo { font-size:5em; margin-bottom:16px; animation:float 3s ease-in-out infinite; cursor:default; user-select:none;
+  filter:drop-shadow(0 0 20px rgba(233,69,96,.3)); }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+#countdown-screen h1 { font-size:2.2em; font-weight:800; letter-spacing:-.02em; }
+#countdown-screen .tagline { color:var(--sub); font-size:1em; margin-bottom:36px; font-style:italic; }
+#countdown-timer { display:flex; gap:12px; margin-bottom:36px; }
+#countdown-timer .unit { background:var(--card); backdrop-filter:blur(20px); border:1px solid var(--card-border);
+  border-radius:16px; padding:16px 18px; min-width:68px; }
+#countdown-timer .unit .num { font-size:2.2em; font-weight:800; color:var(--accent);
+  text-shadow:0 0 20px rgba(233,69,96,.4); }
+#countdown-timer .unit .label { font-size:.65em; color:var(--sub); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
+#countdown-screen .tease { color:var(--sub); font-size:.85em; margin-top:8px; }
+#countdown-screen .tease span { color:var(--accent); font-weight:600; }
+.particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.particle { position:absolute; font-size:1.4em; opacity:.12; animation:drift linear infinite; }
+@keyframes drift { 0%{transform:translateY(100vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
+
+/* ===== BAR ===== */
+#bar-content { display:none; }
+#bar-content.active { display:block; }
+
+.bar-header { text-align:center; padding:28px 16px 6px; user-select:none; cursor:default; }
+.bar-header h1 { font-size:1.8em; font-weight:800; letter-spacing:-.02em; }
+.bar-header small { display:block; font-size:.78em; color:var(--sub); font-weight:400; margin-top:6px; }
+
+/* Tabs */
+.tab-bar { display:flex; overflow-x:auto; gap:10px; padding:14px 16px 16px;
+  -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.15) transparent; }
+.tab-bar::-webkit-scrollbar { height:3px; }
+.tab-bar::-webkit-scrollbar-track { background:transparent; }
+.tab-bar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.15); border-radius:4px; }
+
+.tab { flex-shrink:0; background:var(--card); backdrop-filter:blur(12px); border:1px solid var(--card-border);
+  border-radius:16px; padding:12px 20px; text-align:center; cursor:pointer; transition:all .2s; min-width:88px; position:relative; }
+.tab:active { transform:scale(.95); }
+.tab.active { background:rgba(233,69,96,.12); border-color:var(--accent); box-shadow:0 0 20px rgba(233,69,96,.15), inset 0 0 20px rgba(233,69,96,.05); }
+.tab .tab-emoji { font-size:1.6em; filter:grayscale(.3); transition:filter .2s; }
+.tab.active .tab-emoji { filter:grayscale(0) drop-shadow(0 0 8px rgba(255,255,255,.2)); }
+.tab .tab-name { font-size:.7em; font-weight:600; margin-top:4px; color:var(--sub); transition:color .2s; }
+.tab.active .tab-name { color:var(--text); }
+.tab .tab-type { font-size:.55em; font-weight:600; padding:2px 8px; border-radius:20px; margin-top:5px; display:inline-block; letter-spacing:.5px; }
+.tab .type-alc { background:rgba(233,69,96,.15); color:var(--danger); }
+.tab .type-na { background:rgba(78,204,163,.12); color:var(--ok); }
+
+/* Section */
+.cocktail-section { padding:4px 16px 120px; }
+.section-header { display:flex; align-items:center; gap:14px; padding:8px 4px 18px; }
+.section-header .sec-emoji { font-size:2.6em; filter:drop-shadow(0 0 10px rgba(255,255,255,.1)); }
+.section-header .sec-info h2 { font-size:1.25em; font-weight:700; }
+.section-header .sec-stock { font-size:.82em; color:var(--sub); margin-top:2px; }
+.section-header .sec-stock strong { font-weight:700; }
+
+/* Cocktail cards */
+.cocktail-card {
+  background:var(--card); backdrop-filter:blur(12px); border:1px solid var(--card-border);
+  border-radius:18px; padding:16px 18px; margin-bottom:10px;
+  display:flex; align-items:center; gap:14px; cursor:pointer;
+  transition:all .18s; position:relative; overflow:hidden;
+}
+.cocktail-card::before {
+  content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s;
+  background:linear-gradient(135deg, rgba(233,69,96,.06) 0%, rgba(78,204,163,.04) 100%);
+}
+.cocktail-card:active { transform:scale(.98); }
+.cocktail-card:active::before { opacity:1; }
+.cocktail-card.disabled { opacity:.4; }
+.cocktail-card .cc-icon { font-size:2em; flex-shrink:0; width:44px; text-align:center; position:relative; z-index:1; }
+.cocktail-card .cc-body { flex:1; position:relative; z-index:1; }
+.cocktail-card .cc-name { font-size:1em; font-weight:700; }
+.cocktail-card .cc-recipe { font-size:.78em; color:var(--sub); margin-top:4px; line-height:1.5; }
+.cocktail-card .cc-recipe em { color:rgba(78,204,163,.8); font-style:normal; font-weight:500; }
+.cocktail-card .cc-go { flex-shrink:0; width:32px; height:32px; border-radius:50%;
+  background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center;
+  font-size:.85em; color:var(--sub); position:relative; z-index:1; transition:all .2s; }
+.cocktail-card:not(.disabled) .cc-go { color:var(--ok); background:rgba(78,204,163,.1); }
+.cc-abv { font-size:.6em; font-weight:600; padding:2px 7px; border-radius:20px; display:inline-block;
+  letter-spacing:.3px; margin-left:6px; vertical-align:middle; }
+.cc-abv.abv-alc { background:rgba(233,69,96,.12); color:var(--danger); }
+.cc-abv.abv-na { background:rgba(78,204,163,.1); color:var(--ok); }
+
+@keyframes served { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
+.cocktail-card.just-served { animation:served .4s ease; }
+
+/* OOS */
+.oos-banner { text-align:center; color:var(--danger); font-size:.82em; padding:10px 16px;
+  margin:4px 0 12px; background:rgba(233,69,96,.08); border:1px solid rgba(233,69,96,.15); border-radius:12px; }
+
+/* Toast */
+.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ok); color:#000;
+  padding:12px 28px; border-radius:14px; font-weight:700; font-size:.9em; z-index:60; opacity:0;
+  transition:opacity .3s; pointer-events:none; box-shadow:0 4px 20px rgba(78,204,163,.3); }
+.toast.show { opacity:1; }
+
+/* Detail card */
+.detail-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(6px);
+  z-index:30; justify-content:center; align-items:center; padding:16px; }
+.detail-overlay.active { display:flex; }
+.detail-box { background:linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border:1px solid var(--card-border); border-radius:24px; max-width:360px; width:100%; padding:28px; text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5); }
+.detail-icon { font-size:3.5em; margin-bottom:10px; filter:drop-shadow(0 0 12px rgba(255,255,255,.1)); }
+.detail-name { font-size:1.5em; font-weight:800; margin-bottom:12px; }
+.detail-desc { font-size:.88em; color:var(--sub); line-height:1.6; margin-bottom:16px; text-align:left; padding:0 4px; }
+.detail-recipe-label { font-size:.7em; color:var(--sub); text-transform:uppercase; letter-spacing:1.5px; font-weight:600; margin-bottom:6px; }
+.detail-recipe { font-size:.82em; color:var(--text); font-weight:500; margin-bottom:24px; padding:14px;
+  background:rgba(255,255,255,.04); border:1px solid var(--card-border); border-radius:12px; text-align:left; line-height:1.7; }
+.detail-recipe .fiole { color:var(--warn); font-weight:700; display:block; margin-bottom:6px; }
+.detail-recipe .fiole-ingredients { color:var(--sub); display:block; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--card-border); }
+.detail-recipe .prep-label { color:var(--ok); font-weight:700; display:block; margin-bottom:4px; font-size:.95em; }
+.detail-recipe .prep-item { color:var(--sub); display:block; padding-left:12px; line-height:1.6; }
+.detail-recipe .prep-item::before { content:'• '; color:var(--ok); }
+.detail-abv { display:inline-block; font-size:.75em; font-weight:600; padding:3px 10px; border-radius:20px;
+  letter-spacing:.3px; margin-top:2px; }
+.detail-abv.abv-alc { background:rgba(233,69,96,.12); color:var(--danger); }
+.detail-abv.abv-na { background:rgba(78,204,163,.1); color:var(--ok); }
+.detail-btns { display:flex; gap:12px; justify-content:center; }
+.detail-btn { padding:13px 28px; border-radius:14px; border:none; font-size:.95em; font-weight:700; cursor:pointer; transition:transform .12s; }
+.detail-btn:active { transform:scale(.95); }
+.detail-btn.cancel { background:rgba(255,255,255,.08); color:var(--text); }
+.detail-btn.ok { background:linear-gradient(135deg,var(--ok),#3ab88a); color:#000; box-shadow:0 4px 16px rgba(78,204,163,.25); }
+.detail-btn.ok.disabled { opacity:.35; pointer-events:none; }
+
+/* ===== ADMIN ===== */
+#admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); backdrop-filter:blur(4px);
+  z-index:50; overflow-y:auto; padding:16px; }
+#admin-overlay.active { display:flex; justify-content:center; align-items:flex-start; }
+#admin-panel { background:linear-gradient(160deg, rgba(22,33,62,.98) 0%, rgba(12,12,29,.98) 100%);
+  border:1px solid var(--card-border); border-radius:20px; max-width:500px; width:100%; padding:20px; margin:20px auto; }
+#admin-panel h2 { text-align:center; margin-bottom:16px; color:var(--accent); font-weight:800; }
+#admin-panel h3 { margin:16px 0 8px; color:var(--ok); font-size:.95em; font-weight:700; }
+.admin-row { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.04);
+  border:1px solid var(--card-border); border-radius:12px; padding:10px 14px; margin:6px 0; flex-wrap:wrap; }
+.admin-row .admin-label { font-size:.9em; flex:1; min-width:120px; }
+.admin-row .admin-label small { color:var(--sub); }
+.admin-stock-ctrl { display:flex; align-items:center; gap:8px; }
+.admin-stock-ctrl button { width:30px; height:30px; border-radius:50%; border:none; font-size:1em; cursor:pointer; font-weight:700; }
+.admin-stock-ctrl .minus { background:rgba(233,69,96,.15); color:var(--danger); }
+.admin-stock-ctrl .plus { background:rgba(78,204,163,.15); color:var(--ok); }
+.admin-stock-ctrl input[type=number] { width:50px; text-align:center; background:rgba(255,255,255,.06);
+  border:1px solid var(--card-border); color:var(--text); border-radius:8px; padding:4px; font-size:1em; }
+.admin-add-form { background:rgba(255,255,255,.03); border:1px solid var(--card-border); border-radius:14px; padding:14px; margin:8px 0; }
+.admin-add-form label { display:block; font-size:.75em; color:var(--sub); margin:8px 0 2px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+.admin-add-form input, .admin-add-form select { width:100%; padding:8px 10px; border-radius:10px;
+  border:1px solid var(--card-border); background:rgba(255,255,255,.06); color:var(--text); font-size:.9em; }
+.admin-add-form .row2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.admin-btn { display:inline-block; margin:6px 4px; padding:10px 22px; border-radius:12px; border:none; font-size:.9em; cursor:pointer; font-weight:700; }
+.admin-btn-ok { background:linear-gradient(135deg,var(--ok),#3ab88a); color:#000; }
+.admin-btn-danger { background:rgba(233,69,96,.2); color:var(--danger); border:1px solid rgba(233,69,96,.3); }
+.admin-btn-close { background:rgba(255,255,255,.08); color:var(--text); }
+.admin-delete { cursor:pointer; color:var(--danger); font-size:.8em; margin-left:8px; opacity:.5; transition:opacity .15s; }
+.admin-delete:hover { opacity:1; }
+.admin-combo-row { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.03);
+  border:1px solid var(--card-border); border-radius:8px; padding:6px 10px; margin:4px 0; font-size:.82em; }
+.admin-combo-row span { flex:1; }
+.admin-combo-add { background:rgba(255,255,255,.03); border:1px solid var(--card-border); border-radius:10px; padding:8px; margin:4px 0; }
+.admin-combo-add input, .admin-combo-add select { width:100%; padding:6px 8px; border-radius:8px;
+  border:1px solid var(--card-border); background:rgba(255,255,255,.06); color:var(--text); font-size:.82em; margin:2px 0; }
+.admin-actions { text-align:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--card-border); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:480px) {
+  .bar-header h1 { font-size:1.5em; }
+  .tab { padding:10px 14px; min-width:76px; }
+  .tab .tab-emoji { font-size:1.3em; }
+  .tab .tab-name { font-size:.62em; }
+  .section-header .sec-emoji { font-size:2em; }
+  .section-header .sec-info h2 { font-size:1.1em; }
+  .cocktail-card { padding:14px; gap:10px; }
+  .cocktail-card .cc-icon { font-size:1.6em; width:36px; }
+  .cocktail-card .cc-name { font-size:.92em; }
+  .cocktail-card .cc-recipe { font-size:.72em; }
+  #countdown-timer { gap:8px; }
+  #countdown-timer .unit { padding:12px 10px; min-width:55px; }
+  #countdown-timer .unit .num { font-size:1.8em; }
+  #countdown-screen h1 { font-size:1.6em; }
+  #admin-panel { padding:14px; }
+  .admin-add-form .row2 { grid-template-columns:1fr; }
+}
+@media (min-width:481px) and (max-width:1024px) {
+  body { padding:16px; }
+  .bar-header { padding:28px 20px 8px; }
+  .bar-header h1 { font-size:2.1em; }
+  .tab-bar { padding:14px 20px 16px; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .tab { padding:14px 24px; min-width:100px; }
+  .cocktail-section { max-width:680px; margin:0 auto; }
+  .cocktail-card { padding:18px 20px; }
+  .cocktail-card .cc-name { font-size:1.05em; }
+  #admin-panel { max-width:580px; }
+}
+@media (min-width:1025px) {
+  .bar-header h1 { font-size:2.4em; }
+  .tab-bar { justify-content:center; gap:14px; padding:16px 24px; }
+  .tab { padding:16px 30px; }
+  .cocktail-section { max-width:750px; margin:0 auto; }
+  .cocktail-card { padding:20px 22px; border-radius:20px; }
+  .cocktail-card .cc-icon { font-size:2.2em; }
+  #admin-panel { max-width:620px; }
+}
+
+/* ===== TUTORIAL OVERLAY ===== */
+.tutorial-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .8);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.tutorial-overlay.active {
+  display: flex;
+}
+.tutorial-bubble {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
+  position: relative;
+}
+.tutorial-counter {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: .75em;
+  color: var(--sub);
+  font-weight: 600;
+}
+.tutorial-emoji {
+  font-size: 3em;
+  margin-bottom: 16px;
+  display: block;
+}
+.tutorial-text {
+  font-size: .9em;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.tutorial-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.tutorial-skip {
+  background: none;
+  border: none;
+  color: var(--sub);
+  font-size: .8em;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color .2s;
+}
+.tutorial-skip:hover {
+  color: var(--text);
+}
+
+/* Mobile responsive pour tutoriel */
+@media (max-width: 480px) {
+  .tutorial-bubble {
+    max-width: 300px;
+    padding: 24px;
+  }
+  .tutorial-emoji {
+    font-size: 2.5em;
+    margin-bottom: 14px;
+  }
+  .tutorial-text {
+    font-size: .85em;
+  }
+}
 </style>
 </head>
 <body>
@@ -662,21 +954,18 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 
 <!-- BAR -->
 <div id="bar-content">
-  <!-- I18N TOGGLE -->
-  <!-- lang toggle removed, language is chosen in username popup -->
-  
-  <!-- USER DISPLAY -->
-  <div class="user-display" id="user-display" style="display: none;">
-    <span class="user-name" id="user-name"></span>
-    <span class="user-points" id="user-points" style="color: var(--warn); margin-left: 4px;"></span>
-    <button class="edit-btn" id="edit-username-btn" onclick="showUsernamePopup(true)">✏️</button>
+  <!-- TOP BAR -->
+  <div class="top-bar" id="top-bar">
+    <div class="top-bar-left">
+      <button class="top-bar-btn" onclick="showLeaderboard()">🏆</button>
+      <button class="top-bar-btn" onclick="showTitles()">🎖️</button>
+    </div>
+    <div class="top-bar-right" id="user-display" onclick="showUsernamePopup(true)">
+      <span class="user-name" id="user-name"></span>
+      <span class="user-points" id="user-points"></span>
+      <span class="edit-icon">✏️</span>
+    </div>
   </div>
-  
-  <!-- LEADERBOARD BUTTON -->
-  <button class="leaderboard-btn" onclick="showLeaderboard()">🏆</button>
-  
-  <!-- TITLES BUTTON -->
-  <button class="titles-btn" onclick="console.log('Titres - En cours de développement')">🎖️</button>
   
   <div class="bar-header" id="title">
     <h1>Sip Happens at Fred's 🍹</h1>
@@ -702,9 +991,35 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   </div>
 </div>
 
+<!-- MINI SERVE POPUP (softs/bières) -->
+<div class="mini-serve-overlay" id="mini-serve-overlay" onclick="if(event.target===this)closeMiniServe()">
+  <div class="mini-serve-popup">
+    <div class="mini-serve-emoji" id="mini-serve-emoji">🥤</div>
+    <div class="mini-serve-name" id="mini-serve-name"></div>
+    <div class="mini-serve-tag" id="mini-serve-tag"></div>
+    <div class="mini-serve-btns">
+      <button class="detail-btn cancel" onclick="closeMiniServe()">Fermer</button>
+      <button class="detail-btn ok" id="mini-serve-btn" onclick="confirmMiniServe()">🍹 Servir !</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN -->
 <div id="admin-overlay">
   <div id="admin-panel"></div>
+</div>
+
+<!-- TUTORIAL OVERLAY -->
+<div class="tutorial-overlay" id="tutorial-overlay">
+  <div class="tutorial-bubble">
+    <div class="tutorial-counter" id="tutorial-counter">1/6</div>
+    <div class="tutorial-emoji" id="tutorial-emoji">🎉</div>
+    <div class="tutorial-text" id="tutorial-text"></div>
+    <div class="tutorial-actions">
+      <button class="detail-btn ok" id="tutorial-next" onclick="nextTutorialStep()">Suivant →</button>
+      <button class="tutorial-skip" onclick="skipTutorial()">Passer</button>
+    </div>
+  </div>
 </div>
 
 <!-- USERNAME POPUP -->
@@ -713,7 +1028,7 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
     <h3 id="username-title">👋 Salut toi !</h3>
     <p id="username-desc">Choisis ton pseudo pour profiter du bar et accéder au classement.</p>
     <div style="display:flex;justify-content:center;gap:10px;margin-bottom:16px;">
-      <button class="lang-choice" id="lang-fr" onclick="setLangPopup('fr')" style="padding:8px 18px;border-radius:12px;border:2px solid var(--accent);background:var(--card);font-size:1.2em;cursor:pointer;transition:all .2s;color:var(--text);">🇫🇷 Français</button>
+      <button class="lang-choice" id="lang-fr" onclick="setLangPopup('fr')" style="padding:8px 18px;border-radius:12px;border:2px solid var(--card-border);background:var(--card);font-size:1.2em;cursor:pointer;transition:all .2s;">🇫🇷 Français</button>
       <button class="lang-choice" id="lang-en" onclick="setLangPopup('en')" style="padding:8px 18px;border-radius:12px;border:2px solid var(--card-border);background:var(--card);font-size:1.2em;cursor:pointer;transition:all .2s;color:var(--sub);">🇬🇧 English</button>
     </div>
     <div class="input-group">
@@ -763,8 +1078,31 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
   </div>
 </div>
 
-<!-- WebSocket Status -->
-<div id="ws-status" style="position:fixed;bottom:8px;right:12px;font-size:.7em;color:var(--sub);z-index:5;opacity:.6;">🔴 Hors ligne</div>
+<!-- TITLES OVERLAY -->
+<div class="titles-overlay" id="titles-overlay">
+  <div class="titles-panel">
+    <div class="titles-header">
+      <h3 id="titles-title">🎖️ Titres</h3>
+    </div>
+    <div class="titles-content" id="titles-content">
+      <!-- Contenu généré dynamiquement -->
+    </div>
+    <div class="titles-footer">
+      <button class="titles-close" id="titles-close-btn" onclick="hideTitles()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENT POPUP -->
+<div class="achievement-popup" id="achievement-popup">
+  <div class="achievement-emoji" id="achievement-emoji">🏆</div>
+  <div class="achievement-title" id="achievement-title">Nouveau titre débloqué !</div>
+  <div class="achievement-desc" id="achievement-desc">Description du titre</div>
+  <div class="achievement-actions">
+    <button class="achievement-btn equip" id="achievement-equip" onclick="equipNewTitle()">Équiper</button>
+    <button class="achievement-btn close" onclick="hideAchievement()">Fermer</button>
+  </div>
+</div>
 
 <script>
 // ===== I18N SYSTEM =====
@@ -777,7 +1115,7 @@ const I18N = {
     outOfStock: 'Plus de stock pour ce mix',
     recipe: 'RECETTE',
     preparation: 'Préparation :',
-    glass: 'Verre 250ml',
+    glass: 'Verre 360ml',
     serve: '🍹 Servir !',
     close: 'Fermer',
     outOfStockBtn: 'Rupture de stock',
@@ -824,6 +1162,22 @@ const I18N = {
     equip: 'Équiper',
     equipped: 'Équipé',
     titleEquipped: 'Titre équipé !',
+    // Tutorial
+    tutorialNext: 'Suivant →',
+    tutorialSkip: 'Passer',
+    tutorialFinish: 'C\'est parti ! 🍹',
+    tutorial1Title: 'Bienvenue !',
+    tutorial1Text: 'Bienvenue au bar ! Ici tu commandes tes cocktails, tu cumules des points et tu grimpes dans le classement. Let\'s go !',
+    tutorial2Title: 'Les mix',
+    tutorial2Text: 'En haut, tu trouveras les différents mix. Chaque onglet correspond à un type de cocktail. Scroll pour voir Softs et Bières aussi !',
+    tutorial3Title: 'Commander',
+    tutorial3Text: 'Tape sur un cocktail pour voir sa fiche. Tu y trouveras la description et la recette complète. Appuie sur Servir pour le commander !',
+    tutorial4Title: 'Points',
+    tutorial4Text: 'Chaque boisson te rapporte des points : 🍹 Cocktail alcoolisé = 3 pts, 🍹 Sans alcool = 2 pts, 🍺 Bière = 2 pts, 🥤 Soft = 1 pt',
+    tutorial5Title: 'Classement & Titres',
+    tutorial5Text: 'Appuie sur 🏆 pour voir le classement en temps réel. Appuie sur 🎖️ pour découvrir tous les titres à débloquer. Plus tu bois, plus tu débloques !',
+    tutorial6Title: 'Ton profil',
+    tutorial6Text: 'En haut à droite, tu peux modifier ton pseudo, changer de langue et équiper un titre. Amuse-toi bien ! 🎉',
   },
   en: {
     subtitle: 'Pick a mix, choose your cocktail!',
@@ -833,7 +1187,7 @@ const I18N = {
     outOfStock: 'Out of stock for this mix',
     recipe: 'RECIPE',
     preparation: 'How to make:',
-    glass: '250ml glass',
+    glass: '360ml glass',
     serve: '🍹 Serve!',
     close: 'Close',
     outOfStockBtn: 'Out of stock',
@@ -880,6 +1234,22 @@ const I18N = {
     equip: 'Equip',
     equipped: 'Equipped',
     titleEquipped: 'Title equipped!',
+    // Tutorial
+    tutorialNext: 'Next →',
+    tutorialSkip: 'Skip',
+    tutorialFinish: 'Let\'s go! 🍹',
+    tutorial1Title: 'Welcome!',
+    tutorial1Text: 'Welcome to the bar! Order cocktails, earn points and climb the leaderboard. Let\'s go!',
+    tutorial2Title: 'The mixes',
+    tutorial2Text: 'At the top, you\'ll find different mixes. Each tab is a cocktail type. Scroll to see Soft drinks and Beers too!',
+    tutorial3Title: 'Ordering',
+    tutorial3Text: 'Tap a cocktail to see its details. You\'ll find the description and full recipe. Press Serve to order it!',
+    tutorial4Title: 'Points',
+    tutorial4Text: 'Every drink earns you points: 🍹 Alcoholic cocktail = 3 pts, 🍹 Non-alcoholic = 2 pts, 🍺 Beer = 2 pts, 🥤 Soft = 1 pt',
+    tutorial5Title: 'Leaderboard & Titles',
+    tutorial5Text: 'Press 🏆 to see the live leaderboard. Press 🎖️ to discover all titles to unlock. The more you drink, the more you unlock!',
+    tutorial6Title: 'Your profile',
+    tutorial6Text: 'Top right, you can edit your nickname, switch language and equip a title. Have fun! 🎉',
   }
 };
 
@@ -891,10 +1261,12 @@ function t(key) {
 function setLangPopup(l) {
   lang = l;
   localStorage.setItem('siphappens_lang', lang);
+  // Update popup button styles
   document.getElementById('lang-fr').style.borderColor = lang==='fr' ? 'var(--accent)' : 'var(--card-border)';
   document.getElementById('lang-fr').style.color = lang==='fr' ? 'var(--text)' : 'var(--sub)';
   document.getElementById('lang-en').style.borderColor = lang==='en' ? 'var(--accent)' : 'var(--card-border)';
   document.getElementById('lang-en').style.color = lang==='en' ? 'var(--text)' : 'var(--sub)';
+  // Update popup texts
   document.getElementById('username-title').textContent = lang==='fr' ? '👋 Salut toi !' : '👋 Hey there!';
   document.getElementById('username-desc').textContent = t('chooseNicknameDesc');
   document.getElementById('username-input').placeholder = t('chooseNickname');
@@ -935,88 +1307,80 @@ function updateLanguageDisplay() {
 }
 
 const DEFAULT_MIXES = [
-  { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:8,
+  { id:'tropical', emoji:'🥭', name:'Mix Tropical', alc:false, stock:6,
     combos:[
-      { name:'Tropi-Kat 🐱', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Fruité & pétillant', desc:'Un mix fruité et pétillant qui te transporte direct sous les cocotiers. Le tonic apporte le fizz, le tropical fait le reste.' },
-      { name:'L\'Ananas-rchiste', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'100% fruité, sans compromis', desc:'Rebellion tropicale en bouche. L\'ananas vient renforcer le mix pour un combo 100% fruité et sans compromis.' },
-      { name:'Mangue Ta Vie', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Doux et onctueux', desc:'Doux, onctueux, réconfortant. La mangue enveloppe le mix tropical dans un câlin sucré.' },
-      { name:'Tropical Sunrise', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
-        tag:'Fruité & vitaminé', desc:'Le tropical rencontre l\'agrume. Un lever de soleil fruité, lumineux et vitaminé.' },
-      { name:'Bubble Paradise', recipe:'🥭 Mix Tropical (fiole) : 75ml sirop mangue + 75ml sirop passion — À ajouter : 120ml eau gazeuse + glaçons', soft:'gazeuse', icon:'💧',
-        tag:'Léger et rafraîchissant', desc:'Version allégée et pétillante du mix tropical. Rafraîchissant, léger, parfait pour enchaîner.' },
+      { name:'Tropi-Kat 🐱', name_en:'Tropi-Kat 🐱', recipe:'🥭 Mix Tropical (fiole) : 30ml sirop mangue-passion + 20ml jus citron vert + 100ml eau — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:0,
+        tag:'Fruité & pétillant', tag_en:'Fruity & sparkling', desc:'Un mix fruité et pétillant qui te transporte direct sous les cocotiers. Le tonic apporte le fizz, le tropical fait le reste.', desc_en:'A fruity and sparkling mix that takes you straight to the coconut palms. The tonic brings the fizz, the tropical does the rest.' },
+      { name:'L\'Ananas-rchiste', name_en:'The Pineapple Rebel', recipe:'🥭 Mix Tropical (fiole) : 30ml sirop mangue-passion + 20ml jus citron vert + 100ml eau — À ajouter : 150ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍', abv:0,
+        tag:'100% fruité, sans compromis', tag_en:'100% fruity, no compromise', desc:'Rebellion tropicale en bouche. L\'ananas vient renforcer le mix pour un combo 100% fruité et sans compromis.', desc_en:'Tropical rebellion in your mouth. Pineapple comes to reinforce the mix for a 100% fruity combo with no compromise.' },
+      { name:'Mangue Ta Vie', name_en:'Mango Your Life', recipe:'🥭 Mix Tropical (fiole) : 30ml sirop mangue-passion + 20ml jus citron vert + 100ml eau — À ajouter : 150ml jus de mangue + glaçons', soft:'mangue', icon:'🥭', abv:0,
+        tag:'Doux et onctueux', tag_en:'Smooth and velvety', desc:'Doux, onctueux, réconfortant. La mangue enveloppe le mix tropical dans un câlin sucré.', desc_en:'Smooth, velvety, comforting. The mango wraps the tropical mix in a sweet hug.' },
+      { name:'Bubble Paradise', name_en:'Bubble Paradise', recipe:'🥭 Mix Tropical (fiole) : 30ml sirop mangue-passion + 20ml jus citron vert + 100ml eau — À ajouter : 150ml eau gazeuse + glaçons', soft:'gazeuse', icon:'💧', abv:0,
+        tag:'Léger et rafraîchissant', tag_en:'Light and refreshing', desc:'Version allégée et pétillante du mix tropical. Rafraîchissant, léger, parfait pour enchaîner.', desc_en:'Light and sparkling version of the tropical mix. Refreshing, light, perfect for chaining.' },
     ]},
-  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:6,
+  { id:'fresh', emoji:'🌿', name:'Mix Fresh', alc:false, stock:8,
     combos:[
-      { name:'Virgin Mojito', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 120ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃',
-        tag:'Le classique sans alcool', desc:'Le classique indémodable version sans alcool. Menthe fraîche, lime, bulles — tout le plaisir, zéro regret.' },
-      { name:'Fraîchitude', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Fresh & tonic, simple', desc:'Simple, frais, efficace. Le tonic donne du peps au mix fresh pour un combo désaltérant.' },
-      { name:'Fresh Colada', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Menthe & ananas, frais total', desc:'Ananas et fraîcheur mentholée, comme une piña colada qui a choisi le bon côté de la Force.' },
-      { name:'Mangue Zen', recipe:'🌿 Mix Fresh (fiole) : 60ml sirop menthe + 40ml sirop sucre de canne + 50ml sirop citron vert — À ajouter : 100ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Douceur mangue-menthe', desc:'La douceur de la mangue + la fraîcheur de la menthe. Zen, fruité, et totalement addictif.' },
+      { name:'Virgin Mojito', name_en:'Virgin Mojito', recipe:'🌿 Mix Fresh (fiole) : 15ml sirop menthe + 10ml sirop sucre de canne + 20ml jus citron vert + 105ml eau — À ajouter : 150ml eau gazeuse + menthe fraîche + lime', soft:'gazeuse', icon:'🍃', abv:0,
+        tag:'Le classique sans alcool', tag_en:'The classic non-alcoholic', desc:'Le classique indémodable version sans alcool. Menthe fraîche, lime, bulles — tout le plaisir, zéro regret.', desc_en:'The timeless classic in non-alcoholic version. Fresh mint, lime, bubbles — all the pleasure, zero regret.' },
+      { name:'Fraîchitude', name_en:'Freshitude', recipe:'🌿 Mix Fresh (fiole) : 15ml sirop menthe + 10ml sirop sucre de canne + 20ml jus citron vert + 105ml eau — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:0,
+        tag:'Fresh & tonic, simple', tag_en:'Fresh & tonic, simple', desc:'Simple, frais, efficace. Le tonic donne du peps au mix fresh pour un combo désaltérant.', desc_en:'Simple, fresh, effective. The tonic gives pep to the fresh mix for a thirst-quenching combo.' },
+      { name:'Fresh Colada', name_en:'Fresh Colada', recipe:'🌿 Mix Fresh (fiole) : 15ml sirop menthe + 10ml sirop sucre de canne + 20ml jus citron vert + 105ml eau — À ajouter : 150ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍', abv:0,
+        tag:'Menthe & ananas, frais total', tag_en:'Mint & pineapple, total freshness', desc:'Ananas et fraîcheur mentholée, comme une piña colada qui a choisi le bon côté de la Force.', desc_en:'Pineapple and minty freshness, like a piña colada that chose the right side of the Force.' },
+      { name:'Mangue Zen', name_en:'Zen Mango', recipe:'🌿 Mix Fresh (fiole) : 15ml sirop menthe + 10ml sirop sucre de canne + 20ml jus citron vert + 105ml eau — À ajouter : 150ml jus de mangue + glaçons', soft:'mangue', icon:'🥭', abv:0,
+        tag:'Douceur mangue-menthe', tag_en:'Sweet mango-mint blend', desc:'La douceur de la mangue + la fraîcheur de la menthe. Zen, fruité, et totalement addictif.', desc_en:'The sweetness of mango + the freshness of mint. Zen, fruity, and totally addictive.' },
     ]},
   { id:'maitai', emoji:'🏝', name:'Mix Mai Tai', alc:true, stock:10,
     combos:[
-      { name:'Mai Tai Classique', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 80ml jus d\'ananas + glaçons pilés', soft:'ananas', icon:'🍍',
-        tag:'Le roi du tiki', desc:'Le roi des cocktails tiki. Rhums, curaçao, orgeat et ananas — un voyage en Polynésie dans ton verre.' },
-      { name:'Mai Oh Mai', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Tiki exotique à la mangue', desc:'Le Mai Tai qui a rencontré une mangue et qui n\'est jamais revenu. Exotique et addictif.' },
-      { name:'Tai Piquant', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Tiki épicé au gingembre', desc:'Le tiki rencontre le gingembre. Épicé, pétillant, avec la profondeur du rhum. Ça réveille.' },
-      { name:'Tai & Tonic', recipe:'🏝 Mix Mai Tai (fiole) : 45ml rhum brun + 35ml rhum blanc + 30ml curaçao + 20ml sirop orgeat + 20ml sirop amande — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Tiki version light', desc:'Le tiki en mode light. Le tonic étire les saveurs de rhum et d\'orgeat, frais et sec.' },
+      { name:'Mai Tai Classique', name_en:'Classic Mai Tai', recipe:'🏝 Mix Mai Tai (fiole) : 50ml rhum brun + 40ml rhum blanc + 30ml curaçao + 25ml sirop orgeat — À ajouter : 150ml jus d\'ananas + glaçons pilés', soft:'ananas', icon:'🍍', abv:14,
+        tag:'Le roi du tiki', tag_en:'The tiki king', desc:'Le roi des cocktails tiki. Rhums, curaçao, orgeat et ananas — un voyage en Polynésie dans ton verre.', desc_en:'The king of tiki cocktails. Rums, curaçao, orgeat and pineapple — a trip to Polynesia in your glass.' },
+      { name:'Mai Oh Mai', name_en:'Mai Oh Mai', recipe:'🏝 Mix Mai Tai (fiole) : 50ml rhum brun + 40ml rhum blanc + 30ml curaçao + 25ml sirop orgeat — À ajouter : 150ml jus de mangue + glaçons', soft:'mangue', icon:'🥭', abv:14,
+        tag:'Tiki exotique à la mangue', tag_en:'Exotic mango tiki', desc:'Le Mai Tai qui a rencontré une mangue et qui n\'est jamais revenu. Exotique et addictif.', desc_en:'The Mai Tai that met a mango and never came back. Exotic and addictive.' },
+      { name:'Tai Piquant', name_en:'Spicy Tai', recipe:'🏝 Mix Mai Tai (fiole) : 50ml rhum brun + 40ml rhum blanc + 30ml curaçao + 25ml sirop orgeat — À ajouter : 150ml ginger beer + glaçons', soft:'ginger', icon:'🫚', abv:14,
+        tag:'Tiki épicé au gingembre', tag_en:'Spicy ginger tiki', desc:'Le tiki rencontre le gingembre. Épicé, pétillant, avec la profondeur du rhum. Ça réveille.', desc_en:'Tiki meets ginger. Spicy, sparkling, with the depth of rum. It wakes you up.' },
+      { name:'Tai & Tonic', name_en:'Tai & Tonic', recipe:'🏝 Mix Mai Tai (fiole) : 50ml rhum brun + 40ml rhum blanc + 30ml curaçao + 25ml sirop orgeat — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:14,
+        tag:'Tiki version light', tag_en:'Light tiki version', desc:'Le tiki en mode light. Le tonic étire les saveurs de rhum et d\'orgeat, frais et sec.', desc_en:'Tiki in light mode. The tonic stretches the rum and orgeat flavors, fresh and dry.' },
     ]},
   { id:'passion', emoji:'🍑', name:'Mix Passion', alc:true, stock:10,
     combos:[
-      { name:'Pornstar Martini', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : shot de prosecco à côté', soft:'prosecco', icon:'🥂',
-        tag:'Glamour & passion', desc:'Le cocktail star des soirées. Passion, vanille, et un shot de prosecco à descendre entre deux gorgées. Glamour.' },
-      { name:'Passionnément Orange', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🍊',
-        tag:'Vitaminé & fruité', desc:'La passion fruit rencontre l\'orange pour un duo vitaminé et légèrement sucré. Solaire.' },
-      { name:'Fruit Défendu', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Tentation passion-mangue', desc:'Passion + mangue = tentation pure. Onctueux, sucré, et juste ce qu\'il faut d\'interdit.' },
-      { name:'Crush Fizz', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Passion pétillante', desc:'La passion version pétillante. Le tonic allège et les bulles font danser le fruit.' },
-      { name:'Ananas Désir', recipe:'🍑 Mix Passion (fiole) : 60ml vodka vanille + 50ml sirop passion + 40ml sirop vanille — À ajouter : 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Coup de foudre tropical', desc:'Quand la passion rencontre l\'ananas, c\'est le coup de foudre tropical. Frais et envoûtant.' },
+      { name:'Pornstar Martini', name_en:'Pornstar Martini', recipe:'🍑 Mix Passion (fiole) : 70ml rhum vanille arrangé + 40ml sirop mangue-passion + 40ml jus d'orange — À ajouter : shot de prosecco à côté', soft:'prosecco', icon:'🥂', abv:15,
+        tag:'Glamour & passion', tag_en:'Glamour & passion', desc:'Le cocktail star des soirées. Passion, vanille, et un shot de prosecco à descendre entre deux gorgées. Glamour.', desc_en:'The star cocktail of the evening. Passion, vanilla, and a shot of prosecco to down between sips. Glamour.' },
+      { name:'Fruit Défendu', name_en:'Forbidden Fruit', recipe:'🍑 Mix Passion (fiole) : 70ml rhum vanille arrangé + 40ml sirop mangue-passion + 40ml jus d'orange — À ajouter : 150ml jus de mangue + glaçons', soft:'mangue', icon:'🥭', abv:9,
+        tag:'Tentation passion-mangue', tag_en:'Passion-mango temptation', desc:'Passion + mangue = tentation pure. Onctueux, sucré, et juste ce qu\'il faut d\'interdit.', desc_en:'Passion + mango = pure temptation. Smooth, sweet, and just the right amount of forbidden.' },
+      { name:'Crush Fizz', name_en:'Crush Fizz', recipe:'🍑 Mix Passion (fiole) : 70ml rhum vanille arrangé + 40ml sirop mangue-passion + 40ml jus d'orange — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:9,
+        tag:'Passion pétillante', tag_en:'Sparkling passion', desc:'La passion version pétillante. Le tonic allège et les bulles font danser le fruit.', desc_en:'Passion in sparkling version. The tonic lightens and the bubbles make the fruit dance.' },
+      { name:'Ananas Désir', name_en:'Pineapple Desire', recipe:'🍑 Mix Passion (fiole) : 70ml rhum vanille arrangé + 40ml sirop mangue-passion + 40ml jus d'orange — À ajouter : 150ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍', abv:9,
+        tag:'Coup de foudre tropical', tag_en:'Tropical love at first sip', desc:'Quand la passion rencontre l\'ananas, c\'est le coup de foudre tropical. Frais et envoûtant.', desc_en:'When passion meets pineapple, it\'s tropical love at first sight. Fresh and captivating.' },
     ]},
-  { id:'ginger', emoji:'🫚', name:'Mix Ginger', alc:true, stock:8,
+  { id:'ginger', emoji:'🫚', name:'Mix Ginger', alc:true, stock:10,
     combos:[
-      { name:'Moscow Mule', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 120ml ginger beer + lime + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Le classique iconique', desc:'Le classique absolu. Vodka, ginger beer, lime — simple, efficace, iconique. Servi dans un mug en cuivre si t\'as la classe.' },
-      { name:'Lever de Gingembre', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
-        tag:'Sunrise épicé', desc:'Le sunrise version gingembre. L\'orange adoucit le piquant pour un réveil en douceur.' },
-      { name:'Pique & Piquant', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Épicé-sucré addictif', desc:'Le gingembre qui pique, l\'ananas qui adoucit. Un équilibre épicé-sucré addictif.' },
-      { name:'Ginger Mango', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Exotique & piquant', desc:'Le piquant du gingembre adouci par la mangue veloutée. Un duo exotique qui fonctionne à merveille.' },
-      { name:'Ginger Highball', recipe:'🫚 Mix Ginger (fiole) : 60ml vodka + 50ml sirop gingembre + 40ml sirop citron vert — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Long drink raffiné', desc:'Le ginger mix version longue et raffinée. Le tonic allonge, les bulles dansent, le gingembre parle.' },
+      { name:'Moscow Mule', name_en:'Moscow Mule', recipe:'🫚 Mix Ginger (fiole) : 50ml vodka + 20ml jus citron vert + 80ml ginger beer — À ajouter : 150ml ginger beer + lime + glaçons', soft:'ginger', icon:'🫚', abv:7,
+        tag:'Le classique iconique', tag_en:'The iconic classic', desc:'Le classique absolu. Vodka, ginger beer, lime — simple, efficace, iconique. Servi dans un mug en cuivre si t\'as la classe.', desc_en:'The absolute classic. Vodka, ginger beer, lime — simple, effective, iconic. Served in a copper mug if you have class.' },
+      { name:'Lever de Gingembre', name_en:'Ginger Sunrise', recipe:'🫚 Mix Ginger (fiole) : 50ml vodka + 20ml jus citron vert + 80ml ginger beer — À ajouter : 150ml jus d\'orange + glaçons', soft:'orange', icon:'🌅', abv:7,
+        tag:'Sunrise épicé', tag_en:'Spicy sunrise', desc:'Le sunrise version gingembre. L\'orange adoucit le piquant pour un réveil en douceur.', desc_en:'The ginger version sunrise. Orange softens the spice for a gentle wake-up.' },
+      { name:'Ginger Mango', name_en:'Ginger Mango', recipe:'🫚 Mix Ginger (fiole) : 50ml vodka + 20ml jus citron vert + 80ml ginger beer — À ajouter : 150ml jus de mangue + glaçons', soft:'mangue', icon:'🥭', abv:7,
+        tag:'Exotique & piquant', tag_en:'Exotic & spicy', desc:'Le piquant du gingembre adouci par la mangue veloutée. Un duo exotique qui fonctionne à merveille.', desc_en:'The ginger spice softened by velvety mango. An exotic duo that works wonderfully.' },
+      { name:'Ginger Highball', name_en:'Ginger Highball', recipe:'🫚 Mix Ginger (fiole) : 50ml vodka + 20ml jus citron vert + 80ml ginger beer — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:7,
+        tag:'Long drink raffiné', tag_en:'Refined long drink', desc:'Le ginger mix version longue et raffinée. Le tonic allonge, les bulles dansent, le gingembre parle.', desc_en:'The ginger mix in long and refined version. The tonic stretches, the bubbles dance, the ginger speaks.' },
     ]},
-  { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:12,
+  { id:'sunset', emoji:'🍊', name:'Mix Sunset', alc:true, stock:10,
     combos:[
-      { name:'Sunset de Fred', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 100ml jus d\'orange + glaçons', soft:'orange', icon:'🌅',
-        tag:'La signature du patron', desc:'La signature du patron. Orange, grenadine et coucher de soleil dans un verre. Le cocktail qui donne le smile.' },
-      { name:'Soleil Couchant', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 100ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍',
-        tag:'Sunset tropical', desc:'Le sunset prend une tournure tropicale avec l\'ananas. Doux, coloré, et parfait pour finir la journée.' },
-      { name:'Crépuscule Fizz', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Sunset pétillant', desc:'Le sunset allégé par le tonic. Pétillant, léger, avec juste ce qu\'il faut de couleur.' },
-      { name:'Sunset Exotique', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange — À ajouter : 80ml jus de mangue + glaçons', soft:'mangue', icon:'🥭',
-        tag:'Sunset façon Thaï', desc:'Le coucher de soleil prend des airs de plage thaïlandaise. Mangue + sunset = carte postale en verre.' },
-      { name:'Sunset Mule', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 30ml grenadine + 30ml sirop orange + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Sunset qui kick', desc:'Le sunset qui kick. La ginger beer ajoute du piquant au dégradé fruité. Épicé et coloré.' },
+      { name:'Sunset de Fred', name_en:'Fred\'s Sunset', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 20ml grenadine + 40ml jus d\'orange — À ajouter : 150ml jus d\'orange + glaçons', soft:'orange', icon:'🌅', abv:9,
+        tag:'La signature du patron', tag_en:'The bartender\'s signature', desc:'La signature du patron. Orange, grenadine et coucher de soleil dans un verre. Le cocktail qui donne le smile.', desc_en:'The boss\'s signature. Orange, grenadine and sunset in a glass. The cocktail that makes you smile.' },
+      { name:'Soleil Couchant', name_en:'Setting Sun', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 20ml grenadine + 40ml jus d\'orange — À ajouter : 150ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍', abv:9,
+        tag:'Sunset tropical', tag_en:'Tropical sunset', desc:'Le sunset prend une tournure tropicale avec l\'ananas. Doux, coloré, et parfait pour finir la journée.', desc_en:'The sunset takes a tropical turn with pineapple. Sweet, colorful, and perfect to end the day.' },
+      { name:'Crépuscule Fizz', name_en:'Twilight Fizz', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 20ml grenadine + 40ml jus d\'orange — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:9,
+        tag:'Sunset pétillant', tag_en:'Sparkling sunset', desc:'Le sunset allégé par le tonic. Pétillant, léger, avec juste ce qu\'il faut de couleur.', desc_en:'The sunset lightened by tonic. Sparkling, light, with just the right amount of color.' },
+      { name:'Sunset Mule', name_en:'Sunset Mule', recipe:'🍊 Mix Sunset (fiole) : 50ml vodka + 40ml liqueur pêche + 20ml grenadine + 40ml jus d\'orange — À ajouter : 150ml ginger beer + glaçons', soft:'ginger', icon:'🫚', abv:9,
+        tag:'Sunset qui kick', tag_en:'Sunset with a kick', desc:'Le sunset qui kick. La ginger beer ajoute du piquant au dégradé fruité. Épicé et coloré.', desc_en:'The sunset that kicks. The ginger beer adds spice to the fruity gradient. Spicy and colorful.' },
     ]},
-  { id:'espresso', emoji:'☕', name:'Mix Espresso', alc:true, stock:10,
+  { id:'sureau', emoji:'🌸', name:'Mix Sureau', alc:true, stock:10,
     combos:[
-      { name:'Espresso Martini', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café — À ajouter : 30ml café froid + glaçons + shaker', soft:'cafe', icon:'☕',
-        tag:'Élégance caféinée', desc:'Le cocktail qui te garde éveillé pour danser. Vodka, café, liqueur de café — secoué, pas remué. Élégance caféinée.' },
-      { name:'Ginger Buzz', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café + 100ml ginger beer + glaçons', soft:'ginger', icon:'🫚',
-        tag:'Café épicé & pétillant', desc:'Le café rencontre le gingembre pour un buzz épicé. Pétillant et corsé, il envoie du lourd.' },
-      { name:'Espresso Tonic', recipe:'☕ Mix Espresso (fiole) : 50ml vodka + 40ml Kahlúa + 30ml sirop vanille + 30ml sirop café — À ajouter : 120ml tonic + glaçons', soft:'tonic', icon:'🫧',
-        tag:'Le combo tendance', desc:'Le combo tendance des coffee shops branchés. Le tonic fait mousser le café, c\'est amer, frais et addictif.' },
+      { name:'Hugo Royal', name_en:'Hugo Royal', recipe:'🌸 Mix Sureau (fiole) : 80ml gin + 30ml sirop fleur de sureau + 30ml sirop de pêche + 10ml jus citron vert — À ajouter : 150ml prosecco + menthe', soft:'prosecco', icon:'🥂', abv:16,
+        tag:'Chic et floral', tag_en:'Chic and floral', desc:'Le cocktail chic par excellence. Gin, sureau et pêche rencontrent les bulles du prosecco. Frais, floral et élégant.', desc_en:'The ultimate chic cocktail. Gin, elderflower and peach meet prosecco bubbles. Fresh, floral and elegant.' },
+      { name:'Gin Fizz Floral', name_en:'Floral Gin Fizz', recipe:'🌸 Mix Sureau (fiole) : 80ml gin + 30ml sirop fleur de sureau + 30ml sirop de pêche + 10ml jus citron vert — À ajouter : 150ml tonic + glaçons', soft:'tonic', icon:'🫧', abv:11,
+        tag:'G&T version florale', tag_en:'Floral G&T', desc:'Le gin tonic revisité avec une touche florale. Le sureau adoucit, la pêche arrondit. Simple et raffiné.', desc_en:'A gin and tonic reimagined with a floral twist. Elderflower softens, peach rounds it out. Simple and refined.' },
+      { name:'Sureau Tropical', name_en:'Tropical Elderflower', recipe:'🌸 Mix Sureau (fiole) : 80ml gin + 30ml sirop fleur de sureau + 30ml sirop de pêche + 10ml jus citron vert — À ajouter : 150ml jus d\'ananas + glaçons', soft:'ananas', icon:'🍍', abv:11,
+        tag:'Floral meets tropical', tag_en:'Floral meets tropical', desc:'Quand les fleurs rencontrent les tropiques. Le sureau et l\'ananas, un duo inattendu mais addictif.', desc_en:'When flowers meet the tropics. Elderflower and pineapple, an unexpected but addictive duo.' },
     ]},
 ];
 const DEFAULT_SOFTS = [
@@ -1031,18 +1395,26 @@ const DEFAULT_SOFTS = [
 ];
 
 const STANDALONE_SOFTS = [
-  { id:'coca', emoji:'🥤', name:'Coca-Cola', stock:20 },
-  { id:'orangina', emoji:'🍊', name:'Orangina', stock:15 },
-  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', stock:15 },
-  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', stock:20 },
-  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', stock:15 },
-  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', stock:15 },
-  { id:'eau', emoji:'💧', name:'Eau', stock:999, unlimited:true },
+  { id:'coca', emoji:'🥤', name:'Coca-Cola', name_en:'Coca-Cola', stock:20, tag:'Le classique indétrônable', tag_en:'The undisputed classic' },
+  { id:'orangina', emoji:'🍊', name:'Orangina', name_en:'Orangina', stock:15, tag:'Secouez-moi, secouez-moi', tag_en:'Shake me, shake me' },
+  { id:'ice-tea', emoji:'🍵', name:'Ice Tea', name_en:'Ice Tea', stock:15, tag:'Frais et désaltérant', tag_en:'Cool and refreshing' },
+  { id:'jus-orange', emoji:'🧃', name:'Jus d\'orange', name_en:'Orange juice', stock:20, tag:'100% vitaminé', tag_en:'100% vitamins' },
+  { id:'jus-ananas', emoji:'🍍', name:'Jus d\'ananas', name_en:'Pineapple juice', stock:15, tag:'Exotique et sucré', tag_en:'Exotic and sweet' },
+  { id:'jus-mangue', emoji:'🥭', name:'Jus de mangue', name_en:'Mango juice', stock:15, tag:'Douceur tropicale', tag_en:'Tropical sweetness' },
+  { id:'eau', emoji:'💧', name:'Eau', name_en:'Water', stock:999, unlimited:true, tag:'L\'essentiel, tout simplement', tag_en:'The essential, plain and simple' },
 ];
 
 const BEERS = [
-  { id:'affligem', emoji:'🍺', name:'Affligem', stock:4 },
+  { id:'affligem', emoji:'🍺', name:'Affligem', name_en:'Affligem', stock:4, tag:'Bière d\'abbaye, 6.8°', tag_en:'Abbey beer, 6.8°' },
 ];
+
+let MIXES,SOFTS,STANDALONE_SOFTS_DATA,BEERS_DATA,state,activeTab;
+
+// Variables pour l'identification et le classement simulé
+let currentUsername = null;
+let leaderboardData = { history: [], topDrinkers: [], cocktailStar: null };
+const FAKE_USERS = ['Alex', 'Léa', 'Nico', 'Sarah', 'Max', 'Chloé', 'Tom', 'Emma'];
+let fakeActivityTimer = null;
 
 // ===== SYSTÈME DE POINTS ET ACHIEVEMENTS =====
 const POINT_VALUES = {
@@ -1078,7 +1450,6 @@ const TITLES = [
   
   // Catégories spéciales
   { id:'tropical_fan', emoji:'🏝️', name:{fr:'Team Tropical',en:'Team Tropical'}, desc:{fr:'Tous les cocktails Tropical goûtés',en:'All Tropical cocktails tasted'}, condition:'all_tropical' },
-  { id:'espresso_fan', emoji:'☕', name:{fr:'Espresso Yourself',en:'Espresso Yourself'}, desc:{fr:'Tous les cocktails Espresso goûtés',en:'All Espresso cocktails tasted'}, condition:'all_espresso' },
   { id:'sunset_fan', emoji:'🌅', name:{fr:'Sunset Lover',en:'Sunset Lover'}, desc:{fr:'Tous les cocktails Sunset goûtés',en:'All Sunset cocktails tasted'}, condition:'all_sunset' },
   
   // Styles de consommation
@@ -1096,30 +1467,478 @@ const TITLES = [
 let userTitles = JSON.parse(localStorage.getItem('siphappens_titles') || '[]');
 let activeTitle = localStorage.getItem('siphappens_active_title') || null;
 
-let MIXES,SOFTS,STANDALONE_SOFTS_DATA,BEERS_DATA,state,activeTab;
-// Nouvelles variables pour l'identification
-let currentUsername = null;
-let leaderboardData = { history: [], topDrinkers: [], cocktailStar: null };
-
-function loadAll(){try{const s=JSON.parse(localStorage.getItem('siphappens_ws'));if(s&&s.mixes&&s.softs&&s.standalone_softs&&s.beers&&s.stock){MIXES=s.mixes;SOFTS=s.softs;STANDALONE_SOFTS_DATA=s.standalone_softs;BEERS_DATA=s.beers;state=s.stock;return;}}catch(e){}
+function loadAll(){try{const s=JSON.parse(localStorage.getItem('chezfred_v1'));if(s&&s.mixes&&s.softs&&s.standalone_softs&&s.beers&&s.stock){MIXES=s.mixes;SOFTS=s.softs;STANDALONE_SOFTS_DATA=s.standalone_softs;BEERS_DATA=s.beers;state=s.stock;return;}}catch(e){}
 MIXES=JSON.parse(JSON.stringify(DEFAULT_MIXES));SOFTS=JSON.parse(JSON.stringify(DEFAULT_SOFTS));STANDALONE_SOFTS_DATA=JSON.parse(JSON.stringify(STANDALONE_SOFTS));BEERS_DATA=JSON.parse(JSON.stringify(BEERS));state={mixes:{},softs:{},standalone_softs:{},beers:{}};MIXES.forEach(m=>state.mixes[m.id]=m.stock);SOFTS.forEach(d=>state.softs[d.id]=d.stock);STANDALONE_SOFTS_DATA.forEach(s=>state.standalone_softs[s.id]=s.stock);BEERS_DATA.forEach(b=>state.beers[b.id]=b.stock);}
-function saveAll(){localStorage.setItem('siphappens_ws',JSON.stringify({mixes:MIXES,softs:SOFTS,standalone_softs:STANDALONE_SOFTS_DATA,beers:BEERS_DATA,stock:state}));}
+function saveAll(){localStorage.setItem('chezfred_v1',JSON.stringify({mixes:MIXES,softs:SOFTS,standalone_softs:STANDALONE_SOFTS_DATA,beers:BEERS_DATA,stock:state}));}
 
-// === NOUVELLES FONCTIONNALITÉS ===
+// Gestion du classement simulé
+function loadLeaderboardData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('chezfred_demo_leaderboard') || '{}');
+    if (saved.history) {
+      leaderboardData.history = saved.history;
+    }
+  } catch(e) {}
+  
+  // Si pas d'historique, générer quelques fausses commandes initiales
+  if (leaderboardData.history.length === 0) {
+    generateInitialHistory();
+  }
+}
 
-// Gestion du pseudo
+function saveLeaderboardData() {
+  localStorage.setItem('chezfred_demo_leaderboard', JSON.stringify(leaderboardData));
+}
+
+function generateInitialHistory() {
+  const now = Date.now();
+  const drinks = [];
+  
+  // Collecter tous les cocktails disponibles
+  MIXES.forEach(mix => {
+    mix.combos.forEach(combo => {
+      drinks.push(combo.name);
+    });
+  });
+  
+  // Ajouter les softs standalone
+  STANDALONE_SOFTS.forEach(soft => {
+    drinks.push(soft.name);
+  });
+  
+  // Ajouter les bières
+  BEERS.forEach(beer => {
+    drinks.push(beer.name);
+  });
+  
+  // Générer 5-8 commandes récentes
+  const count = 5 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < count; i++) {
+    const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
+    const fakeDrink = drinks[Math.floor(Math.random() * drinks.length)];
+    const fakeTime = now - (i * 60000) - Math.random() * 300000; // Entre maintenant et 5-25 min ago
+    
+    leaderboardData.history.unshift({
+      username: fakeUser,
+      cocktailName: fakeDrink,
+      timestamp: fakeTime
+    });
+  }
+  
+  saveLeaderboardData();
+}
+
+function addFakeOrder() {
+  const drinks = [];
+  const drinkTypes = [];
+  
+  // Collecter tous les cocktails disponibles
+  MIXES.forEach(mix => {
+    mix.combos.forEach(combo => {
+      drinks.push(combo.name);
+      drinkTypes.push(mix.alc ? 'cocktail_alc' : 'cocktail_na');
+    });
+  });
+  
+  // Ajouter les softs standalone
+  STANDALONE_SOFTS_DATA.forEach(soft => {
+    drinks.push(soft.name);
+    drinkTypes.push('soft');
+  });
+  
+  // Ajouter les bières
+  BEERS_DATA.forEach(beer => {
+    drinks.push(beer.name);
+    drinkTypes.push('beer');
+  });
+  
+  if (drinks.length === 0) return;
+  
+  const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
+  const drinkIndex = Math.floor(Math.random() * drinks.length);
+  const fakeDrink = drinks[drinkIndex];
+  const drinkType = drinkTypes[drinkIndex];
+  
+  // Attribuer des titres aléatoires aux faux utilisateurs  
+  const fakeTitles = ['first_sip', 'debutant', 'curious', 'tropical_fan', 'dd', 'pur_jus'];
+  const fakeTitle = Math.random() > 0.7 ? fakeTitles[Math.floor(Math.random() * fakeTitles.length)] : null;
+  
+  leaderboardData.history.unshift({
+    username: fakeUser,
+    cocktailName: fakeDrink,
+    drinkType: drinkType,
+    points: POINT_VALUES[drinkType],
+    title: fakeTitle,
+    timestamp: Date.now()
+  });
+  
+  // Garder max 100 entrées
+  if (leaderboardData.history.length > 100) {
+    leaderboardData.history = leaderboardData.history.slice(0, 100);
+  }
+  
+  saveLeaderboardData();
+  updateLeaderboardData();
+}
+
+function startFakeActivity() {
+  function scheduleNext() {
+    const delay = 8000 + Math.random() * 7000; // 8-15 secondes
+    fakeActivityTimer = setTimeout(() => {
+      addFakeOrder();
+      scheduleNext();
+    }, delay);
+  }
+  
+  scheduleNext();
+}
+
+function stopFakeActivity() {
+  if (fakeActivityTimer) {
+    clearTimeout(fakeActivityTimer);
+    fakeActivityTimer = null;
+  }
+}
+
+// ===== SYSTÈME DE POINTS ET ACHIEVEMENTS =====
+
+function getUserStats(username) {
+  const userHistory = leaderboardData.history.filter(h => h.username === username);
+  
+  const stats = {
+    drinks: userHistory.length,
+    points: 0,
+    beers: 0,
+    softs: 0,
+    cocktails: 0,
+    cocktails_alc: 0,
+    cocktails_na: 0,
+    unique_cocktails: 0,
+    max_same: 0,
+    last_drinks: [],
+    drink_counts: {},
+    categories: {
+      tropical: new Set(),
+      sunset: new Set()
+    }
+  };
+  
+  // Analyser l'historique
+  userHistory.forEach((entry, index) => {
+    stats.points += entry.points || 0;
+    
+    switch(entry.drinkType) {
+      case 'cocktail_alc':
+        stats.cocktails++;
+        stats.cocktails_alc++;
+        break;
+      case 'cocktail_na':
+        stats.cocktails++;
+        stats.cocktails_na++;
+        break;
+      case 'beer':
+        stats.beers++;
+        break;
+      case 'soft':
+        stats.softs++;
+        break;
+    }
+    
+    // Compter les cocktails uniques
+    const drinkName = entry.cocktailName;
+    if (!stats.drink_counts[drinkName]) {
+      stats.drink_counts[drinkName] = 0;
+    }
+    stats.drink_counts[drinkName]++;
+    
+    // Derniers drinks pour la détection de séries
+    if (index < 10) {
+      stats.last_drinks.push(entry);
+    }
+    
+    // Détecter les catégories spéciales
+    if (drinkName.includes('Tropical') || drinkName.includes('Tropi') || drinkName.includes('Ananas') || drinkName.includes('Mangue')) {
+      stats.categories.tropical.add(drinkName);
+    }
+
+    if (drinkName.includes('Sunset') || drinkName.includes('Soleil') || drinkName.includes('Crépuscule')) {
+      stats.categories.sunset.add(drinkName);
+    }
+  });
+  
+  stats.unique_cocktails = Object.keys(stats.drink_counts).filter(name => 
+    stats.drink_counts[name] > 0 && !STANDALONE_SOFTS_DATA.some(s => s.name === name) && !BEERS_DATA.some(b => b.name === name)
+  ).length;
+  
+  stats.max_same = Math.max(...Object.values(stats.drink_counts), 0);
+  
+  return stats;
+}
+
+function checkTitleConditions(stats) {
+  const newTitles = [];
+  
+  TITLES.forEach(title => {
+    if (userTitles.includes(title.id)) return; // Déjà débloqué
+    
+    let unlocked = false;
+    
+    switch(title.condition) {
+      case 'drinks >= 1':
+        unlocked = stats.drinks >= 1;
+        break;
+      case 'drinks >= 2':
+        unlocked = stats.drinks >= 2;
+        break;
+      case 'drinks >= 3':
+        unlocked = stats.drinks >= 3;
+        break;
+      case 'drinks >= 5':
+        unlocked = stats.drinks >= 5;
+        break;
+      case 'drinks >= 10':
+        unlocked = stats.drinks >= 10;
+        break;
+      case 'drinks >= 15':
+        unlocked = stats.drinks >= 15;
+        break;
+      case 'points >= 10':
+        unlocked = stats.points >= 10;
+        break;
+      case 'points >= 20':
+        unlocked = stats.points >= 20;
+        break;
+      case 'points >= 30':
+        unlocked = stats.points >= 30;
+        break;
+      case 'points >= 50':
+        unlocked = stats.points >= 50;
+        break;
+      case 'unique_cocktails >= 3':
+        unlocked = stats.unique_cocktails >= 3;
+        break;
+      case 'unique_cocktails >= 5':
+        unlocked = stats.unique_cocktails >= 5;
+        break;
+      case 'unique_cocktails >= 10':
+        unlocked = stats.unique_cocktails >= 10;
+        break;
+      case 'max_same >= 3':
+        unlocked = stats.max_same >= 3;
+        break;
+      case 'max_same >= 5':
+        unlocked = stats.max_same >= 5;
+        break;
+      case 'beers >= 3':
+        unlocked = stats.beers >= 3;
+        break;
+      case 'softs >= 3':
+        unlocked = stats.softs >= 3;
+        break;
+      case 'only_soft_and_na':
+        unlocked = stats.drinks > 0 && stats.cocktails_alc === 0 && stats.beers === 0;
+        break;
+      case 'has_cocktail_beer_soft':
+        unlocked = stats.cocktails > 0 && stats.beers > 0 && stats.softs > 0;
+        break;
+      case 'all_tropical':
+        unlocked = stats.categories.tropical.size >= 3; // Au moins 3 cocktails tropical
+        break;
+
+        break;
+      case 'all_sunset':
+        unlocked = stats.categories.sunset.size >= 3; // Au moins 3 cocktails sunset
+        break;
+      case 'speed_3_in_30':
+        // 3 drinks en 30 minutes
+        if (stats.last_drinks.length >= 3) {
+          const now = Date.now();
+          const recent = stats.last_drinks.filter(d => now - d.timestamp < 30 * 60 * 1000);
+          unlocked = recent.length >= 3;
+        }
+        break;
+      case '3_softs_streak':
+        // 3 softs d'affilée
+        if (stats.last_drinks.length >= 3) {
+          const lastThree = stats.last_drinks.slice(0, 3);
+          unlocked = lastThree.every(d => d.drinkType === 'soft');
+        }
+        break;
+    }
+    
+    if (unlocked) {
+      newTitles.push(title);
+      userTitles.push(title.id);
+    }
+  });
+  
+  if (newTitles.length > 0) {
+    localStorage.setItem('siphappens_titles', JSON.stringify(userTitles));
+    // Afficher le premier nouveau titre
+    showAchievementPopup(newTitles[0]);
+  }
+}
+
+function showAchievementPopup(title) {
+  const popup = document.getElementById('achievement-popup');
+  const emoji = document.getElementById('achievement-emoji');
+  const titleEl = document.getElementById('achievement-title');
+  const desc = document.getElementById('achievement-desc');
+  const equipBtn = document.getElementById('achievement-equip');
+  
+  emoji.textContent = title.emoji;
+  titleEl.textContent = title.name[lang];
+  desc.textContent = title.desc[lang];
+  
+  equipBtn.onclick = () => equipNewTitle(title.id);
+  
+  popup.classList.add('show');
+}
+
+function hideAchievement() {
+  document.getElementById('achievement-popup').classList.remove('show');
+}
+
+function equipNewTitle(titleId) {
+  activeTitle = titleId || document.getElementById('achievement-equip').titleId;
+  localStorage.setItem('siphappens_active_title', activeTitle);
+  hideAchievement();
+  updateUserDisplay();
+  showToast('🎖️ Titre équipé !');
+}
+
+function createConfetti() {
+  const colors = ['#FFD700', '#FF69B4', '#9370DB', '#32CD32', '#1E90FF', '#FF8C00'];
+  
+  for (let i = 0; i < 30; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 2 + 's';
+    confetti.style.animationDuration = (2 + Math.random() * 1) + 's';
+    
+    document.body.appendChild(confetti);
+    
+    setTimeout(() => {
+      confetti.remove();
+    }, 4000);
+  }
+}
+
+function showEmojiAnimation(emoji) {
+  const emojiEl = document.createElement('div');
+  emojiEl.className = 'emoji-bounce';
+  emojiEl.textContent = emoji;
+  
+  document.body.appendChild(emojiEl);
+  
+  setTimeout(() => {
+    emojiEl.remove();
+  }, 1200);
+}
+
+function addDrinkToHistory(username, cocktailName, drinkType) {
+  if (!username || !cocktailName) return;
+  
+  const points = POINT_VALUES[drinkType] || 0;
+  
+  leaderboardData.history.unshift({
+    username: username,
+    cocktailName: cocktailName,
+    drinkType: drinkType,
+    points: points,
+    timestamp: Date.now()
+  });
+  
+  // Garder max 100 entrées
+  if (leaderboardData.history.length > 100) {
+    leaderboardData.history = leaderboardData.history.slice(0, 100);
+  }
+  
+  saveLeaderboardData();
+  
+  // Déclencher animations
+  createConfetti();
+  showEmojiAnimation(getEmojiForDrinkType(drinkType));
+  
+  // Vérifier les nouveaux titres
+  const stats = getUserStats(username);
+  checkTitleConditions(stats);
+  
+  updateLeaderboardData();
+  updateUserDisplay();
+}
+
+function getEmojiForDrinkType(drinkType) {
+  switch(drinkType) {
+    case 'cocktail_alc':
+    case 'cocktail_na':
+      return '🍹';
+    case 'beer':
+      return '🍺';
+    case 'soft':
+      return '🥤';
+    default:
+      return '🍹';
+  }
+}
+
+function showTitles() {
+  renderTitles();
+  document.getElementById('titles-overlay').classList.add('active');
+}
+
+function hideTitles() {
+  document.getElementById('titles-overlay').classList.remove('active');
+}
+
+function renderTitles() {
+  const content = document.getElementById('titles-content');
+  const stats = currentUsername ? getUserStats(currentUsername) : { drinks: 0, points: 0 };
+  
+  let html = TITLES.map(title => {
+    const unlocked = userTitles.includes(title.id);
+    const isActive = activeTitle === title.id;
+    const name = title.name[lang];
+    const desc = unlocked ? title.desc[lang] : title.desc[lang];
+    
+    let actionButtons = '';
+    if (unlocked) {
+      if (isActive) {
+        actionButtons = '<button class="title-btn active-btn">Équipé</button>';
+      } else {
+        actionButtons = `<button class="title-btn" onclick="equipTitle('${title.id}')">Équiper</button>`;
+      }
+    }
+    
+    return `<div class="title-item ${unlocked ? 'unlocked' : 'locked'} ${isActive ? 'active' : ''}">
+      <div class="title-emoji">${title.emoji}</div>
+      <div class="title-info">
+        <div class="title-name">${name}</div>
+        <div class="title-desc">${desc}</div>
+      </div>
+      <div class="title-actions">${actionButtons}</div>
+    </div>`;
+  }).join('');
+  
+  content.innerHTML = html;
+}
+
+function equipTitle(titleId) {
+  activeTitle = titleId;
+  localStorage.setItem('siphappens_active_title', activeTitle);
+  renderTitles();
+  updateUserDisplay();
+  showToast('🎖️ Titre équipé !');
+}
+
+// === GESTION DU PSEUDO ===
 function initUsername() {
-  const savedUsername = localStorage.getItem('siphappens_username');
+  const savedUsername = localStorage.getItem('siphappens_demo_username');
   if (savedUsername && savedUsername.trim().length >= 2) {
     currentUsername = savedUsername.trim();
     updateUserDisplay();
-    // S'enregistrer auprès du serveur si WebSocket connecté
-    if (wsConnected && ws) {
-      ws.send(JSON.stringify({
-        type: 'register',
-        username: currentUsername
-      }));
-    }
   } else {
     showUsernamePopup(false);
   }
@@ -1132,6 +1951,7 @@ function showUsernamePopup(isEdit = false) {
   const titleSel = document.getElementById('popup-title-selector');
   const titleList = document.getElementById('popup-title-list');
   
+  // Update lang buttons state
   document.getElementById('lang-fr').style.borderColor = lang==='fr' ? 'var(--accent)' : 'var(--card-border)';
   document.getElementById('lang-fr').style.color = lang==='fr' ? 'var(--text)' : 'var(--sub)';
   document.getElementById('lang-en').style.borderColor = lang==='en' ? 'var(--accent)' : 'var(--card-border)';
@@ -1141,8 +1961,9 @@ function showUsernamePopup(isEdit = false) {
     input.value = currentUsername || '';
     document.getElementById('username-title').textContent = lang==='fr' ? '✏️ Modifier' : '✏️ Edit';
     document.getElementById('username-submit').textContent = lang==='fr' ? '✅ Sauvegarder' : '✅ Save';
+    // Show title selector with unlocked titles
     const unlocked = JSON.parse(localStorage.getItem('siphappens_titles') || '[]');
-    if (unlocked.length > 0 && typeof TITLES !== 'undefined') {
+    if (unlocked.length > 0) {
       const activeTitle = localStorage.getItem('siphappens_active_title') || '';
       titleList.innerHTML = '<button onclick="selectTitlePopup(null)" style="padding:4px 10px;border-radius:8px;border:1px solid '+(activeTitle?'var(--card-border)':'var(--accent)')+';background:'+(activeTitle?'var(--card)':'rgba(var(--accent-rgb,110,69,226),.2)')+';font-size:.8em;cursor:pointer;color:var(--text);">'+(lang==='fr'?'Aucun':'None')+'</button>' + 
         TITLES.filter(t=>unlocked.includes(t.id)).map(t=>{
@@ -1162,7 +1983,6 @@ function showUsernamePopup(isEdit = false) {
   error.textContent = '';
   
   popup.classList.add('active');
-  input.focus();
 }
 
 function selectTitlePopup(titleId) {
@@ -1171,8 +1991,9 @@ function selectTitlePopup(titleId) {
   } else {
     localStorage.removeItem('siphappens_active_title');
   }
+  // Refresh the selector buttons
   showUsernamePopup(true);
-  if (typeof updateUserDisplay === 'function') updateUserDisplay();
+  updateUserDisplay();
 }
 
 function submitUsername() {
@@ -1194,74 +2015,58 @@ function submitUsername() {
     return;
   }
   
-  submitBtn.disabled = true;
-  submitBtn.textContent = lang === 'fr' ? 'Vérification...' : 'Checking...';
-  error.style.display = 'none';
-  
-  // Vérifier la disponibilité du pseudo
-  if (wsConnected && ws) {
-    ws.send(JSON.stringify({
-      type: 'check_username',
-      username: username
-    }));
-  } else {
-    // Fallback si pas de WebSocket
-    acceptUsername(username);
-  }
-}
-
-function acceptUsername(username) {
+  // Transférer l'historique de l'ancien pseudo vers le nouveau
   const oldUsername = currentUsername;
   currentUsername = username;
-  localStorage.setItem('siphappens_username', username);
-  // Demander au serveur de transférer l'historique
-  if (wsConnected && ws && oldUsername && oldUsername !== username) {
-    ws.send(JSON.stringify({ type: 'rename', oldUsername, newUsername: username }));
-  }
-  
-  // S'enregistrer auprès du serveur
-  if (wsConnected && ws) {
-    ws.send(JSON.stringify({
-      type: 'register',
-      username: username
-    }));
+  localStorage.setItem('siphappens_demo_username', username);
+  if (oldUsername && oldUsername !== username && leaderboardData.history) {
+    leaderboardData.history.forEach(h => { if (h.username === oldUsername) h.username = username; });
+    localStorage.setItem('siphappens_demo_leaderboard', JSON.stringify(leaderboardData));
+    updateLeaderboardData();
   }
   
   updateUserDisplay();
   hideUsernamePopup();
   showToast('👋 ' + (lang === 'fr' ? 'Salut ' : 'Hello ') + username + ' !');
-}
-
-function rejectUsername() {
-  const error = document.getElementById('username-error');
-  const submitBtn = document.getElementById('username-submit');
   
-  error.textContent = t('taken');
-  error.style.display = 'block';
-  submitBtn.disabled = false;
-  submitBtn.textContent = t('letsGo');
+  // Show tutorial if first time
+  if (!localStorage.getItem('siphappens_tutorial_done')) {
+    setTimeout(() => showTutorial(), 500);
+  }
 }
 
 function hideUsernamePopup() {
   document.getElementById('username-popup').classList.remove('active');
   const submitBtn = document.getElementById('username-submit');
   submitBtn.disabled = false;
-  submitBtn.textContent = 'C\'est parti ! 🚀';
+  submitBtn.textContent = t('letsGo');
 }
 
 function updateUserDisplay() {
   const display = document.getElementById('user-display');
   const nameEl = document.getElementById('user-name');
+  const pointsEl = document.getElementById('user-points');
   
   if (currentUsername) {
-    nameEl.textContent = currentUsername;
-    display.style.display = 'flex';
+    let displayName = currentUsername;
+    if (activeTitle) {
+      const title = TITLES.find(t => t.id === activeTitle);
+      if (title) {
+        displayName = `${title.emoji} ${currentUsername}`;
+      }
+    }
+    nameEl.textContent = displayName;
+    
+    const stats = getUserStats(currentUsername);
+    pointsEl.textContent = `⭐ ${stats.points} pts`;
+    
   } else {
-    display.style.display = 'none';
+    nameEl.textContent = lang==='fr' ? '👤 Pseudo ?' : '👤 Name?';
+    pointsEl.textContent = '';
   }
 }
 
-// Gestion du classement
+// === GESTION DU CLASSEMENT ===
 function showLeaderboard() {
   updateLeaderboardData();
   document.getElementById('leaderboard-overlay').classList.add('active');
@@ -1274,27 +2079,47 @@ function hideLeaderboard() {
 function updateLeaderboardData() {
   if (!leaderboardData.history) return;
   
-  // Compter les cocktails par utilisateur
-  const userCounts = {};
+  // Compter les points par utilisateur
+  const userStats = {};
   const cocktailCounts = {};
   
   leaderboardData.history.forEach(entry => {
-    userCounts[entry.username] = (userCounts[entry.username] || 0) + 1;
+    if (!userStats[entry.username]) {
+      userStats[entry.username] = { points: 0, drinks: 0, title: null };
+    }
+    userStats[entry.username].points += entry.points || 0;
+    userStats[entry.username].drinks += 1;
+    
+    // Garder le titre le plus récent pour l'affichage
+    if (entry.title) {
+      userStats[entry.username].title = entry.title;
+    }
+    
     cocktailCounts[entry.cocktailName] = (cocktailCounts[entry.cocktailName] || 0) + 1;
   });
   
-  // Top buveurs
-  const topDrinkers = Object.entries(userCounts)
-    .sort(([,a], [,b]) => b - a)
+  // Top buveurs (triés par points)
+  const topDrinkers = Object.entries(userStats)
+    .sort(([,a], [,b]) => b.points - a.points)
     .slice(0, 10);
   
   const topDrinkersHtml = topDrinkers.length > 0 
-    ? topDrinkers.map(([username, count], index) => {
+    ? topDrinkers.map(([username, stats], index) => {
         const classes = ['first', 'second', 'third'][index] ? `leaderboard-item ${['first', 'second', 'third'][index]}` : 'leaderboard-item';
+        
+        let titleLine = '';
+        const titleId = (username === currentUsername && activeTitle) ? activeTitle : stats.title;
+        if (titleId) {
+          const title = TITLES.find(t => t.id === titleId);
+          if (title) {
+            titleLine = `<div style="font-size:.7em;color:var(--sub);font-weight:400;margin-top:1px;">${title.emoji} ${title.name[lang]}</div>`;
+          }
+        }
+        
         return `<div class="${classes}">
           <div class="rank">${index + 1}</div>
-          <div class="name">${username}</div>
-          <div class="count">${count}</div>
+          <div class="name"><div>${username}</div>${titleLine}</div>
+          <div class="count">${stats.points} pts</div>
         </div>`;
       }).join('')
     : `<div style="text-align: center; color: var(--sub); padding: 20px;">${t('noDrinks')}</div>`;
@@ -1323,10 +2148,12 @@ function updateLeaderboardData() {
     ? leaderboardData.history.slice(0, 50).map(entry => {
         const time = new Date(entry.timestamp);
         const timeStr = time.toLocaleTimeString(lang === 'fr' ? 'fr-FR' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        const points = entry.points || 0;
+        const pointsStr = points > 0 ? ` <span style="color: var(--ok); font-weight: 700;">+${points}</span>` : '';
         return `<div class="history-item">
           <div>
             <span class="user">${entry.username}</span>
-            <span class="cocktail">${entry.cocktailName}</span>
+            <span class="cocktail">${entry.cocktailName}${pointsStr}</span>
           </div>
           <div class="time">${timeStr}</div>
         </div>`;
@@ -1336,7 +2163,7 @@ function updateLeaderboardData() {
   document.getElementById('history-list').innerHTML = historyHtml;
 }
 
-// Gestion des événements username popup
+// Gestion des événements
 document.getElementById('username-input').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
     submitUsername();
@@ -1356,7 +2183,22 @@ document.getElementById('leaderboard-overlay').addEventListener('click', functio
     hideLeaderboard();
   }
 });
-loadAll(); activeTab=MIXES[0]?.id||'';
+
+document.getElementById('titles-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) {
+    hideTitles();
+  }
+});
+
+document.getElementById('tutorial-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) {
+    skipTutorial();
+  }
+});
+
+loadAll(); 
+loadLeaderboardData();
+activeTab=MIXES[0]?.id||'';
 
 // Countdown
 const LAUNCH=new Date('2026-04-05T12:00:00+02:00');
@@ -1422,10 +2264,11 @@ function renderCocktails(){
   h+=m.combos.map((c,i)=>{
     const ss=state.softs[c.soft]||0,can=ms>0&&ss>0,si=SOFTS.find(s=>s.id===c.soft);
     const w=ss<=0?` — <span style="color:var(--danger)">${si?si.name:'diluant'} épuisé</span>`:'';
+    const tag = lang === 'en' ? (c.tag_en || c.tag) : c.tag;
     return `<div class="cocktail-card ${can?'':'disabled'}" id="cc-${m.id}-${i}" onclick="serveCocktail('${m.id}','${c.soft}',${i})">
       <div class="cc-icon">${c.icon||'🍹'}</div>
-      <div class="cc-body"><div class="cc-name">${c.name}</div>
-      <div class="cc-recipe"><em>${c.tag||''}</em>${w}</div></div>
+      <div class="cc-body"><div class="cc-name">${(lang==='en'&&c.name_en)?c.name_en:c.name} ${c.abv!=null?`<span class="cc-abv ${c.abv>0?'abv-alc':'abv-na'}">${c.abv>0?'~'+c.abv+'%':'0%'}</span>`:''}</div>
+      <div class="cc-recipe"><em>${tag||''}</em>${w}</div></div>
       <div class="cc-go">${can?'→':'✕'}</div></div>`;
   }).join('');
   document.getElementById('cocktailSection').innerHTML=h;
@@ -1435,7 +2278,7 @@ function renderSoftsSection(){
   let h=`<div class="section-header">
     <div class="sec-emoji">🥤</div>
     <div class="sec-info"><h2>${t('softs')}</h2>
-    <div class="sec-stock">${t('stock')} : <strong>${STANDALONE_SOFTS_DATA.length} boissons</strong></div></div></div>`;
+    <div class="sec-stock">${STANDALONE_SOFTS_DATA.length} ${lang==='fr'?'boissons disponibles':'drinks available'}</div></div></div>`;
   
   h+=STANDALONE_SOFTS_DATA.map((s,i)=>{
     const stock=state.standalone_softs[s.id]||0;
@@ -1443,11 +2286,14 @@ function renderSoftsSection(){
     const canServe = s.unlimited || stock > 0;
     const stockText = s.unlimited ? t('unlimited') : `${stock}`;
     
+    const stockLabel = s.unlimited ? '∞' : stock;
+    const name = lang === 'en' ? (s.name_en || s.name) : s.name;
+    const tag = lang === 'en' ? (s.tag_en || s.tag) : s.tag;
     return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveSoft('${s.id}',${i})">
       <div class="cc-icon">${s.emoji}</div>
       <div class="cc-body">
-        <div class="cc-name">${s.name}</div>
-        <div class="cc-recipe"><em>${t('stock')} : ${stockText}</em></div>
+        <div class="cc-name">${name} <span style="font-size:.7em;color:var(--sub);font-weight:400;">(${stockLabel})</span></div>
+        <div class="cc-recipe"><em>${tag||''}</em></div>
       </div>
       <div class="cc-go">${canServe?'→':'✕'}</div>
     </div>`;
@@ -1457,20 +2303,23 @@ function renderSoftsSection(){
 }
 
 function renderBeersSection(){
+  const totalBeers = BEERS_DATA.reduce((sum,b)=>sum+(state.beers[b.id]||0),0);
   let h=`<div class="section-header">
     <div class="sec-emoji">🍺</div>
     <div class="sec-info"><h2>${t('beers')}</h2>
-    <div class="sec-stock">${t('stock')} : <strong>${BEERS_DATA.length} bières</strong></div></div></div>`;
+    <div class="sec-stock">${t('stock')} : <strong>${totalBeers} ${totalBeers>1?'bouteilles':'bouteille'}</strong></div></div></div>`;
   
   h+=BEERS_DATA.map((b,i)=>{
     const stock=state.beers[b.id]||0;
     const canServe = stock > 0;
     
+    const name = lang === 'en' ? (b.name_en || b.name) : b.name;
+    const tag = lang === 'en' ? (b.tag_en || b.tag) : b.tag;
     return `<div class="cocktail-card ${canServe?'':'disabled'}" onclick="serveBeer('${b.id}',${i})">
       <div class="cc-icon">${b.emoji}</div>
       <div class="cc-body">
-        <div class="cc-name">${b.name}</div>
-        <div class="cc-recipe"><em>${t('stock')} : ${stock}</em></div>
+        <div class="cc-name">${name} <span style="font-size:.7em;color:var(--sub);font-weight:400;">(${stock})</span></div>
+        <div class="cc-recipe"><em>${tag||''}</em></div>
       </div>
       <div class="cc-go">${canServe?'→':'✕'}</div>
     </div>`;
@@ -1478,6 +2327,62 @@ function renderBeersSection(){
   
   document.getElementById('cocktailSection').innerHTML=h;
 }
+
+// Fonctions pour servir softs et bières
+window.serveSoft=(id,idx)=>{
+  const soft=STANDALONE_SOFTS_DATA[idx];
+  if(!soft) return;
+  const canServe = soft.unlimited || (state.standalone_softs[id]||0) > 0;
+  if(!canServe) return;
+  pendingServe={type:'soft',id,idx};
+  document.getElementById('mini-serve-emoji').textContent=soft.emoji;
+  const name = lang === 'en' ? (soft.name_en || soft.name) : soft.name;
+  const tag = lang === 'en' ? (soft.tag_en || soft.tag) : soft.tag;
+  document.getElementById('mini-serve-name').textContent=name;
+  document.getElementById('mini-serve-tag').textContent=tag||'';
+  const btn=document.getElementById('mini-serve-btn');
+  btn.textContent=t('serve');btn.disabled=false;
+  document.getElementById('mini-serve-overlay').classList.add('active');
+};
+
+window.serveBeer=(id,idx)=>{
+  const beer=BEERS_DATA[idx];
+  if(!beer) return;
+  const canServe = (state.beers[id]||0) > 0;
+  if(!canServe) return;
+  pendingServe={type:'beer',id,idx};
+  document.getElementById('mini-serve-emoji').textContent=beer.emoji;
+  const name = lang === 'en' ? (beer.name_en || beer.name) : beer.name;
+  const tag = lang === 'en' ? (beer.tag_en || beer.tag) : beer.tag;
+  document.getElementById('mini-serve-name').textContent=name;
+  document.getElementById('mini-serve-tag').textContent=tag||'';
+  const btn=document.getElementById('mini-serve-btn');
+  btn.textContent=t('serve');btn.disabled=false;
+  document.getElementById('mini-serve-overlay').classList.add('active');
+};
+
+window.closeMiniServe=()=>{pendingServe=null;document.getElementById('mini-serve-overlay').classList.remove('active');};
+
+window.confirmMiniServe=()=>{if(!pendingServe)return;
+  if(pendingServe.type==='soft'){
+    const soft=STANDALONE_SOFTS_DATA[pendingServe.idx];
+    if(!soft.unlimited) state.standalone_softs[pendingServe.id]--;
+    const softName = lang === 'en' ? (soft.name_en || soft.name) : soft.name;
+    if(currentUsername) addDrinkToHistory(currentUsername, softName, 'soft');
+    saveAll();renderCocktails();
+    document.getElementById('mini-serve-overlay').classList.remove('active');
+    showToast(`🥤 ${softName} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
+  }
+  if(pendingServe.type==='beer'){
+    const beer=BEERS_DATA[pendingServe.idx];
+    state.beers[pendingServe.id]--;
+    const beerName = lang === 'en' ? (beer.name_en || beer.name) : beer.name;
+    if(currentUsername) addDrinkToHistory(currentUsername, beerName, 'beer');
+    saveAll();renderCocktails();
+    document.getElementById('mini-serve-overlay').classList.remove('active');
+    showToast(`🍺 ${beerName} ${lang==='fr'?'servi':'served'} !`);pendingServe=null;return;
+  }
+};
 
 window.switchTab=(id)=>{activeTab=id;renderTabs();renderCocktails();
   // scroll active tab into view
@@ -1491,8 +2396,10 @@ window.serveCocktail=(mixId,softId,idx)=>{
   const canMake=(state.mixes[mixId]||0)>0&&(state.softs[softId]||0)>0;
   pendingServe=canMake?{mixId,softId,idx}:null;
   document.getElementById('detail-icon').textContent=c.icon||'🍹';
-  document.getElementById('detail-name').textContent=c.name;
-  document.getElementById('detail-desc').textContent=c.desc||'Un cocktail unique à découvrir !';
+  const detailNameEl=document.getElementById('detail-name');
+  detailNameEl.innerHTML=((lang==='en'&&c.name_en)?c.name_en:c.name)+(c.abv!=null?' <span class="detail-abv '+(c.abv>0?'abv-alc':'abv-na')+'">'+(c.abv>0?'~'+c.abv+'%':'0%')+'</span>':'');
+  const desc = lang === 'en' ? (c.desc_en || c.desc) : c.desc;
+  document.getElementById('detail-desc').textContent=desc||'Un cocktail unique à découvrir !';
   // Format recipe with fiole/prep sections
   const recipe=c.recipe||'';
   const parts=recipe.split(' — À ajouter : ');
@@ -1528,92 +2435,23 @@ window.serveCocktail=(mixId,softId,idx)=>{
   document.querySelector('.detail-btn.cancel').textContent = t('close');
   document.getElementById('detail-overlay').classList.add('active');
 };
-window.confirmServe=()=>{if(!pendingServe)return;const{mixId,softId,idx}=pendingServe;
+window.confirmServe=()=>{if(!pendingServe)return;
+  const{mixId,softId,idx}=pendingServe;
+  const m=MIXES.find(x=>x.id===mixId);
+  const cocktailName = m.combos[idx].name;
+  const drinkType = m.alc ? 'cocktail_alc' : 'cocktail_na';
   
-  if (wsConnected && ws && currentUsername) {
-    // Envoyer via WebSocket avec username
-    ws.send(JSON.stringify({
-      type: 'serve',
-      mixId: mixId,
-      softId: softId,
-      username: currentUsername,
-      comboIdx: idx
-    }));
-    
-    document.getElementById('detail-overlay').classList.remove('active');
-    const el = document.getElementById(`cc-${mixId}-${idx}`);
-    if (el) {
-      el.classList.add('just-served');
-      setTimeout(() => el.classList.remove('just-served'), 500);
-    }
-    showToast(t('served'));
-    pendingServe = null;
-  } else {
-    // Comportement localStorage classique
-    state.mixes[mixId]--;state.softs[softId]--;saveAll();renderTabs();renderCocktails();
-    document.getElementById('detail-overlay').classList.remove('active');
-    const el=document.getElementById(`cc-${mixId}-${idx}`);
-    if(el){el.classList.add('just-served');setTimeout(()=>el.classList.remove('just-served'),500);}
-    showToast(t('served'));pendingServe=null;
+  if (currentUsername && cocktailName) {
+    addDrinkToHistory(currentUsername, cocktailName, drinkType);
   }
-};
+  
+  state.mixes[mixId]--;state.softs[softId]--;saveAll();renderTabs();renderCocktails();
+  document.getElementById('detail-overlay').classList.remove('active');
+  const el=document.getElementById(`cc-${mixId}-${idx}`);
+  if(el){el.classList.add('just-served');setTimeout(()=>el.classList.remove('just-served'),500);}
+  showToast(t('served'));pendingServe=null;};
 window.closeDetail=()=>{pendingServe=null;document.getElementById('detail-overlay').classList.remove('active');};
 document.getElementById('detail-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDetail();});
-
-// Fonctions pour servir softs et bières
-window.serveSoft=(id,idx)=>{
-  const soft=STANDALONE_SOFTS_DATA[idx];
-  if(!soft) return;
-  
-  const canServe = soft.unlimited || (state.standalone_softs[id]||0) > 0;
-  if(!canServe) return;
-  
-  if(confirm(`${t('serveConfirm')} ${soft.name}`)) {
-    if (wsConnected && ws && currentUsername) {
-      // Envoyer via WebSocket
-      ws.send(JSON.stringify({
-        type: 'serve_soft',
-        softId: id,
-        username: currentUsername
-      }));
-    } else {
-      // Comportement localStorage classique
-      if(!soft.unlimited) {
-        state.standalone_softs[id]--;
-      }
-      saveAll();
-      renderCocktails();
-    }
-    
-    showToast(`🥤 ${soft.name} servi !`);
-  }
-};
-
-window.serveBeer=(id,idx)=>{
-  const beer=BEERS_DATA[idx];
-  if(!beer) return;
-  
-  const canServe = (state.beers[id]||0) > 0;
-  if(!canServe) return;
-  
-  if(confirm(`${t('serveConfirm')} ${beer.name}`)) {
-    if (wsConnected && ws && currentUsername) {
-      // Envoyer via WebSocket
-      ws.send(JSON.stringify({
-        type: 'serve_beer',
-        beerId: id,
-        username: currentUsername
-      }));
-    } else {
-      // Comportement localStorage classique
-      state.beers[id]--;
-      saveAll();
-      renderCocktails();
-    }
-    
-    showToast(`🍺 ${beer.name} servi !`);
-  }
-};
 
 renderTabs();renderCocktails();
 
@@ -1658,6 +2496,29 @@ function renderAdmin(){
     <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="ns-n" placeholder="Jus cranberry"></div><div><label>Emoji</label><input id="ns-e" placeholder="🫐"></div></div>
     <div><label>Stock</label><input id="ns-s" type="number" value="20" min="0"></div>
     <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addSoft()">Ajouter</button></div></div>
+    
+    <h3>🥤 Softs Standalone</h3>
+    ${STANDALONE_SOFTS_DATA.map(s=>`<div class="admin-row"><div class="admin-label">${s.emoji} ${s.name} ${s.unlimited?'<small>(illimité)</small>':''}<span class="admin-delete" onclick="deleteStandaloneSoft('${s.id}')">🗑</span></div>
+    <div class="admin-stock-ctrl">${s.unlimited?'<span style="color:var(--ok);font-weight:700;">∞</span>':`<button class="minus" onclick="asss('${s.id}',-1)">−</button>
+    <input type="number" value="${state.standalone_softs[s.id]||0}" onchange="ssss('${s.id}',this.value)" min="0">
+    <button class="plus" onclick="asss('${s.id}',1)">+</button>`}</div></div>`).join('')}
+    
+    <h3 style="margin-top:20px">➕ Nouveau soft standalone</h3>
+    <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="nss-n" placeholder="Coca-Cola"></div><div><label>Emoji</label><input id="nss-e" placeholder="🥤"></div></div>
+    <div class="row2"><div><label>Stock</label><input id="nss-s" type="number" value="20" min="0"></div><div><label>Illimité ?</label><select id="nss-u"><option value="false">Non</option><option value="true">Oui</option></select></div></div>
+    <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addStandaloneSoft()">Ajouter</button></div></div>
+    
+    <h3>🍺 Bières</h3>
+    ${BEERS_DATA.map(b=>`<div class="admin-row"><div class="admin-label">${b.emoji} ${b.name}<span class="admin-delete" onclick="deleteBeer('${b.id}')">🗑</span></div>
+    <div class="admin-stock-ctrl"><button class="minus" onclick="abs('${b.id}',-1)">−</button>
+    <input type="number" value="${state.beers[b.id]||0}" onchange="sbs('${b.id}',this.value)" min="0">
+    <button class="plus" onclick="abs('${b.id}',1)">+</button></div></div>`).join('')}
+    
+    <h3 style="margin-top:20px">➕ Nouvelle bière</h3>
+    <div class="admin-add-form"><div class="row2"><div><label>Nom</label><input id="nb-n" placeholder="Affligem"></div><div><label>Emoji</label><input id="nb-e" placeholder="🍺"></div></div>
+    <div><label>Stock</label><input id="nb-s" type="number" value="4" min="0"></div>
+    <div style="text-align:center;margin-top:10px"><button class="admin-btn admin-btn-ok" onclick="addBeer()">Ajouter</button></div></div>
+    
     <div class="admin-actions"><button class="admin-btn admin-btn-danger" onclick="resetAll()">🔄 Reset</button>
     <button class="admin-btn admin-btn-close" onclick="closeAdmin()">Fermer</button></div>`;
 }
@@ -1669,271 +2530,299 @@ window.sss=(id,v)=>{state.softs[id]=Math.max(0,parseInt(v)||0);saveAll();};
 window.addMix=()=>{const n=document.getElementById('nm-n').value.trim(),e=document.getElementById('nm-e').value.trim()||'🍹',
 s=parseInt(document.getElementById('nm-s').value)||10,a=document.getElementById('nm-a').value==='true';if(!n)return;
 const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();MIXES.push({id,emoji:e,name:n,alc:a,stock:s,combos:[]});
-state.mixes[id]=s;saveAll();renderAdmin();showToast('✅ Mix ajouté');};
-window.deleteMix=(id)=>{if(!confirm('Supprimer ?'))return;MIXES.splice(MIXES.findIndex(m=>m.id===id),1);delete state.mixes[id];saveAll();renderAdmin();showToast('🗑 Supprimé');};
+state.mixes[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Mix ajouté' : 'Mix added'));};
+window.deleteMix=(id)=>{if(!confirm(t('deleteMix')))return;MIXES.splice(MIXES.findIndex(m=>m.id===id),1);delete state.mixes[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
 window.addSoft=()=>{const n=document.getElementById('ns-n').value.trim(),e=document.getElementById('ns-e').value.trim()||'🧊',
 s=parseInt(document.getElementById('ns-s').value)||20;if(!n)return;const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();
-SOFTS.push({id,emoji:e,name:n,stock:s});state.softs[id]=s;saveAll();renderAdmin();showToast('✅ Diluant ajouté');};
-window.deleteSoft=(id)=>{if(!confirm('Supprimer ?'))return;SOFTS.splice(SOFTS.findIndex(d=>d.id===id),1);delete state.softs[id];saveAll();renderAdmin();showToast('🗑 Supprimé');};
+SOFTS.push({id,emoji:e,name:n,stock:s});state.softs[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Diluant ajouté' : 'Diluent added'));};
+window.deleteSoft=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;SOFTS.splice(SOFTS.findIndex(d=>d.id===id),1);delete state.softs[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
 window.ac=(mid)=>{const n=document.getElementById('cn-'+mid).value.trim(),r=document.getElementById('cr-'+mid).value.trim(),
 ic=document.getElementById('ci-'+mid).value.trim()||'🍹',s=document.getElementById('cs-'+mid).value;if(!n||!r)return;
-MIXES.find(x=>x.id===mid).combos.push({name:n,recipe:r,soft:s,icon:ic});saveAll();renderAdmin();showToast('✅ Cocktail ajouté');};
+MIXES.find(x=>x.id===mid).combos.push({name:n,recipe:r,soft:s,icon:ic});saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Cocktail ajouté' : 'Cocktail added'));};
 window.dc=(mid,i)=>{MIXES.find(x=>x.id===mid).combos.splice(i,1);saveAll();renderAdmin();};
-window.resetAll=()=>{if(!confirm('Tout reset ?'))return;
-  if(wsConnected){
-    // Envoyer via WebSocket
-    ws.send(JSON.stringify({type:'reset'}));
-  } else {
-    // Comportement localStorage classique
-    localStorage.removeItem('siphappens_ws');loadAll();activeTab=MIXES[0]?.id||'';saveAll();renderAdmin();renderTabs();renderCocktails();showToast('🔄 Reset');
-  }
+// Gestion softs standalone admin
+window.asss=(id,d)=>{state.standalone_softs[id]=Math.max(0,(state.standalone_softs[id]||0)+d);saveAll();renderAdmin();};
+window.ssss=(id,v)=>{state.standalone_softs[id]=Math.max(0,parseInt(v)||0);saveAll();};
+window.addStandaloneSoft=()=>{const n=document.getElementById('nss-n').value.trim(),e=document.getElementById('nss-e').value.trim()||'🥤',
+s=parseInt(document.getElementById('nss-s').value)||20,u=document.getElementById('nss-u').value==='true';if(!n)return;
+const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();const newSoft={id,emoji:e,name:n,stock:s};if(u)newSoft.unlimited=true;
+STANDALONE_SOFTS_DATA.push(newSoft);state.standalone_softs[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Soft ajouté' : 'Soft added'));};
+window.deleteStandaloneSoft=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;STANDALONE_SOFTS_DATA.splice(STANDALONE_SOFTS_DATA.findIndex(s=>s.id===id),1);delete state.standalone_softs[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
+
+// Gestion bières admin
+window.abs=(id,d)=>{state.beers[id]=Math.max(0,(state.beers[id]||0)+d);saveAll();renderAdmin();};
+window.sbs=(id,v)=>{state.beers[id]=Math.max(0,parseInt(v)||0);saveAll();};
+window.addBeer=()=>{const n=document.getElementById('nb-n').value.trim(),e=document.getElementById('nb-e').value.trim()||'🍺',
+s=parseInt(document.getElementById('nb-s').value)||4;if(!n)return;
+const id=n.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now();BEERS_DATA.push({id,emoji:e,name:n,stock:s});
+state.beers[id]=s;saveAll();renderAdmin();showToast('✅ ' + (lang === 'fr' ? 'Bière ajoutée' : 'Beer added'));};
+window.deleteBeer=(id)=>{if(!confirm(lang === 'fr' ? 'Supprimer ?' : 'Delete?'))return;BEERS_DATA.splice(BEERS_DATA.findIndex(b=>b.id===id),1);delete state.beers[id];saveAll();renderAdmin();showToast('🗑 ' + (lang === 'fr' ? 'Supprimé' : 'Deleted'));};
+
+window.resetAll=()=>{if(!confirm(t('resetAll')))return;
+  localStorage.removeItem('chezfred_v1');
+  localStorage.removeItem('chezfred_demo_leaderboard');
+  localStorage.removeItem('siphappens_demo_leaderboard');
+  localStorage.removeItem('siphappens_demo_username');
+  localStorage.removeItem('siphappens_titles');
+  localStorage.removeItem('siphappens_active_title');
+  localStorage.removeItem('siphappens_lang');
+  localStorage.removeItem('siphappens_tutorial_done');
+  currentUsername=null;userTitles=[];activeTitle=null;
+  leaderboardData={history:[],topDrinkers:[],cocktailStar:null};
+  lang='fr';
+  loadAll();activeTab=MIXES[0]?.id||'';saveAll();
+  updateUserDisplay();updateLanguageDisplay();
+  renderAdmin();renderTabs();renderCocktails();
+  generateInitialHistory();startFakeActivity();
+  showToast(t('reset'));
+  showUsernamePopup(false);
 };
 
-// ===== WEBSOCKET LOGIC =====
-let wsConnected = false;
-let ws = null;
-
-function connectWS() {
-  try {
-    ws = new WebSocket(`ws://${window.location.host}`);
+// Initialiser les données historiques pour la démo
+function generateInitialHistory() {
+  const now = Date.now();
+  const drinks = [];
+  const drinkTypes = [];
+  
+  // Collecter tous les cocktails disponibles
+  MIXES.forEach(mix => {
+    mix.combos.forEach(combo => {
+      drinks.push(combo.name);
+      drinkTypes.push(mix.alc ? 'cocktail_alc' : 'cocktail_na');
+    });
+  });
+  
+  // Ajouter les softs standalone
+  STANDALONE_SOFTS_DATA.forEach(soft => {
+    drinks.push(soft.name);
+    drinkTypes.push('soft');
+  });
+  
+  // Ajouter les bières
+  BEERS_DATA.forEach(beer => {
+    drinks.push(beer.name);
+    drinkTypes.push('beer');
+  });
+  
+  // Générer 5-8 commandes récentes avec points
+  const count = 5 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < count; i++) {
+    const fakeUser = FAKE_USERS[Math.floor(Math.random() * FAKE_USERS.length)];
+    const drinkIndex = Math.floor(Math.random() * drinks.length);
+    const fakeDrink = drinks[drinkIndex];
+    const drinkType = drinkTypes[drinkIndex];
+    const fakeTime = now - (i * 60000) - Math.random() * 300000; // Entre maintenant et 5-25 min ago
     
-    ws.onopen = () => {
-      wsConnected = true;
-      document.getElementById('ws-status').innerHTML = '🟢 Connecté';
-      console.log('🔗 WebSocket connecté');
-    };
+    // Attribuer des titres aléatoires aux faux utilisateurs  
+    const fakeTitles = ['first_sip', 'debutant', 'curious', 'tropical_fan', 'dd', 'pur_jus'];
+    const fakeTitle = Math.random() > 0.7 ? fakeTitles[Math.floor(Math.random() * fakeTitles.length)] : null;
     
-    ws.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        
-        if (message.type === 'sync' && message.state) {
-          // Mettre à jour depuis le serveur
-          MIXES = message.state.mixes;
-          SOFTS = message.state.softs;
-          state = message.state.stock;
-          
-          // Mettre à jour l'historique pour le classement
-          if (message.state.history) {
-            leaderboardData.history = message.state.history;
-          }
-          
-          // Aussi mettre à jour localStorage en fallback
-          saveAll();
-          
-          // Re-render
-          renderTabs();
-          renderCocktails();
-          
-          console.log('📦 État synchronisé depuis serveur');
-        } else if (message.type === 'username_ok') {
-          // Pseudo accepté
-          const username = document.getElementById('username-input').value.trim();
-          acceptUsername(username);
-        } else if (message.type === 'username_taken') {
-          // Pseudo refusé
-          rejectUsername();
-        }
-      } catch (error) {
-        console.error('❌ Erreur parsing message WS:', error);
-      }
-    };
-    
-    ws.onclose = () => {
-      wsConnected = false;
-      document.getElementById('ws-status').innerHTML = '🔴 Hors ligne';
-      console.log('❌ WebSocket déconnecté - reconnexion dans 2s...');
-      setTimeout(connectWS, 2000);
-    };
-    
-    ws.onerror = (error) => {
-      console.error('❌ Erreur WebSocket:', error);
-      if (ws) ws.close();
-    };
-    
-  } catch (error) {
-    console.error('❌ Erreur création WebSocket:', error);
-    setTimeout(connectWS, 2000);
+    leaderboardData.history.unshift({
+      username: fakeUser,
+      cocktailName: fakeDrink,
+      drinkType: drinkType,
+      points: POINT_VALUES[drinkType],
+      title: fakeTitle,
+      timestamp: fakeTime
+    });
   }
+  
+  saveLeaderboardData();
 }
 
-// Fonction pour envoyer la mise à jour admin
-
-// Modifier les fonctions admin pour WebSocket
-function sendAdminUpdate() {
-  if (wsConnected && ws) {
-    ws.send(JSON.stringify({
-      type: 'admin_update',
-      mixes: MIXES,
-      softs: SOFTS,
-      stock: state
-    }));
-  }
-}
-
-// Override des fonctions admin existantes
-window.ams = (id, d) => {
-  state.mixes[id] = Math.max(0, (state.mixes[id] || 0) + d);
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-};
-
-window.sms = (id, v) => {
-  state.mixes[id] = Math.max(0, parseInt(v) || 0);
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-};
-
-window.ass = (id, d) => {
-  state.softs[id] = Math.max(0, (state.softs[id] || 0) + d);
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-};
-
-window.sss = (id, v) => {
-  state.softs[id] = Math.max(0, parseInt(v) || 0);
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-};
-
-window.addMix = () => {
-  const n = document.getElementById('nm-n').value.trim();
-  const e = document.getElementById('nm-e').value.trim() || '🍹';
-  const s = parseInt(document.getElementById('nm-s').value) || 10;
-  const a = document.getElementById('nm-a').value === 'true';
-  if (!n) return;
-  
-  const id = n.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now();
-  MIXES.push({id, emoji: e, name: n, alc: a, stock: s, combos: []});
-  state.mixes[id] = s;
-  
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-  showToast('✅ Mix ajouté');
-};
-
-window.deleteMix = (id) => {
-  if (!confirm('Supprimer ?')) return;
-  MIXES.splice(MIXES.findIndex(m => m.id === id), 1);
-  delete state.mixes[id];
-  
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-  showToast('🗑 Supprimé');
-};
-
-window.addSoft = () => {
-  const n = document.getElementById('ns-n').value.trim();
-  const e = document.getElementById('ns-e').value.trim() || '🧊';
-  const s = parseInt(document.getElementById('ns-s').value) || 20;
-  if (!n) return;
-  
-  const id = n.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now();
-  SOFTS.push({id, emoji: e, name: n, stock: s});
-  state.softs[id] = s;
-  
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-  showToast('✅ Diluant ajouté');
-};
-
-window.deleteSoft = (id) => {
-  if (!confirm('Supprimer ?')) return;
-  SOFTS.splice(SOFTS.findIndex(d => d.id === id), 1);
-  delete state.softs[id];
-  
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-  showToast('🗑 Supprimé');
-};
-
-window.ac = (mid) => {
-  const n = document.getElementById('cn-' + mid).value.trim();
-  const r = document.getElementById('cr-' + mid).value.trim();
-  const ic = document.getElementById('ci-' + mid).value.trim() || '🍹';
-  const s = document.getElementById('cs-' + mid).value;
-  if (!n || !r) return;
-  
-  MIXES.find(x => x.id === mid).combos.push({name: n, recipe: r, soft: s, icon: ic});
-  
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-  showToast('✅ Cocktail ajouté');
-};
-
-window.dc = (mid, i) => {
-  MIXES.find(x => x.id === mid).combos.splice(i, 1);
-  
-  if (wsConnected) {
-    sendAdminUpdate();
-  } else {
-    saveAll();
-  }
-  renderAdmin();
-};
-
-// Initialiser l'i18n et le système d'identification
+// Initialisation
 updateLanguageDisplay();
 initUsername();
 
-// Modifier ws.onopen pour s'enregistrer automatiquement
-const originalConnect = connectWS;
-connectWS = function() {
-  originalConnect();
-  const originalOnOpen = ws ? ws.onopen : null;
-  if (ws) {
-    ws.onopen = () => {
+// Générer historique initial s'il n'existe pas
+if (leaderboardData.history.length === 0) {
+  generateInitialHistory();
+}
+
+startFakeActivity();
+
+// ===== TUTORIAL SYSTEM =====
+let currentTutorialStep = 1;
+const TUTORIAL_STEPS = [
+  { emoji: '🎉', titleKey: 'tutorial1Title', textKey: 'tutorial1Text' },
+  { emoji: '🥭', titleKey: 'tutorial2Title', textKey: 'tutorial2Text' },
+  { emoji: '👆', titleKey: 'tutorial3Title', textKey: 'tutorial3Text' },
+  { emoji: '⭐', titleKey: 'tutorial4Title', textKey: 'tutorial4Text' },
+  { emoji: '🏆', titleKey: 'tutorial5Title', textKey: 'tutorial5Text' },
+  { emoji: '✏️', titleKey: 'tutorial6Title', textKey: 'tutorial6Text' }
+];
+
+function showTutorial() {
+  if (localStorage.getItem('siphappens_tutorial_done')) {
+    return; // Tutorial already completed
+  }
+  
+  currentTutorialStep = 1;
+  updateTutorialDisplay();
+  document.getElementById('tutorial-overlay').classList.add('active');
+}
+
+function updateTutorialDisplay() {
+  const step = TUTORIAL_STEPS[currentTutorialStep - 1];
+  if (!step) return;
+  
+  document.getElementById('tutorial-counter').textContent = `${currentTutorialStep}/6`;
+  document.getElementById('tutorial-emoji').textContent = step.emoji;
+  document.getElementById('tutorial-text').textContent = t(step.textKey);
+  
+  const nextBtn = document.getElementById('tutorial-next');
+  if (currentTutorialStep === 6) {
+    nextBtn.textContent = t('tutorialFinish');
+  } else {
+    nextBtn.textContent = t('tutorialNext');
+  }
+}
+
+function nextTutorialStep() {
+  if (currentTutorialStep >= 6) {
+    // Tutorial finished
+    closeTutorial();
+    return;
+  }
+  
+  currentTutorialStep++;
+  updateTutorialDisplay();
+}
+
+function skipTutorial() {
+  closeTutorial();
+}
+
+function closeTutorial() {
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  localStorage.setItem('siphappens_tutorial_done', '1');
+}
+
+window.nextTutorialStep = nextTutorialStep;
+window.skipTutorial = skipTutorial;
+
+// ===== WEBSOCKET LIVE SYNC =====
+// Auto-détecte si un serveur WS est dispo (mode soirée) sinon reste en localStorage
+(function() {
+  let ws = null;
+  let wsConnected = false;
+  let reconnectTimer = null;
+  const WS_RETRY_MS = 3000;
+
+  // Patch saveAll pour broadcast via WS
+  const _origSaveAll = saveAll;
+  saveAll = function() {
+    _origSaveAll();
+    if (wsConnected && ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({
+        type: 'stock_update',
+        stock: state,
+        historyEntry: (typeof leaderboardData !== 'undefined' && leaderboardData.history && leaderboardData.history.length > 0)
+          ? leaderboardData.history[0] : null
+      }));
+    }
+  };
+
+  function applySync(serverState) {
+    if (serverState.stock) {
+      // Merge server stock into local state
+      if (serverState.stock.mixes) state.mixes = serverState.stock.mixes;
+      if (serverState.stock.softs) state.softs = serverState.stock.softs;
+      if (serverState.stock.standalone_softs) state.standalone_softs = serverState.stock.standalone_softs;
+      if (serverState.stock.beers) state.beers = serverState.stock.beers;
+    }
+    if (serverState.history && typeof leaderboardData !== 'undefined') {
+      leaderboardData.history = serverState.history;
+    }
+    _origSaveAll(); // Save locally too
+    renderTabs();
+    renderCocktails();
+  }
+
+  function connectWS() {
+    // Build WS URL from current page location
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = proto + '//' + location.host;
+
+    try {
+      ws = new WebSocket(wsUrl);
+    } catch(e) { return; }
+
+    ws.onopen = function() {
       wsConnected = true;
-      document.getElementById('ws-status').innerHTML = '🟢 Connecté';
-      console.log('🔗 WebSocket connecté');
-      
-      // S'enregistrer si on a un pseudo
+      console.log('🔗 WebSocket connecté — mode live !');
+      // Register username if available
       if (currentUsername) {
-        ws.send(JSON.stringify({
-          type: 'register',
-          username: currentUsername
-        }));
+        ws.send(JSON.stringify({ type: 'register', username: currentUsername }));
       }
+      // Show live indicator
+      showLiveIndicator(true);
+    };
+
+    ws.onmessage = function(e) {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.type === 'sync' && msg.state) {
+          applySync(msg.state);
+        } else if (msg.type === 'reset') {
+          localStorage.removeItem('chezfred_v1');
+          location.reload();
+        } else if (msg.type === 'users') {
+          updateConnectedCount(msg.count);
+        }
+      } catch(err) {}
+    };
+
+    ws.onclose = function() {
+      wsConnected = false;
+      showLiveIndicator(false);
+      console.log('📡 WebSocket déconnecté — retry dans 3s');
+      reconnectTimer = setTimeout(connectWS, WS_RETRY_MS);
+    };
+
+    ws.onerror = function() {
+      ws.close();
     };
   }
-};
 
-// Connecter au chargement
-connectWS();
+  function showLiveIndicator(on) {
+    let el = document.getElementById('live-indicator');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'live-indicator';
+      el.style.cssText = 'position:fixed;top:8px;right:8px;z-index:100;font-size:.7em;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.5px;pointer-events:none;transition:opacity .3s;';
+      document.body.appendChild(el);
+    }
+    if (on) {
+      el.style.background = 'rgba(78,204,163,.15)';
+      el.style.color = '#4ecca3';
+      el.innerHTML = '● LIVE';
+      el.style.opacity = '1';
+    } else {
+      el.style.background = 'rgba(233,69,96,.15)';
+      el.style.color = '#e94560';
+      el.innerHTML = '○ OFFLINE';
+      el.style.opacity = '0.6';
+    }
+  }
+
+  function updateConnectedCount(count) {
+    let el = document.getElementById('connected-count');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'connected-count';
+      el.style.cssText = 'position:fixed;top:8px;right:80px;z-index:100;font-size:.7em;padding:3px 10px;border-radius:20px;font-weight:600;background:rgba(255,255,255,.06);color:var(--sub);pointer-events:none;';
+      document.body.appendChild(el);
+    }
+    el.textContent = '👥 ' + count;
+  }
+
+  // Tenter la connexion — si pas de serveur, on reste en mode localStorage silencieusement
+  // Ne tenter que si on n'est PAS sur github.io
+  if (!location.hostname.includes('github.io')) {
+    connectWS();
+  }
+})();
 </script>
 </body>
 </html>
