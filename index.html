@@ -2215,7 +2215,8 @@ function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return
   }
   setTimeout(updateCountdown,1000);}
 let tapC=0,tapT;document.getElementById('countdown-logo').addEventListener('click',()=>{tapC++;clearTimeout(tapT);if(tapC>=3){tapC=0;launchBar();return;}tapT=setTimeout(()=>tapC=0,600);});
-spawnParticles();updateCountdown();
+// Countdown désactivé - accès direct au bar
+launchBar();
 
 // Rendering
 function stockClass(n){return n<=0?'stock-danger':n<=3?'stock-warn':'stock-ok';}
