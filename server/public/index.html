@@ -2182,7 +2182,13 @@ document.getElementById('tutorial-overlay').addEventListener('click', function(e
 });
 
 // Bar activé directement
-document.getElementById('bar-content').classList.add('active');
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('bar-content').classList.add('active');
+  });
+} else {
+  document.getElementById('bar-content').classList.add('active');
+}
 
 loadAll(); 
 loadLeaderboardData();
