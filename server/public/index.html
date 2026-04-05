@@ -2550,7 +2550,8 @@ window.resetAll=()=>{if(!confirm(t('resetAll')))return;
   loadAll();activeTab=MIXES[0]?.id||'';saveAll();
   updateUserDisplay();updateLanguageDisplay();
   renderAdmin();renderTabs();renderCocktails();
-  generateInitialHistory();startFakeActivity();
+  // Faux invités désactivés
+// // generateInitialHistory();startFakeActivity();
   showToast(t('reset'));
   showUsernamePopup(false);
 };
@@ -2612,11 +2613,11 @@ updateLanguageDisplay();
 initUsername();
 
 // Générer historique initial s'il n'existe pas
-if (leaderboardData.history.length === 0) {
-  generateInitialHistory();
-}
-
-startFakeActivity();
+// Faux invités désactivés
+// if (leaderboardData.history.length === 0) {
+//   generateInitialHistory();
+// }
+// startFakeActivity();
 
 // ===== TUTORIAL SYSTEM =====
 let currentTutorialStep = 1;
