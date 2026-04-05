@@ -2185,8 +2185,10 @@ loadAll();
 loadLeaderboardData();
 activeTab=MIXES[0]?.id||'';
 
-// Bar activé directement
-document.getElementById('bar-content').classList.add('active');
+// Bar activé directement après chargement du DOM
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('bar-content').classList.add('active');
+});
 
 // Rendering
 function stockClass(n){return n<=0?'stock-danger':n<=3?'stock-warn':'stock-ok';}
