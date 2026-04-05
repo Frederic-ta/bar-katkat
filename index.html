@@ -937,21 +937,6 @@ body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sa
 </head>
 <body>
 
-<!-- COUNTDOWN -->
-<div id="countdown-screen">
-  <div class="particles" id="particles"></div>
-  <div class="logo" id="countdown-logo">🍹</div>
-  <h1>Sip Happens at Fred's</h1>
-  <div class="tagline">Something's brewing...</div>
-  <div id="countdown-timer">
-    <div class="unit"><div class="num" id="cd-days">--</div><div class="label">Jours</div></div>
-    <div class="unit"><div class="num" id="cd-hours">--</div><div class="label">Heures</div></div>
-    <div class="unit"><div class="num" id="cd-mins">--</div><div class="label">Min</div></div>
-    <div class="unit"><div class="num" id="cd-secs">--</div><div class="label">Sec</div></div>
-  </div>
-  <div class="tease">🔒 Ouverture le <span>5 avril à 12h00</span></div>
-</div>
-
 <!-- BAR -->
 <div id="bar-content">
   <!-- TOP BAR -->
@@ -2200,23 +2185,8 @@ loadAll();
 loadLeaderboardData();
 activeTab=MIXES[0]?.id||'';
 
-// Countdown
-const LAUNCH=new Date('2026-04-05T12:00:00+02:00');
-function spawnParticles(){const e=['🍹','🍸','🧊','🍋','🫚','🥭','🍊','☕','🥂','🌿','🍍'];const c=document.getElementById('particles');for(let i=0;i<15;i++){const p=document.createElement('div');p.className='particle';p.textContent=e[Math.floor(Math.random()*e.length)];p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=(-Math.random()*15)+'s';p.style.fontSize=(1+Math.random()*1.2)+'em';c.appendChild(p);}}
-function launchBar(){document.getElementById('countdown-screen').style.display='none';document.getElementById('bar-content').classList.add('active');}
-function updateCountdown(){const d=LAUNCH-new Date();if(d<=0){launchBar();return;}document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');
-  // Update labels
-  const units = document.querySelectorAll('#countdown-timer .unit .label');
-  if(units.length >= 4) {
-    units[0].textContent = t('days');
-    units[1].textContent = t('hours');
-    units[2].textContent = t('min');
-    units[3].textContent = t('sec');
-  }
-  setTimeout(updateCountdown,1000);}
-let tapC=0,tapT;document.getElementById('countdown-logo').addEventListener('click',()=>{tapC++;clearTimeout(tapT);if(tapC>=3){tapC=0;launchBar();return;}tapT=setTimeout(()=>tapC=0,600);});
-// Countdown désactivé - accès direct au bar
-launchBar();
+// Bar activé directement
+document.getElementById('bar-content').classList.add('active');
 
 // Rendering
 function stockClass(n){return n<=0?'stock-danger':n<=3?'stock-warn':'stock-ok';}
