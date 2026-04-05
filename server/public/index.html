@@ -2181,14 +2181,12 @@ document.getElementById('tutorial-overlay').addEventListener('click', function(e
   }
 });
 
+// Bar activé directement
+document.getElementById('bar-content').classList.add('active');
+
 loadAll(); 
 loadLeaderboardData();
 activeTab=MIXES[0]?.id||'';
-
-// Bar activé directement après chargement du DOM
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('bar-content').classList.add('active');
-});
 
 // Rendering
 function stockClass(n){return n<=0?'stock-danger':n<=3?'stock-warn':'stock-ok';}
